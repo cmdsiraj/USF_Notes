@@ -1,0 +1,135 @@
+You are given a research paper (PDF).
+
+Your task is to produce a **standalone, exam-ready study companion** in **HTML format** with a **left-side navigation bar**.
+
+IMPORTANT CONSTRAINTS
+- Assume I will NOT re-open the paper while studying.
+- These notes must fully substitute the paper.
+- Be precise, structured, and detailed — no fluff.
+- Be faithful to the paper’s claims (do not invent content).
+- Highlight important concepts, definitions, frameworks, and arguments.
+- Use clear section headers, bullet points, tables, and callout boxes.
+
+────────────────────────────────
+STRUCTURE REQUIREMENTS (MANDATORY)
+────────────────────────────────
+
+1. GLOBAL LAYOUT
+- Single self-contained HTML file.
+- Sticky left sidebar with:
+  - Paper title + citation
+  - Search/filter box
+  - Clickable section navigation
+- Main content area on the right.
+- Clean, readable academic UI (dark theme acceptable).
+
+2. REQUIRED MAIN SECTIONS (IN THIS ORDER)
+
+### 1. Overview
+- What problem the paper addresses
+- Why it matters
+- Core thesis / central claim
+- What the paper contributes (frameworks, models, methods)
+
+### 2. Key Concepts & Keywords
+- Glossary-style table
+- Define terms *as used in this paper*, not generic definitions
+- Highlight differences from common interpretations if relevant
+
+### 3. Core Frameworks / Models
+For each major framework/model:
+- Explain it in plain language
+- Explain *why it exists*
+- Explain how it is used in the paper
+- Include implications for research or practice
+
+⚠️ PLACE THE IMAGE SLOT FOR EACH FIGURE **DIRECTLY IN THIS SECTION**
+- Image placeholder box
+- Right below it, a detailed explanation of:
+  - What the diagram shows
+  - What insight it conveys
+  - Why it is important
+
+### 4. Main Contributions
+- Break down each contribution separately
+- Explain:
+  - What is new
+  - Why it matters
+  - How it advances prior work
+
+### 5. Methodology / Process (if applicable)
+- Explain how the authors arrived at their results
+- Highlight assumptions and constraints
+- Explain tradeoffs and design choices
+
+### 6. Evaluation / Evidence
+- How claims are validated
+- What evidence is used
+- Strengths and limitations of the evaluation
+- Explicitly link claims → evidence
+
+### 7. Examples / Case Studies (if present)
+For each example:
+- Problem context
+- Artifact / idea applied
+- Evaluation method
+- Key takeaway
+
+### 8. Limitations, Challenges, Open Issues
+- What the authors explicitly admit
+- Structural or methodological limitations
+- Where future work is needed
+
+### 9. Practical Takeaways / Study Checklist
+- Bullet list I can memorize
+- Use this to:
+  - Review for exams
+  - Evaluate other papers
+  - Design my own research
+
+### 10. Figures & Tables Index (FINAL SECTION)
+For each figure/table:
+- Paper page number
+- PDF page number
+- Short description of what it represents
+- Credits if the paper cites another source
+
+### 11. Credits & Citation
+- Full paper citation
+- Any cited figure credits
+- Statement that notes are a study companion
+
+────────────────────────────────
+IMAGE HANDLING (VERY IMPORTANT)
+────────────────────────────────
+- DO NOT embed actual images.
+- Insert a clearly labeled “Image Slot” for every figure/table.
+- The explanation MUST be immediately next to the image slot.
+- Include:
+  - Figure/Table number
+  - Title
+  - What it means (interpretation, not caption repetition)
+  - Page references so I can screenshot manually
+
+────────────────────────────────
+STYLE REQUIREMENTS
+────────────────────────────────
+- Clear academic tone
+- No marketing language
+- No excessive emojis
+- Use callout boxes for:
+  - Key insights
+  - Exam tips
+  - “Say this in your own words” summaries
+- Prefer structured clarity over verbosity
+
+────────────────────────────────
+OUTPUT REQUIREMENTS
+────────────────────────────────
+- Output ONLY the final HTML (no explanation).
+- Ensure the file is fully usable offline.
+- Navigation links must work correctly.
+
+Now generate the complete HTML notes for the given paper.
+
+The paper is attached, use it as the sole source.

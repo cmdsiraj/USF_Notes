@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Final Study Notes — Hevner et al. (2004) Design Science in IS Research</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#111826;
+      --panel2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --accent:#60a5fa;
+      --accent2:#34d399;
+      --border:rgba(255,255,255,.10);
+      --mark:rgba(96,165,250,.22);
+      --shadow: 0 10px 28px rgba(0,0,0,.30);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:linear-gradient(180deg,var(--bg),#070a0f);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    a:hover{color:var(--accent)}
+    .layout{
+      display:grid;
+      grid-template-columns: 330px 1fr;
+      min-height:100vh;
+    }
+    aside{
+      position:sticky;
+      top:0;
+      height:100vh;
+      padding:18px 16px;
+      border-right:1px solid var(--border);
+      background:linear-gradient(180deg,var(--panel),rgba(17,24,38,.65));
+      overflow:auto;
+    }
+    main{
+      padding:28px 26px 48px;
+      max-width: 1100px;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding:12px 12px 14px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:linear-gradient(180deg,var(--panel2),rgba(15,23,42,.5));
+      box-shadow: var(--shadow);
+      margin-bottom:14px;
+    }
+    .brand h1{
+      font-size:15px;
+      margin:0;
+      line-height:1.25;
+      letter-spacing:.2px;
+    }
+    .brand .meta{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .pillrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .pill{
+      font-size:11px;
+      padding:5px 8px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      color:var(--muted);
+      background:rgba(0,0,0,.15);
+    }
+    .search{
+      margin:10px 0 14px;
+      display:flex;
+      gap:8px;
+    }
+    .search input{
+      width:100%;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      outline:none;
+    }
+    .nav{display:flex;flex-direction:column;gap:4px;padding:2px}
+    .nav a{
+      padding:9px 10px;
+      border-radius:10px;
+      color:var(--muted);
+      border:1px solid transparent;
+      font-size:13px;
+      line-height:1.2;
+    }
+    .nav a.active{
+      color:var(--text);
+      background:rgba(96,165,250,.14);
+      border-color:rgba(96,165,250,.25);
+    }
+    .nav .group{
+      margin-top:8px;
+      padding-top:8px;
+      border-top:1px dashed rgba(255,255,255,.12);
+    }
+
+    h2{margin:26px 0 10px;font-size:22px;letter-spacing:.2px}
+    h3{margin:18px 0 8px;font-size:16px;color:#f3f4f6}
+    h4{margin:14px 0 6px;font-size:14px;color:#f3f4f6}
+    p{margin:10px 0;color:rgba(229,231,235,.92);line-height:1.60}
+    ul{margin:8px 0 12px 20px;line-height:1.60}
+    li{margin:6px 0}
+
+    mark{
+      background:var(--mark);
+      color:var(--text);
+      padding:1px 3px;
+      border-radius:4px;
+    }
+    code{
+      background:rgba(0,0,0,.22);
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.10);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.92em;
+    }
+    .muted{color:var(--muted)}
+    .callout{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px 14px;
+      background:linear-gradient(180deg,rgba(96,165,250,.10),rgba(0,0,0,.15));
+      margin:14px 0;
+    }
+    .callout strong{color:#eaf2ff}
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:12px;
+      margin:12px 0 14px;
+    }
+    .card{
+      grid-column: span 6;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.14));
+    }
+    .card.small{grid-column: span 4;}
+    .qa{
+      border-left:3px solid rgba(52,211,153,.55);
+      padding:10px 12px;
+      margin:10px 0;
+      background:rgba(0,0,0,.10);
+      border-radius:10px;
+    }
+    .table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.10);
+      margin:10px 0 14px;
+    }
+    .table th,.table td{
+      padding:10px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      vertical-align:top;
+      font-size:13px;
+      line-height:1.40;
+    }
+    .table th{color:#eaf2ff;text-align:left;background:rgba(96,165,250,.08)}
+    .table tr:last-child td{border-bottom:none}
+
+    .imgslot{
+      border:1px dashed rgba(255,255,255,.22);
+      border-radius:14px;
+      padding:12px 12px;
+      background:rgba(0,0,0,.10);
+      margin:10px 0 14px;
+    }
+    .imgslot .title{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+    .badge{
+      font-size:11px;
+      padding:4px 7px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.16);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .hr{margin:26px 0;border:none;border-top:1px solid rgba(255,255,255,.10);}
+    footer{
+      margin-top:30px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.10);
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    @media (max-width: 980px){
+      .layout{grid-template-columns: 1fr;}
+      aside{position:relative;height:auto}
+      main{padding:18px 16px}
+      .card,.card.small{grid-column: span 12;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <h1>Final Study Notes: Hevner et al. (2004) — Design Science in IS Research</h1>
+        <div class="meta">
+          Standalone study companion with figure meanings + image slots placed right where they’re discussed.
+        </div>
+        <div class="pillrow">
+          <span class="pill">Design Science</span>
+          <span class="pill">Behavioral Science</span>
+          <span class="pill">IT Artifact</span>
+          <span class="pill">Rigor vs Relevance</span>
+          <span class="pill">7 Guidelines</span>
+          <span class="pill">Evaluation</span>
+          <span class="pill">Generate/Test</span>
+        </div>
+      </div>
+
+      <div class="search">
+        <input id="filter" type="text" placeholder="Filter sections…" />
+      </div>
+
+      <nav class="nav" id="nav">
+        <a href="#overview">Overview</a>
+        <a href="#keywords">Key concepts & keywords</a>
+
+        <div class="group">
+          <a href="#paradigms">Two paradigms</a>
+          <a href="#artifact">What is an IT artifact?</a>
+          <a href="#orgdesign">Org–IS design link (Figure 1)</a>
+          <a href="#framework">IS research framework (Figure 2)</a>
+        </div>
+
+        <div class="group">
+          <a href="#guidelines">Seven guidelines (Table 1)</a>
+          <a href="#g1">G1: Artifact</a>
+          <a href="#g2">G2: Relevance</a>
+          <a href="#g3">G3: Evaluation</a>
+          <a href="#g4">G4: Contribution</a>
+          <a href="#g5">G5: Rigor</a>
+          <a href="#g6">G6: Search process (Figure 3)</a>
+          <a href="#g7">G7: Communication</a>
+        </div>
+
+        <div class="group">
+          <a href="#evaluation">Evaluation methods (Table 2)</a>
+          <a href="#wicked">Wicked problems</a>
+          <a href="#exemplars">Exemplars</a>
+          <a href="#challenges">Challenges</a>
+          <a href="#takeaways">Practical checklist</a>
+        </div>
+
+        <div class="group">
+          <a href="#credits">Credits & references</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main>
+      <section id="overview">
+        <h2>Overview</h2>
+        <p>
+          Hevner et al. argue that Information Systems (IS) research should be explicitly grounded in <mark>two complementary paradigms</mark>:
+          <mark>behavioral science</mark> (understanding and explaining phenomena) and <mark>design science</mark> (building and evaluating solutions).
+          Behavioral science aims for <mark>truth</mark> (validated explanations/predictions). Design science aims for <mark>utility</mark>
+          (artifacts that solve important problems).
+        </p>
+
+        <div class="callout">
+          <strong>Central claim:</strong> In IS, <mark>truth and utility are inseparable</mark>.
+          Theories inform design; the demonstrated utility (or failure) of artifacts feeds back into theory refinement and the discipline’s knowledge base.
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h4>What the paper contributes</h4>
+            <ul>
+              <li>A unifying <mark>IS research framework</mark> linking environment, knowledge base, and research activities (Figure 2).</li>
+              <li><mark>Seven guidelines</mark> defining what high-quality design-science research must address (Table 1).</li>
+              <li>A catalog of <mark>evaluation methods</mark> matched to different artifact types (Table 2).</li>
+              <li>A conceptualization of design as <mark>iterative search</mark> (Generate/Test) (Figure 3).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>How to study this paper</h4>
+            <ul>
+              <li>Memorize: the <mark>7 guidelines</mark> + what evidence is expected for each.</li>
+              <li>Internalize: the <mark>framework</mark> (Figure 2) as your mental map of IS research.</li>
+              <li>Practice: map any design paper you read to the guidelines (artifact → evaluation → contribution).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="keywords">
+        <h2>Key concepts & keywords</h2>
+
+        <table class="table">
+          <thead><tr><th style="width:24%">Term</th><th>Meaning in this paper</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Design science</strong></td><td>Build and evaluate <mark>IT artifacts</mark> to solve important problems and contribute to knowledge.</td></tr>
+            <tr><td><strong>Behavioral science</strong></td><td>Develop and test <mark>theories</mark> explaining/predicting IS-related phenomena.</td></tr>
+            <tr><td><strong>IT artifact</strong></td><td>Designed object embodying knowledge: <mark>constructs</mark>, <mark>models</mark>, <mark>methods</mark>, <mark>instantiations</mark>.</td></tr>
+            <tr><td><strong>Relevance</strong></td><td>Anchoring research in real business needs (environment-driven problems).</td></tr>
+            <tr><td><strong>Rigor</strong></td><td>Grounding construction/evaluation in strong theory + disciplined methods (knowledge base driven).</td></tr>
+            <tr><td><strong>Routine design</strong></td><td>Applying known practices to build systems; valuable practice but not automatically research.</td></tr>
+            <tr><td><strong>Design-science research</strong></td><td>Innovative solutions + credible evaluation + explicit contribution to knowledge base.</td></tr>
+            <tr><td><strong>Build–evaluate loop</strong></td><td>Iterate: build artifact → evaluate → refine; evaluation both proves utility and drives improvement.</td></tr>
+            <tr><td><strong>Generate/Test</strong></td><td>Design as iterative <mark>search</mark> through alternatives under constraints (Figure 3).</td></tr>
+          </tbody>
+        </table>
+
+        <div class="qa">
+          <strong>Memory hook:</strong> <mark>Environment</mark> supplies the problem; <mark>Knowledge base</mark> supplies theory/methods; <mark>Research</mark> builds + evaluates artifacts and adds back to knowledge.
+        </div>
+      </section>
+
+      <section id="paradigms">
+        <h2>Two research paradigms</h2>
+        <div class="grid">
+          <div class="card">
+            <h4>Behavioral science: “What is true?”</h4>
+            <ul>
+              <li>Goal: develop and validate theories that explain/predict IS phenomena.</li>
+              <li>Outputs: constructs, hypotheses, causal models, empirical results.</li>
+              <li>Validity focus: accuracy, generalizability, explanatory power.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Design science: “What is effective?”</h4>
+            <ul>
+              <li>Goal: create artifacts that solve problems and demonstrate utility.</li>
+              <li>Outputs: algorithms, frameworks, architectures, prototypes, methods.</li>
+              <li>Validity focus: utility/quality/efficacy, conditions of success, tradeoffs.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>Complementarity:</strong> Design science is often <mark>proactive</mark> (creates new artifacts). Behavioral science is often <mark>reactive</mark> (studies artifacts in use). IS needs both.
+        </div>
+      </section>
+
+      <section id="artifact">
+        <h2>What is an IT artifact?</h2>
+        <p>
+          In this paper, “artifact” is broader than “a software prototype.” Artifacts exist at multiple abstraction levels and can be reused
+          beyond one system build.
+        </p>
+
+        <div class="grid">
+          <div class="card small">
+            <h4>Constructs</h4>
+            <p class="muted">The vocabulary of the domain.</p>
+            <ul>
+              <li>Terms and symbols used to describe problems/solutions.</li>
+              <li>Enables consistent communication and measurement.</li>
+            </ul>
+          </div>
+          <div class="card small">
+            <h4>Models</h4>
+            <p class="muted">Representations that let you reason.</p>
+            <ul>
+              <li>Abstract descriptions of systems or solution spaces.</li>
+              <li>Can be conceptual, graphical, or mathematical.</li>
+            </ul>
+          </div>
+          <div class="card small">
+            <h4>Methods</h4>
+            <p class="muted">Procedures/algorithms for doing work.</p>
+            <ul>
+              <li>Algorithms, processes, design principles, “how-to” recipes.</li>
+              <li>Often the most reusable research output.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Instantiations</h4>
+            <p class="muted">Implemented artifacts demonstrating feasibility.</p>
+            <ul>
+              <li>Prototypes/tools/systems that embody constructs/models/methods.</li>
+              <li>Enables strong testing and performance/usability evaluation.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Socio-technical reality</h4>
+            <ul>
+              <li>Artifacts interact with people, incentives, and organizational process.</li>
+              <li>Utility claims should specify context: who uses it, where, and under what constraints.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="orgdesign">
+        <h2>Org–IS design link (Figure 1)</h2>
+        <p>
+          Figure 1 is used to remind readers that IS design is part of broader organizational design and strategic alignment.
+          It motivates why IS research should include design: IT is a designed intervention that shapes organizational capability.
+        </p>
+
+        <div class="imgslot">
+          <div class="title">
+            <span class="badge">Image slot</span>
+            <strong>Figure 1 — Organizational Design and IS Design Activities</strong>
+          </div>
+          <p><strong>What it means:</strong> The picture conveys that IT systems and organizational choices are intertwined.
+            Designing IT “in isolation” can create systems that are technically fine but strategically misaligned. In IS research,
+            design questions must consider organizational strategy, structure, processes, and constraints.</p>
+          <p class="muted" hidden>
+            Paste Figure 1 screenshot here. Reference: MISQ p. 79; PDF “5 / 31”.
+            Figure credit (in paper caption): adapted from Henderson &amp; Venkatraman (1993).
+          </p>
+          <img src="./Assets/hevner_2004_design_science_notes/figure1.png"/>
+        </div>
+      </section>
+
+      <section id="framework">
+        <h2>IS research framework (Figure 2)</h2>
+        <p>
+          Figure 2 is the paper’s central integrative model. It links:
+          <mark>Environment</mark> (where problems and needs arise),
+          <mark>Knowledge base</mark> (foundations and methodologies),
+          and <mark>IS research</mark> (build/evaluate artifacts, and theorize/test).
+        </p>
+
+        <div class="callout">
+          <strong>Say it plainly:</strong> “Relevant problems come from the environment; rigorous methods come from the knowledge base;
+          IS research builds and evaluates artifacts that solve the problems and adds results back to the knowledge base.”
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h4>Environment (source of relevance)</h4>
+            <ul>
+              <li><mark>People</mark>: roles, skills, preferences, cognition, incentives</li>
+              <li><mark>Organizations</mark>: strategy, structure, culture, processes</li>
+              <li><mark>Technology</mark>: infrastructure, platforms, architectures, capabilities</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Knowledge base (source of rigor)</h4>
+            <ul>
+              <li><mark>Foundations</mark>: theories, constructs, models, methods, prior artifacts</li>
+              <li><mark>Methodologies</mark>: evaluation techniques, metrics, data analysis, validation criteria</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="imgslot">
+          <div class="title">
+            <span class="badge">Image slot</span>
+            <strong>Figure 2 — Information Systems Research Framework</strong>
+          </div>
+          <p><strong>What it means:</strong> This diagram encodes the paper’s main message: IS research must balance
+            <mark>relevance</mark> (environment-driven) and <mark>rigor</mark> (knowledge-base-driven).
+            It also implies a feedback loop: evaluation results and theory development should accumulate into the knowledge base for future designs.</p>
+          <p class="muted" hidden>
+            Paste Figure 2 screenshot here. Reference: MISQ p. 81; PDF “7 / 31”.
+          </p>
+          <img src="./Assets/hevner_2004_design_science_notes/figure2.png"/>
+        </div>
+
+        <h3>Routine design vs design-science research</h3>
+        <p>
+          The authors stress that “building a system” is not automatically research.
+          <mark>Routine design</mark> applies known solutions to known problems.
+          <mark>Design-science research</mark> must produce a novel contribution and evidence that it works—so others can verify and build on it.
+        </p>
+
+        <div class="qa">
+          <strong>Self-check:</strong> Could another researcher implement your artifact or reuse your method based on your paper alone?
+          If not, your “contribution” may not be entering the knowledge base.
+        </div>
+      </section>
+
+      <section id="guidelines">
+        <h2>Seven design-science guidelines (Table 1)</h2>
+        <p>
+          The seven guidelines are the paper’s most reusable contribution: they define what a complete design-science research study should address.
+          They are meant to guide judgment, not to be applied mechanically.
+        </p>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width:28%">Guideline</th>
+              <th>Description</th>
+              <th style="width:30%">What you must show (evidence)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Design as an Artifact</strong></td>
+              <td>Produce a viable artifact (construct, model, method, instantiation).</td>
+              <td>Clear specification, scope, inputs/outputs, and how to apply/implement.</td>
+            </tr>
+            <tr>
+              <td><strong>2. Problem Relevance</strong></td>
+              <td>Address important, relevant business problems with technology-based solutions.</td>
+              <td>Why it matters, stakeholders, context, and why existing solutions are insufficient.</td>
+            </tr>
+            <tr>
+              <td><strong>3. Design Evaluation</strong></td>
+              <td>Demonstrate utility/quality/efficacy with well-executed evaluation.</td>
+              <td>Appropriate method(s), metrics, comparisons, and credible results.</td>
+            </tr>
+            <tr>
+              <td><strong>4. Research Contributions</strong></td>
+              <td>Provide clear, verifiable contributions: artifact, foundations, and/or methodologies.</td>
+              <td>Novelty and significance; what becomes reusable knowledge for others.</td>
+            </tr>
+            <tr>
+              <td><strong>5. Research Rigor</strong></td>
+              <td>Use rigorous construction and evaluation methods.</td>
+              <td>Grounding in prior theory; internal coherence; transparent methods.</td>
+            </tr>
+            <tr>
+              <td><strong>6. Design as a Search Process</strong></td>
+              <td>Iteratively search for effective artifacts under constraints (means/ends/laws).</td>
+              <td>Alternatives considered, constraints, iterations, and rationale for choices.</td>
+            </tr>
+            <tr>
+              <td><strong>7. Communication of Research</strong></td>
+              <td>Communicate to both technical and managerial audiences.</td>
+              <td>Actionable technical detail + managerial implications and tradeoffs.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="imgslot">
+          <div class="title">
+            <span class="badge">Image slot</span>
+            <strong>Table 1 — Design-Science Research Guidelines</strong>
+          </div>
+          <p><strong>What it means:</strong> Table 1 is a completeness checklist for design science. It forces a paper to move beyond
+            “we built something” by requiring relevance, explicit artifact specification, rigorous evaluation, clear contribution,
+            disciplined methods, an iteration/search narrative, and multi-audience communication.</p>
+          <p class="muted" hidden>
+            Paste Table 1 screenshot here (optional). Reference: MISQ p. 83; PDF “9 / 31”.
+          </p>
+          <img src="./Assets/hevner_2004_design_science_notes//table1.png"/>
+        </div>
+
+        <div class="callout">
+          <strong>How to use this in practice:</strong> When reviewing a design paper, you can map each section to a guideline
+          and ask: “What is the evidence for this guideline?” Missing evidence = weak research claim.
+        </div>
+      </section>
+
+      <section id="g1">
+        <h2>G1 — Design as an Artifact</h2>
+        <p>
+          You must produce a <mark>viable artifact</mark>. Viable means it is specified enough to be implemented/applied and evaluated—not just proposed.
+        </p>
+        <h3>What a strong artifact description includes</h3>
+        <ul>
+          <li><strong>Type:</strong> construct/model/method/instantiation (state it explicitly).</li>
+          <li><strong>Purpose:</strong> the task/problem it solves (ties directly to G2).</li>
+          <li><strong>Inputs/outputs:</strong> what it consumes and produces.</li>
+          <li><strong>Assumptions & boundaries:</strong> conditions of validity; what it does not address.</li>
+          <li><strong>Representation:</strong> diagrams, pseudo-code, formal definitions, interfaces, architecture.</li>
+        </ul>
+        <div class="qa">
+          <strong>Why this is research (not writing style):</strong> If others cannot re-create or apply the artifact, your contribution cannot be verified or extended—so it does not reliably enter the knowledge base.
+        </div>
+      </section>
+
+      <section id="g2">
+        <h2>G2 — Problem Relevance</h2>
+        <p>
+          Design science must address an important business problem. Relevance is argued, not assumed.
+          You should be able to answer: “Who cares, and why does it matter now?”
+        </p>
+        <h3>How to argue relevance</h3>
+        <ul>
+          <li>Define the <strong>decision/task</strong> the artifact improves (not just the domain).</li>
+          <li>Identify stakeholders/constituents and the <strong>cost of the problem</strong> (time, money, risk, missed opportunity).</li>
+          <li>Explain why current approaches are insufficient (limitations, poor tradeoffs, missing capabilities).</li>
+          <li>Make the environment constraints explicit (data, policy, workflow, budget, adoption barriers).</li>
+        </ul>
+        <div class="callout">
+          <strong>Rigor–relevance tension:</strong> Highly abstract models can lose practical meaning; purely descriptive accounts can lose theoretical grounding. The goal is an evidence-backed balance.
+        </div>
+      </section>
+
+      <section id="g3">
+        <h2>G3 — Design Evaluation</h2>
+        <p>
+          You must demonstrate the artifact’s <mark>utility, quality, and efficacy</mark>. Evaluation is essential for credibility and for improving the design through iteration.
+        </p>
+        <h3>Evaluation must match your claims</h3>
+        <ul>
+          <li><strong>Performance/scalability claims:</strong> benchmarks, performance modeling, simulation, field measurements.</li>
+          <li><strong>Decision-quality claims:</strong> controlled experiments or field studies comparing outcomes to baselines.</li>
+          <li><strong>Correctness/security claims:</strong> formal proofs + robust testing.</li>
+          <li><strong>Usability claims:</strong> controlled usability studies, task success, time, errors, satisfaction.</li>
+        </ul>
+        <div class="qa">
+          <strong>Study prompt:</strong> For a given artifact, name at least <em>two</em> evaluation methods from Table 2 that could credibly validate its main claim(s).
+        </div>
+      </section>
+
+      <section id="g4">
+        <h2>G4 — Research Contributions</h2>
+        <p>
+          A design-science paper must make a clear, verifiable contribution: the artifact itself and/or new design foundations and/or new design methodologies.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h4>Artifact contribution</h4>
+            <ul>
+              <li>New algorithm, architecture, language, framework, method, or tool.</li>
+              <li>Must be described so it can be reused/extended.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Foundation contribution</h4>
+            <ul>
+              <li>New constructs, design principles, or design theory.</li>
+              <li>Often: combining kernel theory + design principles into a coherent basis.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Methodology contribution</h4>
+            <ul>
+              <li>New evaluation method, measurement framework, or build process that improves design science practice.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="g5">
+        <h2>G5 — Research Rigor</h2>
+        <p>
+          Rigor means disciplined grounding and execution in both construction and evaluation.
+          It is not “more math”; it is “more defensible reasoning and method.”
+        </p>
+        <h3>How rigor appears</h3>
+        <ul>
+          <li><strong>Grounding:</strong> explicit use of prior theory and validated methods from the knowledge base.</li>
+          <li><strong>Precision:</strong> unambiguous definitions, consistent specification/architecture.</li>
+          <li><strong>Transparency:</strong> evaluation procedure, metrics, assumptions, limitations, and threats to validity.</li>
+        </ul>
+      </section>
+
+      <section id="g6">
+        <h2>G6 — Design as a Search Process (Figure 3)</h2>
+        <p>
+          The paper adopts “problem solving as search”: you explore alternatives under constraints until you find a design that satisfies goals well enough.
+          Many IS problems are too complex for closed-form optimality; thus iterative search and heuristic improvement are normal.
+        </p>
+        <h3>Means, ends, laws</h3>
+        <ul>
+          <li><mark>Means</mark>: choices/resources you control (design parameters, algorithms, data, architecture).</li>
+          <li><mark>Ends</mark>: goals + constraints (requirements, target utility, performance thresholds).</li>
+          <li><mark>Laws</mark>: constraints you can’t change (platform limits, budgets, organizational policies, physics).</li>
+        </ul>
+
+        <div class="imgslot">
+          <div class="title">
+            <span class="badge">Image slot</span>
+            <strong>Figure 3 — The Generate/Test Cycle</strong>
+          </div>
+          <p><strong>What it means:</strong> Design proceeds by iterating: generate candidate designs → test them against constraints/requirements → refine and repeat.
+            The key message is that design knowledge is created through this build–evaluate loop, and a good paper should describe
+            the alternatives considered and why the final design was selected.</p>
+          <p class="muted" hidden>
+            Paste Figure 3 screenshot here. Reference: MISQ p. 89; PDF “15 / 31”.
+          </p>
+          <img src="Assets/hevner_2004_design_science_notes/figure3.png"/>
+        </div>
+
+        <div class="qa">
+          <strong>What to include in a paper to satisfy G6:</strong> alternatives considered, constraints that ruled out options, evaluation feedback driving iterations, and a rationale for design choices.
+        </div>
+      </section>
+
+      <section id="g7">
+        <h2>G7 — Communication of Research</h2>
+        <p>
+          Design-science research must speak to two audiences: technology-oriented and management-oriented.
+          Strong work communicates both <mark>how to build/use</mark> the artifact and <mark>why it matters</mark> for decisions and outcomes.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h4>Technical audience</h4>
+            <ul>
+              <li>Artifact specification: algorithms, architectures, interfaces, pseudo-code.</li>
+              <li>Evaluation detail: datasets, metrics, experimental design, proofs, tests.</li>
+              <li>Reusability: what others can implement/extend.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Managerial audience</h4>
+            <ul>
+              <li>Business motivation: impact, risk, cost, opportunity.</li>
+              <li>Tradeoffs: cost/benefit, adoption requirements, limitations.</li>
+              <li>Action: what decision makers should do differently.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="evaluation">
+        <h2>Evaluation methods (Table 2)</h2>
+        <p>
+          The paper provides a menu of evaluation methods across five categories. The underlying message:
+          <mark>choose evaluation that matches your artifact and the claims you make</mark>.
+        </p>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width:20%">Category</th>
+              <th>Methods (from Table 2)</th>
+              <th style="width:40%">What it demonstrates (typical evidence/metrics)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Observational</strong></td>
+              <td><mark>Case study</mark>, <mark>Field study</mark></td>
+              <td>Real-world utility and fit. Evidence: adoption/use, process outcomes, decision quality, time/cost reduction, qualitative fit.</td>
+            </tr>
+            <tr>
+              <td><strong>Analytical</strong></td>
+              <td><mark>Static analysis</mark>, <mark>Architecture analysis</mark>, <mark>Optimization</mark>, <mark>Dynamic analysis</mark></td>
+              <td>Formal properties. Evidence: correctness, complexity bounds, architectural fit, stability/scalability reasoning, performance modeling.</td>
+            </tr>
+            <tr>
+              <td><strong>Experimental</strong></td>
+              <td><mark>Controlled experiment</mark>, <mark>Simulation</mark></td>
+              <td>Causal/comparative evidence. Evidence: outcomes vs baseline, sensitivity analyses, controlled task measures, load/performance experiments.</td>
+            </tr>
+            <tr>
+              <td><strong>Testing</strong></td>
+              <td><mark>Functional (black-box)</mark>, <mark>Structural (white-box)</mark></td>
+              <td>Implementation correctness/robustness. Evidence: test pass rates, coverage, defect discovery, fault tolerance.</td>
+            </tr>
+            <tr>
+              <td><strong>Descriptive</strong></td>
+              <td><mark>Informed argument</mark>, <mark>Scenarios</mark></td>
+              <td>Early plausibility. Evidence: logic grounded in knowledge base; scenario walkthroughs. (Weaker unless other methods are infeasible.)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="imgslot">
+          <div class="title">
+            <span class="badge">Image slot</span>
+            <strong>Table 2 — Design Evaluation Methods</strong>
+          </div>
+          <p><strong>What it means:</strong> Table 2 is a “proof toolbox.” It emphasizes that evaluation is not optional and not one-size-fits-all.
+            Strong design-science claims require methods that can credibly validate (or falsify) the claim.</p>
+          <p class="muted">
+            Paste Table 2 screenshot here (optional). Reference: MISQ p. 86; PDF “12 / 31”.
+          </p>
+          <img src="Assets/hevner_2004_design_science_notes/table2.png"/>
+        </div>
+
+        <div class="callout">
+          <strong>Rule of thumb:</strong> If you cannot realistically evaluate a strong claim, weaken the claim or label it as future work—otherwise your paper becomes persuasion rather than research.
+        </div>
+      </section>
+
+      <section id="wicked">
+        <h2>Wicked problems in IS design</h2>
+        <p>
+          Many IS design problems are “wicked”: requirements shift, constraints conflict, and success depends on human behavior and organizational context.
+          This is why design science emphasizes iteration and evaluation rather than “one-shot” optimal solutions.
+        </p>
+        <ul>
+          <li>Design is rarely a closed-form optimization; it is iterative and adaptive.</li>
+          <li>Evaluation is harder because environments change and controlled comparisons can be difficult.</li>
+          <li>Artifacts are interventions that interact with incentives, culture, and workflow—not just code.</li>
+        </ul>
+      </section>
+
+      <section id="exemplars">
+        <h2>Exemplars: applying the guidelines</h2>
+        <p>
+          The paper reviews exemplar studies to show that different artifacts can still be strong design science
+          if they clearly specify the artifact, choose appropriate evaluation, and make verifiable contributions.
+        </p>
+
+        <h3>Exemplar A — Anonymity mechanisms in GDSS (Gavish &amp; Gerdes)</h3>
+        <div class="callout">
+          <strong>Problem relevance:</strong> anonymity is desired in GDSS; trust in outcomes can depend on it.<br/>
+          <strong>Artifact:</strong> procedural anonymity mechanisms implemented via protocol/architecture changes (e.g., encryption, header removal, re-encryption, randomization, dummy messages).<br/>
+          <strong>Rigor:</strong> grounded in cryptography/protocol foundations; includes formal proofs.<br/>
+          <strong>Evaluation:</strong> proofs + cost–benefit analysis; limited/no field instantiation evidence in the example as discussed.
+        </div>
+
+        <h3>Exemplar B — XRL workflow language (van der Aalst &amp; Kumar)</h3>
+        <div class="callout">
+          <strong>Artifacts:</strong> XRL language + architecture/prototype (XRL/flower) + verification engine (Wolfan).<br/>
+          <strong>Rigor:</strong> Petri-net foundations enable formal analysis; constructs mapped to formal representations.<br/>
+          <strong>Evaluation:</strong> examples + prototype; analytic grounding supports verifiability claims.
+        </div>
+
+        <h3>Exemplar C — TOP Modeler for emergent knowledge processes (Markus et al.)</h3>
+        <div class="callout">
+          <strong>Problem relevance:</strong> conventional IS development methods fail for emergent knowledge processes (EKPs).<br/>
+          <strong>Artifact:</strong> TOP Modeler tool + related design principles; developed with major firms.<br/>
+          <strong>Evaluation:</strong> iterative prototyping and usage observations; limited formal comparative evaluation due to lack of comparable alternatives (as discussed).
+        </div>
+
+        <div class="qa">
+          <strong>Exam-style takeaway:</strong> Different evaluation styles can be acceptable (formal proofs vs prototypes vs field observation),
+          but the paper insists the artifact → evaluation → contribution chain must be explicit and credible.
+        </div>
+      </section>
+
+      <section id="challenges">
+        <h2>Challenges & implications</h2>
+        <p>
+          The authors highlight challenges for design-science research in IS, especially given rapid technological change and socio-technical complexity.
+        </p>
+        <ul>
+          <li><strong>Inadequate cumulative theory base</strong> for IS as an engineering discipline.</li>
+          <li><strong>Representation gap</strong>: abstract models may lose relevance; informal models may lose rigor.</li>
+          <li><strong>Insufficient knowledge base</strong> in new domains → reliance on intuition/trial-and-error and iterative prototyping.</li>
+          <li><strong>Perishability</strong>: tech change can outpace research cycles and reduce practical payoff.</li>
+          <li><strong>Evaluation difficulty</strong>: rigorous evaluation in real environments can be expensive and hard to generalize.</li>
+        </ul>
+        <div class="callout">
+          <strong>Practical implication:</strong> Make evaluation and communication first-class research activities; clearly state assumptions and boundaries; combine multiple evaluation methods when possible.
+        </div>
+      </section>
+
+      <section id="takeaways">
+        <h2>Practical checklist (use to study, write, or review)</h2>
+        <div class="callout">
+          <ul>
+            <li><strong>Artifact (G1):</strong> What exactly is built? How is it specified? How can someone implement/use it?</li>
+            <li><strong>Relevance (G2):</strong> What real problem? Who are the stakeholders? Why do current solutions fail?</li>
+            <li><strong>Evaluation (G3):</strong> What evidence proves utility/quality? Which Table 2 methods fit?</li>
+            <li><strong>Contribution (G4):</strong> What is new? Artifact vs foundations vs methodology? Why does it matter?</li>
+            <li><strong>Rigor (G5):</strong> What kernel theories/methods ground the work? Are definitions and methods disciplined?</li>
+            <li><strong>Search (G6):</strong> What alternatives were explored? What constraints shaped choices? What iterations occurred?</li>
+            <li><strong>Communication (G7):</strong> What should engineers build from this? What should managers decide from this?</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="credits">
+        <h2>Credits & references</h2>
+        <p>
+          <strong>Primary source:</strong> Hevner, A. R., March, S. T., Park, J., &amp; Ram, S. (2004).
+          <em>Design Science in Information Systems Research</em>. MIS Quarterly, 28(1), 75–105.
+        </p>
+        <p class="muted">
+          Figure credit noted in the paper: Figure 1 is adapted from Henderson &amp; Venkatraman (1993) (as stated in the figure caption).
+          These notes are a study companion; conceptual credit belongs to the paper’s authors and cited prior work.
+        </p>
+
+        <h3>Quick index (where to grab images)</h3>
+        <table class="table">
+          <thead><tr><th>Item</th><th>Paper page (MISQ)</th><th>PDF page indicator</th></tr></thead>
+          <tbody>
+            <tr><td>Figure 1</td><td>79</td><td>PDF “5 / 31”</td></tr>
+            <tr><td>Figure 2</td><td>81</td><td>PDF “7 / 31”</td></tr>
+            <tr><td>Table 1</td><td>83</td><td>PDF “9 / 31”</td></tr>
+            <tr><td>Table 2</td><td>86</td><td>PDF “12 / 31”</td></tr>
+            <tr><td>Figure 3</td><td>89</td><td>PDF “15 / 31”</td></tr>
+          </tbody>
+        </table>
+
+        <footer>
+          <div><strong>Notes generated:</strong> Feb 22, 2026</div>
+          <div><strong>Image tip:</strong> Screenshot the figure/table from the PDF and paste it into the matching “Image slot” box above. The explanation is already placed next to the slot.</div>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('aside a[href^="#"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        const id = a.getAttribute("href");
+        const el = document.querySelector(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({behavior:"smooth", block:"start"});
+        history.replaceState(null, "", id);
+      });
+    });
+
+    // Active link on scroll
+    const links = Array.from(document.querySelectorAll("#nav a[href^='#']"));
+    const sections = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const id = "#" + entry.target.id;
+          links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === id));
+        }
+      });
+    }, {rootMargin:"-45% 0px -50% 0px", threshold: 0.01});
+    sections.forEach(s => obs.observe(s));
+
+    // Filter nav items
+    const filter = document.getElementById("filter");
+    filter.addEventListener("input", () => {
+      const q = filter.value.trim().toLowerCase();
+      links.forEach(a => {
+        const txt = a.textContent.toLowerCase();
+        a.style.display = (!q || txt.includes(q)) ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
