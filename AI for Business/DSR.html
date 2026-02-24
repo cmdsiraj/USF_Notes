@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Knowledge Notes (DSR + Related): Hevner 2004; Gregor & Hevner 2013; Mullarkey & Hevner 2019; Hevner & vom Brocke 2023; Berente et al. 2021; CRAKEN 2025</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --panel:#0f1620; --panel2:#111b27;
+      --text:#e7eef7; --muted:#a9b7c7;
+      --line:#223042; --accent:#7aa2ff; --accent2:#5fe1c6;
+      --warn:#ffd479; --danger:#ff7a9a;
+      --code:#0a121b;
+      --shadow: 0 8px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:var(--sans); background:var(--bg); color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .layout{display:flex; min-height:100vh}
+    .sidebar{
+      position:sticky; top:0; height:100vh; width:340px; min-width:340px;
+      background:linear-gradient(180deg, var(--panel) 0%, #0c121a 100%);
+      border-right:1px solid var(--line);
+      padding:18px 14px 18px 14px;
+      overflow:auto;
+    }
+    .main{
+      flex:1; padding:22px 26px 70px 26px; overflow-x:hidden;
+    }
+    .brand{
+      padding:14px; border:1px solid var(--line); border-radius:var(--radius);
+      background:rgba(255,255,255,.02);
+      box-shadow:var(--shadow);
+    }
+    .brand h1{margin:0 0 6px 0; font-size:16px; letter-spacing:.2px}
+    .brand .sub{color:var(--muted); font-size:12px}
+    .searchbox{
+      margin-top:12px;
+      display:flex; gap:8px; align-items:center;
+      background:rgba(255,255,255,.02);
+      border:1px solid var(--line); border-radius:12px;
+      padding:10px 10px;
+    }
+    .searchbox input{
+      width:100%; border:0; outline:0; background:transparent; color:var(--text);
+      font-size:13px;
+    }
+    .searchbox .pill{
+      font-size:11px; color:var(--muted); border:1px solid var(--line);
+      padding:2px 8px; border-radius:999px;
+      white-space:nowrap;
+    }
+    .nav{
+      margin-top:14px;
+      padding:8px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.02);
+    }
+    .nav h2{
+      margin:6px 8px 8px;
+      font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .nav .group{margin:8px 0 12px}
+    .nav details{
+      border-top:1px dashed rgba(255,255,255,.08);
+      padding-top:10px; margin-top:10px;
+    }
+    .nav details:first-of-type{border-top:0; padding-top:0; margin-top:0}
+    .nav summary{
+      cursor:pointer; list-style:none;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:8px 8px; border-radius:10px;
+      background:transparent;
+    }
+    .nav summary:hover{background:rgba(255,255,255,.03)}
+    .nav summary::-webkit-details-marker{display:none}
+    .nav .paperTitle{font-size:13px; font-weight:650}
+    .nav .cite{font-size:11px; color:var(--muted)}
+    .nav .links{padding:0 8px 8px 8px; display:grid; gap:6px}
+    .nav .links a{
+      font-size:12px; color:var(--text);
+      padding:7px 8px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(0,0,0,.12);
+    }
+    .nav .links a:hover{
+      border-color:rgba(122,162,255,.45);
+      background:rgba(122,162,255,.08);
+      text-decoration:none;
+    }
+
+    .tocHint{color:var(--muted); font-size:11px; margin:10px 4px 0}
+    .tag{
+      display:inline-block; font-size:11px; color:var(--muted);
+      border:1px solid rgba(255,255,255,.10); border-radius:999px;
+      padding:2px 8px; margin-right:6px; margin-top:6px;
+      background:rgba(255,255,255,.02);
+    }
+
+    /* Main content */
+    .paper{
+      max-width:1100px;
+      margin:0 auto 28px auto;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.01) 100%);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .paperHeader{
+      padding:18px 18px 14px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      background:rgba(0,0,0,.18);
+    }
+    .paperHeader h2{margin:0 0 6px; font-size:20px}
+    .paperHeader .meta{color:var(--muted); font-size:13px}
+    .paperHeader .meta code{font-family:var(--mono); font-size:12px; color:var(--muted)}
+    .paperBody{padding:18px}
+    .section{
+      padding:14px 0 18px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .section:last-child{border-bottom:0}
+    .section h3{
+      margin:0 0 10px;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .section h4{margin:14px 0 8px; font-size:14px; color:#dbe7ff}
+    .section p{margin:8px 0; color:var(--text)}
+    .muted{color:var(--muted)}
+    ul{margin:8px 0 8px 18px}
+    li{margin:6px 0}
+    table{
+      width:100%; border-collapse:separate; border-spacing:0;
+      margin:10px 0;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px; overflow:hidden;
+      background:rgba(0,0,0,.18);
+    }
+    th, td{
+      padding:10px 10px; text-align:left; vertical-align:top;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      font-size:13px;
+    }
+    th{color:#dbe7ff; font-weight:700; background:rgba(255,255,255,.03)}
+    tr:last-child td{border-bottom:0}
+    .callout{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(122,162,255,.08);
+      padding:12px 12px;
+      border-radius:14px;
+      margin:12px 0;
+    }
+    .callout strong{color:#eaf1ff}
+    .callout.warn{background:rgba(255,212,121,.10); border-color:rgba(255,212,121,.25)}
+    .callout.danger{background:rgba(255,122,154,.10); border-color:rgba(255,122,154,.25)}
+    .callout .small{color:var(--muted); font-size:12px; margin-top:6px}
+    .say{
+      border-left:4px solid var(--accent2);
+      background:rgba(95,225,198,.07);
+      padding:10px 12px;
+      border-radius:12px;
+      margin:12px 0;
+    }
+    .say .label{
+      font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--muted); font-weight:700;
+    }
+    .say p{margin:6px 0 0}
+    details.example{
+      margin:10px 0;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      background:rgba(0,0,0,.16);
+      overflow:hidden;
+    }
+    details.example > summary{
+      cursor:pointer;
+      padding:10px 12px;
+      font-weight:650;
+      color:#eaf1ff;
+      background:rgba(255,255,255,.03);
+      list-style:none;
+    }
+    details.example > summary::-webkit-details-marker{display:none}
+    details.example .inside{padding:10px 12px}
+    .imgSlot{
+      border:2px dashed rgba(122,162,255,.55);
+      background:rgba(122,162,255,.06);
+      border-radius:16px;
+      padding:14px;
+      margin:10px 0 10px;
+    }
+    .imgSlot .kicker{
+      font-family:var(--mono);
+      font-size:12px;
+      color:#dbe7ff;
+      margin-bottom:6px;
+    }
+    .imgSlot .hint{
+      font-size:12px; color:var(--muted);
+    }
+    code.inline{font-family:var(--mono); font-size:12px; background:rgba(255,255,255,.06); padding:2px 6px; border-radius:8px}
+    .foot{
+      margin-top:14px;
+      padding-top:10px;
+      color:var(--muted);
+      border-top:1px dashed rgba(255,255,255,.14);
+      font-size:12px;
+    }
+    .mini{
+      font-family:var(--mono); font-size:11px; color:var(--muted);
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.16);
+      padding:2px 6px; border-radius:8px;
+      display:inline-block;
+      margin-left:6px;
+    }
+    .hrTitle{
+      margin:0 0 8px; color:var(--muted); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    }
+    .noteRef{font-size:11px; color:var(--muted)}
+  </style>
+</head>
+
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand" id="top">
+      <h1>Knowledge Notes Bundle (Offline)</h1>
+      <div class="sub">
+        Design Science Research (DSR) + one applied agentic-systems paper used as a concrete, modern example of build–evaluate research structure.
+      </div>
+
+      <div class="searchbox" role="search" aria-label="Filter navigation">
+        <input id="navSearch" type="text" placeholder="Search sections (e.g., guidelines, omega, ADR, proficiency, autonomy, Graph-RAG)..." />
+        <span class="pill">Ctrl/⌘ + F still works</span>
+      </div>
+
+      <div class="tocHint">
+        Tip: Expand a paper → jump to the exact section. Search filters the nav list only (content stays intact).
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Left navigation">
+      <h2>Papers (logical order)</h2>
+
+      <details open class="navPaper">
+        <summary>
+          <div>
+            <div class="paperTitle">1) Hevner et al. (2004) — Design Science in IS Research</div>
+            <div class="cite">MISQ 28(1)</div>
+          </div>
+          <span class="mini">Foundation</span>
+        </summary>
+        <div class="links">
+          <a href="#p1-overview">Overview</a>
+          <a href="#p1-keywords">Key Concepts & Keywords</a>
+          <a href="#p1-frameworks">Core Frameworks / Models (with figure slots)</a>
+          <a href="#p1-contrib">Main Contributions</a>
+          <a href="#p1-method">Methodology / Process</a>
+          <a href="#p1-eval">Evaluation / Evidence</a>
+          <a href="#p1-examples">Examples / Case Studies</a>
+          <a href="#p1-limits">Limitations, Challenges, Open Issues</a>
+          <a href="#p1-checklist">Practical Takeaways / Checklist</a>
+          <a href="#p1-index">Figures & Tables Index</a>
+          <a href="#p1-cite">Credits & Citation</a>
+        </div>
+      </details>
+
+      <details class="navPaper">
+        <summary>
+          <div>
+            <div class="paperTitle">2) Gregor & Hevner (2013) — Positioning DSR for Maximum Impact</div>
+            <div class="cite">MISQ 37(2)</div>
+          </div>
+          <span class="mini">Contribution logic</span>
+        </summary>
+        <div class="links">
+          <a href="#p2-overview">Overview</a>
+          <a href="#p2-keywords">Key Concepts & Keywords</a>
+          <a href="#p2-frameworks">Core Frameworks / Models (with figure slots)</a>
+          <a href="#p2-contrib">Main Contributions</a>
+          <a href="#p2-method">Methodology / Process</a>
+          <a href="#p2-eval">Evaluation / Evidence</a>
+          <a href="#p2-examples">Examples / Case Studies</a>
+          <a href="#p2-limits">Limitations, Challenges, Open Issues</a>
+          <a href="#p2-checklist">Practical Takeaways / Checklist</a>
+          <a href="#p2-index">Figures & Tables Index</a>
+          <a href="#p2-cite">Credits & Citation</a>
+        </div>
+      </details>
+
+      <details class="navPaper">
+        <summary>
+          <div>
+            <div class="paperTitle">3) Mullarkey & Hevner (2019) — Elaborated Action Design Research (ADR) Process</div>
+            <div class="cite">EJIS 28(1)</div>
+          </div>
+          <span class="mini">Process + entry points</span>
+        </summary>
+        <div class="links">
+          <a href="#p3-overview">Overview</a>
+          <a href="#p3-keywords">Key Concepts & Keywords</a>
+          <a href="#p3-frameworks">Core Frameworks / Models (with figure slots)</a>
+          <a href="#p3-contrib">Main Contributions</a>
+          <a href="#p3-method">Methodology / Process</a>
+          <a href="#p3-eval">Evaluation / Evidence</a>
+          <a href="#p3-examples">Examples / Case Studies</a>
+          <a href="#p3-limits">Limitations, Challenges, Open Issues</a>
+          <a href="#p3-checklist">Practical Takeaways / Checklist</a>
+          <a href="#p3-index">Figures & Tables Index</a>
+          <a href="#p3-cite">Credits & Citation</a>
+        </div>
+      </details>
+
+      <details class="navPaper">
+        <summary>
+          <div>
+            <div class="paperTitle">4) Hevner & vom Brocke (2023) — DSR Proficiency Model (Education)</div>
+            <div class="cite">JISE 34(3)</div>
+          </div>
+          <span class="mini">Skills & teaching</span>
+        </summary>
+        <div class="links">
+          <a href="#p4-overview">Overview</a>
+          <a href="#p4-keywords">Key Concepts & Keywords</a>
+          <a href="#p4-frameworks">Core Frameworks / Models (with figure slots)</a>
+          <a href="#p4-contrib">Main Contributions</a>
+          <a href="#p4-method">Methodology / Process</a>
+          <a href="#p4-eval">Evaluation / Evidence</a>
+          <a href="#p4-examples">Examples / Case Studies</a>
+          <a href="#p4-limits">Limitations, Challenges, Open Issues</a>
+          <a href="#p4-checklist">Practical Takeaways / Checklist</a>
+          <a href="#p4-index">Figures & Tables Index</a>
+          <a href="#p4-cite">Credits & Citation</a>
+        </div>
+      </details>
+
+      <details class="navPaper">
+        <summary>
+          <div>
+            <div class="paperTitle">5) Berente et al. (2021) — Managing Artificial Intelligence (AI as a Frontier)</div>
+            <div class="cite">MISQ 45(3) Special Issue Intro</div>
+          </div>
+          <span class="mini">Context domain</span>
+        </summary>
+        <div class="links">
+          <a href="#p5-overview">Overview</a>
+          <a href="#p5-keywords">Key Concepts & Keywords</a>
+          <a href="#p5-frameworks">Core Frameworks / Models (with figure slots)</a>
+          <a href="#p5-contrib">Main Contributions</a>
+          <a href="#p5-method">Methodology / Process</a>
+          <a href="#p5-eval">Evaluation / Evidence</a>
+          <a href="#p5-examples">Examples / Case Studies</a>
+          <a href="#p5-limits">Limitations, Challenges, Open Issues</a>
+          <a href="#p5-checklist">Practical Takeaways / Checklist</a>
+          <a href="#p5-index">Figures & Tables Index</a>
+          <a href="#p5-cite">Credits & Citation</a>
+        </div>
+      </details>
+
+      <details class="navPaper">
+        <summary>
+          <div>
+            <div class="paperTitle">6) CRAKEN (2025) — Cybersecurity LLM Agent w/ Knowledge-Based Execution</div>
+            <div class="cite">arXiv preprint</div>
+          </div>
+          <span class="mini">Concrete example</span>
+        </summary>
+        <div class="links">
+          <a href="#p6-overview">Overview</a>
+          <a href="#p6-keywords">Key Concepts & Keywords</a>
+          <a href="#p6-frameworks">Core Frameworks / Models (with figure slots)</a>
+          <a href="#p6-contrib">Main Contributions</a>
+          <a href="#p6-method">Methodology / Process</a>
+          <a href="#p6-eval">Evaluation / Evidence</a>
+          <a href="#p6-examples">Examples / Case Studies</a>
+          <a href="#p6-limits">Limitations, Challenges, Open Issues</a>
+          <a href="#p6-checklist">Practical Takeaways / Checklist</a>
+          <a href="#p6-index">Figures & Tables Index</a>
+          <a href="#p6-cite">Credits & Citation</a>
+        </div>
+      </details>
+
+      <div class="group">
+        <h2>Quick jump</h2>
+        <div class="links">
+          <a href="#bundle-synthesis">Cross-paper synthesis (DSR “throughline”)</a>
+          <a href="#bundle-checklist">Cross-paper checklist (how to design & write DSR)</a>
+        </div>
+      </div>
+
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Cross-paper synthesis -->
+    <section class="paper" id="bundle-synthesis" data-title="Cross-paper synthesis DSR throughline">
+      <header class="paperHeader">
+        <h2>Cross-paper synthesis: a coherent “DSR throughline”</h2>
+        <div class="meta">
+          Purpose: align these papers into one mental model you can reuse for reading, doing, and communicating design-oriented research.
+        </div>
+      </header>
+      <div class="paperBody">
+        <div class="section">
+          <h3>1) The core DSR logic: environment ↔ knowledge base ↔ build/evaluate</h3>
+          <ul>
+            <li><strong>Hevner et al. (2004)</strong> gives the foundational frame: IS research sits between an <em>environment</em> (people/org/tech) and a <em>knowledge base</em> (foundations + methodologies), with a central build/evaluate loop and explicit <em>relevance</em> and <em>rigor</em> requirements. <span class="noteRef">:contentReference[oaicite:0]{index=0}</span></li>
+            <li><strong>Gregor & Hevner (2013)</strong> deepens “knowledge base” into two knowledge types:
+              <em>Ω (omega)</em> descriptive knowledge (what is) and <em>Λ (lambda)</em> prescriptive knowledge (how to build). <span class="noteRef">:contentReference[oaicite:1]{index=1}</span></li>
+          </ul>
+
+          <div class="callout">
+            <strong>Key insight (portable):</strong> A DSR project is not just “building a system.”
+            It is a disciplined <em>knowledge-producing</em> cycle where artifacts (Λ) and understandings (Ω) co-evolve, and where you must show (a) what problem context demanded the artifact, (b) how you built it using knowledge, and (c) why the evaluation supports utility.
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>2) What counts as contribution (and how “big” it is)</h3>
+          <ul>
+            <li>Hevner et al. (2004) differentiates routine design from research by asking whether the work produces a contribution to the knowledge base rather than merely applying existing best practices. <span class="noteRef">:contentReference[oaicite:2]{index=2}</span></li>
+            <li>Gregor & Hevner (2013) provides two complementary “contribution lenses”:
+              <ul>
+                <li><strong>Artifact abstraction levels</strong> (Level 1 instantiation → Level 2 principles/models/methods → Level 3 design theory). <span class="noteRef">:contentReference[oaicite:3]{index=3}</span></li>
+                <li><strong>Knowledge contribution framework</strong> (2×2 by maturity of problem knowledge vs solution knowledge) to characterize whether you are doing routine design, improvement, exaptation, or invention. <span class="noteRef">:contentReference[oaicite:4]{index=4}</span></li>
+              </ul>
+            </li>
+          </ul>
+
+          <details class="example">
+            <summary>Collapsible illustration: “Same artifact, different contribution level”</summary>
+            <div class="inside">
+              <ul>
+                <li><strong>Level 1</strong>: You built a working system in a specific organization (situated instantiation). Contribution can be the novel artifact itself if it embodies new design ideas, even before formalization. <span class="noteRef">:contentReference[oaicite:5]{index=5}</span></li>
+                <li><strong>Level 2</strong>: You articulate transferable design principles/architecture/method that explains how to reproduce key effects.</li>
+                <li><strong>Level 3</strong>: You develop a more complete design theory explaining why the artifact works in terms of embedded phenomena.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="section">
+          <h3>3) How to run the work: process models and iteration discipline</h3>
+          <ul>
+            <li><strong>Mullarkey & Hevner (2019)</strong> elaborates Action Design Research (ADR) to make entry points explicit and to “chunk” a longitudinal project into explicit intervention cycles with built artifacts at varying abstraction levels. <span class="noteRef">:contentReference[oaicite:6]{index=6}</span></li>
+            <li><strong>Hevner & vom Brocke (2023)</strong> reframes DSR into teachable proficiencies (skills), from problem framing to contributions/impact, and adds a taxonomy to adapt teaching to different audiences and constraints. <span class="noteRef">:contentReference[oaicite:7]{index=7}</span></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>4) Where to apply: “AI as a frontier” + a concrete modern artifact paper</h3>
+          <ul>
+            <li><strong>Berente et al. (2021)</strong> frames AI not as a static technology but as a moving frontier; management decisions operate across autonomy, learning, and inscrutability. <span class="noteRef">:contentReference[oaicite:8]{index=8}</span></li>
+            <li><strong>CRAKEN (2025)</strong> is a modern “build + evaluate” agent framework paper that makes design choices explicit (retrieval mechanisms, architectures, evaluation benchmarks), and provides a good template for how design decisions are validated by evidence. <span class="noteRef">:contentReference[oaicite:9]{index=9}</span></li>
+          </ul>
+
+          <div class="say">
+            <div class="label">Say this in your own words</div>
+            <p>
+              “DSR is about producing useful artifacts <em>and</em> explainable design knowledge. These papers give: (1) the baseline
+              standards (Hevner 2004), (2) how to position and communicate your contribution (Gregor & Hevner 2013),
+              (3) how to structure and iterate in the field (Mullarkey & Hevner 2019),
+              (4) what skills you need to execute and teach it (Hevner & vom Brocke 2023),
+              and (5) how to pick a domain and explain it as moving and sociotechnical (Berente 2021).”
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cross-paper checklist -->
+    <section class="paper" id="bundle-checklist" data-title="Cross-paper checklist how to design and write DSR">
+      <header class="paperHeader">
+        <h2>Cross-paper checklist: how to design, execute, and write a strong DSR paper</h2>
+        <div class="meta">A practical “do this” list assembled from the bundle.</div>
+      </header>
+      <div class="paperBody">
+        <div class="section">
+          <h3>Problem & relevance</h3>
+          <ul>
+            <li>State the <strong>important, relevant problem</strong> in its environment (people/org/tech), not as an abstract puzzle. (Hevner guideline on relevance) <span class="noteRef">:contentReference[oaicite:10]{index=10}</span></li>
+            <li>Explain why existing solutions fall short (a common ADR entry-point question). <span class="noteRef">:contentReference[oaicite:11]{index=11}</span></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Artifact & design logic</h3>
+          <ul>
+            <li>Be explicit about the artifact type: <strong>construct / model / method / instantiation</strong>. <span class="noteRef">:contentReference[oaicite:12]{index=12}</span></li>
+            <li>Show the build–evaluate loop and how feedback refines both artifact and design process. <span class="noteRef">:contentReference[oaicite:13]{index=13}</span></li>
+            <li>Position contribution level: Level 1 vs Level 2 vs Level 3 (Gregor & Hevner) and explain why your level is appropriate. <span class="noteRef">:contentReference[oaicite:14]{index=14}</span></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Knowledge grounding and contribution size</h3>
+          <ul>
+            <li>Ground work in both <strong>Ω (what knowledge)</strong> and <strong>Λ (how knowledge)</strong> where applicable. <span class="noteRef">:contentReference[oaicite:15]{index=15}</span></li>
+            <li>Use the <strong>problem maturity × solution maturity</strong> framing to justify whether you are doing improvement/exaptation/invention. <span class="noteRef">:contentReference[oaicite:16]{index=16}</span></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Evaluation & evidence</h3>
+          <ul>
+            <li>Choose evaluation methods that match your artifact and claims; explicitly link claims → evidence. (Hevner guideline on evaluation) <span class="noteRef">:contentReference[oaicite:17]{index=17}</span></li>
+            <li>Make evaluation credible: define metrics, discuss appropriateness, avoid “assuming away” relevant parts. <span class="noteRef">:contentReference[oaicite:18]{index=18}</span></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Communication</h3>
+          <ul>
+            <li>Write for both technical and managerial audiences; emphasize artifact description as the “results core” in DSR-style communication. <span class="noteRef">:contentReference[oaicite:19]{index=19}</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAPER 1 -->
+    <article class="paper" id="paper1" data-title="Hevner 2004 design science in IS research">
+      <header class="paperHeader">
+        <h2>1) Hevner, March, Park, &amp; Ram (2004) — “Design Science in Information Systems Research”</h2>
+        <div class="meta">
+          Citation: MIS Quarterly, 28(1), pp. 75–105 (March 2004).<br/>
+          Source file: <code>/mnt/data/Hevner et al 2004 MISQ.pdf</code>
+        </div>
+      </header>
+
+      <div class="paperBody">
+
+        <section class="section" id="p1-overview" data-title="Hevner 2004 overview">
+          <h3>1. Overview</h3>
+          <h4>What problem the paper addresses</h4>
+          <ul>
+            <li>The IS field needs a clearer, shared understanding of <strong>how to conduct, evaluate, and present design-science research</strong> within IS.</li>
+            <li>The paper positions design science as complementary to behavioral science in IS research and provides a framework for thinking about both paradigms. <span class="noteRef">:contentReference[oaicite:20]{index=20}</span></li>
+          </ul>
+
+          <h4>Why it matters</h4>
+          <ul>
+            <li>IS and organizations are <strong>complex, artificial, purposefully designed</strong>; much of IS practice is “design” in the sense of organizing resources to accomplish goals. <span class="noteRef">:contentReference[oaicite:21]{index=21}</span></li>
+            <li>Without explicit standards, design work can be mistaken for routine system building rather than research contribution.</li>
+          </ul>
+
+          <h4>Core thesis / central claim</h4>
+          <ul>
+            <li>High-quality design-science research produces viable IT artifacts and evaluates them rigorously, while maintaining relevance to real business needs; <strong>rigor and relevance must both be present</strong>. <span class="noteRef">:contentReference[oaicite:22]{index=22}</span></li>
+          </ul>
+
+          <h4>What the paper contributes</h4>
+          <ul>
+            <li>A conceptual <strong>Information Systems Research Framework</strong> linking environment ↔ knowledge base with build/evaluate and justify/evaluate activities (Figure 2). <span class="noteRef">:contentReference[oaicite:23]{index=23}</span></li>
+            <li><strong>Seven design-science research guidelines</strong> (Table 1) for conducting and evaluating DSR. <span class="noteRef">:contentReference[oaicite:24]{index=24}</span></li>
+            <li>A catalog of <strong>design evaluation methods</strong> (Table 2) to support credible evidence for artifact utility.</li>
+          </ul>
+
+          <div class="callout">
+            <strong>Key insight:</strong> The paper treats DSR as an explicitly research-oriented form of design: artifacts are built to solve important problems, and the <em>evaluation evidence</em> is how the community can judge utility, quality, and contribution.
+          </div>
+
+          <div class="say">
+            <div class="label">Say this in your own words</div>
+            <p>
+              “This paper gives the IS community a practical definition of what design-science research is and how to judge it:
+              build an artifact (construct/model/method/instantiation), evaluate it rigorously against a real problem, and show
+              a contribution to the knowledge base—while balancing rigor and relevance.”
+            </p>
+          </div>
+        </section>
+
+        <section class="section" id="p1-keywords" data-title="Hevner 2004 keywords glossary">
+          <h3>2. Key Concepts &amp; Keywords (as used in this paper)</h3>
+
+          <table>
+            <thead>
+              <tr><th>Term</th><th>Meaning in this paper</th><th>Why it matters here</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Design-science research</strong></td>
+                <td>A research paradigm in IS focused on <em>creating and evaluating IT artifacts</em> intended to solve organizational problems; goal is <strong>utility</strong> (as contrasted with behavioral science’s goal of truth). <span class="noteRef">:contentReference[oaicite:25]{index=25}</span></td>
+                <td>Defines what “counts” as DSR and why evaluation is central.</td>
+              </tr>
+              <tr>
+                <td><strong>Behavioral-science research</strong></td>
+                <td>Develops and justifies theories that explain or predict phenomena related to business needs; goal is <strong>truth</strong>. <span class="noteRef">:contentReference[oaicite:26]{index=26}</span></td>
+                <td>Positioned as complementary: behavioral truth informs design; design utility informs theory.</td>
+              </tr>
+              <tr>
+                <td><strong>IT artifact</strong></td>
+                <td>Outcome of DSR in forms: <strong>constructs, models, methods, instantiations</strong>. <span class="noteRef">:contentReference[oaicite:27]{index=27}</span></td>
+                <td>This paper’s guideline set depends on understanding artifact types.</td>
+              </tr>
+              <tr>
+                <td><strong>Constructs</strong></td>
+                <td>Vocabulary/symbols to define and communicate problems/solutions; influence how tasks and problems are conceived. <span class="noteRef">:contentReference[oaicite:28]{index=28}</span></td>
+                <td>Constructs shape representations; representation strongly affects design success.</td>
+              </tr>
+              <tr>
+                <td><strong>Models</strong></td>
+                <td>Use constructs to represent problem domain and solution space; allow exploration of effects of design decisions. <span class="noteRef">:contentReference[oaicite:29]{index=29}</span></td>
+                <td>Bridge between real-world situations and design reasoning.</td>
+              </tr>
+              <tr>
+                <td><strong>Methods</strong></td>
+                <td>Define processes or algorithms for searching the solution space; range from formal math to textual best practices. <span class="noteRef">:contentReference[oaicite:30]{index=30}</span></td>
+                <td>Connects DSR to “design as search.”</td>
+              </tr>
+              <tr>
+                <td><strong>Instantiations</strong></td>
+                <td>Working implementations that demonstrate feasibility and allow concrete assessment of suitability. <span class="noteRef">:contentReference[oaicite:31]{index=31}</span></td>
+                <td>Central to “implementable artifacts” and evaluability.</td>
+              </tr>
+              <tr>
+                <td><strong>Relevance</strong></td>
+                <td>Research addresses real, important business needs in the environment (people/org/tech). <span class="noteRef">:contentReference[oaicite:32]{index=32}</span></td>
+                <td>Prevents “rigorous but irrelevant” outcomes.</td>
+              </tr>
+              <tr>
+                <td><strong>Rigor</strong></td>
+                <td>Appropriate use of existing foundations and methodologies for both build and evaluate; requires careful metrics and evaluation criteria. <span class="noteRef">:contentReference[oaicite:33]{index=33}</span></td>
+                <td>Prevents “useful but unjustified” artifacts.</td>
+              </tr>
+              <tr>
+                <td><strong>Routine design vs design research</strong></td>
+                <td>Routine design applies known solutions to known problems; design research targets unsolved problems in innovative ways or improves solutions substantially, producing knowledge-base contributions. <span class="noteRef">:contentReference[oaicite:34]{index=34}</span></td>
+                <td>Explains why not all system building is publishable DSR.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="p1-frameworks" data-title="Hevner 2004 frameworks models figures">
+          <h3>3. Core Frameworks / Models (with Image Slots for Figures)</h3>
+
+          <h4>Framework A: Organizational Design &amp; IS Design Activities (Figure 1)</h4>
+          <div class="imgSlot">
+            <div class="kicker">IMAGE SLOT — Figure 1. Organizational Design and Information Systems Design Activities</div>
+            <div class="hint">Paper page: 79 • PDF page: 4 • Credit: adapted from Henderson &amp; Venkatraman (1993). <span class="noteRef">:contentReference[oaicite:35]{index=35}</span></div>
+          </div>
+          <ul>
+            <li><strong>What the diagram shows:</strong> Alignments between <em>business strategy</em> and <em>IT strategy</em>, and between <em>organizational infrastructure</em> and <em>IS infrastructure</em>, with corresponding organizational and IS design activities. <span class="noteRef">:contentReference[oaicite:36]{index=36}</span></li>
+            <li><strong>Insight conveyed:</strong> In IS, design problems are not purely technical. Effective IS design depends on strategic and infrastructural alignment.</li>
+            <li><strong>Why it is important:</strong> Establishes why IS research must take the environment seriously (relevance) and why artifacts must be evaluated in contexts that reflect these dependencies.</li>
+          </ul>
+
+          <details class="example">
+            <summary>Collapsible illustration: “How alignment affects evaluation”</summary>
+            <div class="inside">
+              <p class="muted">Use this as a thinking tool when reading DSR papers:</p>
+              <ul>
+                <li>If an artifact improves a process but conflicts with strategy (e.g., decentralization vs centralized control), its “utility” may not hold in the full environment.</li>
+                <li>So: evaluation should ask not only “does it work?” but “does it work under the organizational/strategic constraints of the application environment?”</li>
+              </ul>
+            </div>
+          </details>
+
+          <h4>Framework B: Information Systems Research Framework (Figure 2)</h4>
+          <div class="imgSlot">
+            <div class="kicker">IMAGE SLOT — Figure 2. Information Systems Research Framework</div>
+            <div class="hint">Paper page: 80–81 • PDF page: 5 • Shows environment ↔ knowledge base with build/evaluate and justify/evaluate; highlights relevance and rigor. <span class="noteRef">:contentReference[oaicite:37]{index=37}</span></div>
+          </div>
+          <ul>
+            <li><strong>Plain-language explanation:</strong> IS research draws problems from the <strong>environment</strong> (people, organizations, technology) and draws methods/theories from the <strong>knowledge base</strong> (foundations + methodologies). Research outputs (theories or artifacts) are built and then justified/evaluated; outcomes feed back into the knowledge base.</li>
+            <li><strong>Why it exists:</strong> To make explicit the relationships that ensure <strong>relevance</strong> (anchoring in real needs) and <strong>rigor</strong> (grounding in established knowledge and credible evaluation).</li>
+            <li><strong>How used in the paper:</strong> It is the conceptual anchor for arguing DSR’s legitimacy and for motivating the guidelines (what “good DSR” must demonstrate).</li>
+            <li><strong>Implications:</strong>
+              <ul>
+                <li>When reading: check whether a paper clearly identifies (a) environment needs and (b) which foundations/methodologies are used.</li>
+                <li>When designing research: plan evaluation as part of the loop, not as an afterthought.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <div class="callout warn">
+            <strong>Common failure mode (flag it early):</strong> Over-formalizing can “assume away” important environment elements, creating rigor-looking work that loses relevance. <span class="noteRef">:contentReference[oaicite:38]{index=38}</span>
+          </div>
+
+          <h4>Framework C: Design-Science Research Guidelines (Table 1)</h4>
+          <div class="imgSlot">
+            <div class="kicker">IMAGE SLOT — Table 1. Design-Science Research Guidelines (1–7)</div>
+            <div class="hint">Paper page: 83 • PDF page: 8 • Seven guidelines define what DSR must produce and how to judge it. <span class="noteRef">:contentReference[oaicite:39]{index=39}</span></div>
+          </div>
+
+          <table>
+            <thead><tr><th>Guideline</th><th>What it requires</th><th>How to operationalize (reader + author)</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>1: Design as an Artifact</strong></td>
+                <td>Produce a viable artifact: construct, model, method, or instantiation. <span class="noteRef">:contentReference[oaicite:40]{index=40}</span></td>
+                <td>Identify the artifact type explicitly; avoid “we built a system” ambiguity.</td>
+              </tr>
+              <tr>
+                <td><strong>2: Problem Relevance</strong></td>
+                <td>Target important and relevant business problems with technology-based solutions. <span class="noteRef">:contentReference[oaicite:41]{index=41}</span></td>
+                <td>Explain the environment’s needs and stakes; show why the problem matters.</td>
+              </tr>
+              <tr>
+                <td><strong>3: Design Evaluation</strong></td>
+                <td>Demonstrate artifact utility/quality/efficacy via well-executed evaluation. <span class="noteRef">:contentReference[oaicite:42]{index=42}</span></td>
+                <td>Choose evaluation methods aligned to claims; present evidence, not assertions.</td>
+              </tr>
+              <tr>
+                <td><strong>4: Research Contributions</strong></td>
+                <td>Make clear contributions in artifact, foundations, and/or methodologies. <span class="noteRef">:contentReference[oaicite:43]{index=43}</span></td>
+                <td>State what is new (artifact vs method vs foundation) and how it advances prior work.</td>
+              </tr>
+              <tr>
+                <td><strong>5: Research Rigor</strong></td>
+                <td>Use rigorous methods in construction and evaluation. <span class="noteRef">:contentReference[oaicite:44]{index=44}</span></td>
+                <td>Show grounding in knowledge base; justify metrics; discuss validity threats.</td>
+              </tr>
+              <tr>
+                <td><strong>6: Design as a Search Process</strong></td>
+                <td>Search for effective artifacts under constraints of the environment. <span class="noteRef">:contentReference[oaicite:45]{index=45}</span></td>
+                <td>Explain alternative designs considered; show tradeoffs and constraints.</td>
+              </tr>
+              <tr>
+                <td><strong>7: Communication of Research</strong></td>
+                <td>Present effectively to technology- and management-oriented audiences. <span class="noteRef">:contentReference[oaicite:46]{index=46}</span></td>
+                <td>Write the artifact clearly and connect it to business meaning (not only technical novelty).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Framework D: Design Evaluation Methods (Table 2)</h4>
+          <div class="imgSlot">
+            <div class="kicker">IMAGE SLOT — Table 2. Design Evaluation Methods</div>
+            <div class="hint">Paper page: 86 • PDF page: 12 • Table catalogs evaluation method categories. (Caption captured as “Design Evaluation Methods”.)</div>
+          </div>
+          <p>
+            The paper emphasizes that <strong>evaluation is not optional</strong>—it is the mechanism by which the community can judge artifact utility and thus research quality.
+            The framework in Figure 2 lists evaluation types used in IS research (analytical, case study, experimental, field study, simulation). <span class="noteRef">:contentReference[oaicite:47]{index=47}</span>
+          </p>
+          <details class="example">
+            <summary>Collapsible illustration: mapping claims → evaluation evidence (how to read Table 2)</summary>
+            <div class="inside">
+              <ul>
+                <li><strong>If the claim is “better performance”</strong> (speed/accuracy/cost): expect analytical proofs, simulations, controlled experiments, or benchmark comparisons.</li>
+                <li><strong>If the claim is “usable/fit in context”</strong>: expect field studies, case studies, qualitative evaluation, and attention to stakeholder roles and training.</li>
+                <li><strong>If the claim is “generalizable design method”</strong>: expect evaluation across multiple instances or strong justification for applicability constraints.</li>
+              </ul>
+              <div class="callout warn">
+                The paper notes that artifacts may be part of human–machine systems; behavioral theories and empirical methods can be needed to construct and evaluate such artifacts appropriately. <span class="noteRef">:contentReference[oaicite:48]{index=48}</span>
+              </div>
+            </div>
+          </details>
+
+        </section>
+
+        <section class="section" id="p1-contrib" data-title="Hevner 2004 main contributions">
+          <h3>4. Main Contributions</h3>
+          <ol>
+            <li>
+              <strong>Defines and bounds design science within IS research.</strong><br/>
+              What is new: a disciplined articulation of DSR’s role and the nature of IT artifacts (construct/model/method/instantiation). <span class="noteRef">:contentReference[oaicite:49]{index=49}</span><br/>
+              Why it matters: helps the field treat design as legitimate research rather than “mere system building.”<br/>
+              How it advances prior work: integrates prior conceptualizations (e.g., March &amp; Smith build/evaluate; IS design theory) into a coherent guideline set.
+            </li>
+            <li>
+              <strong>Information Systems Research Framework (environment ↔ knowledge base).</strong><br/>
+              What is new: a visual, integrative framework to position behavioral and design research together. <span class="noteRef">:contentReference[oaicite:50]{index=50}</span><br/>
+              Why it matters: makes “rigor + relevance” operational: environment drives relevance; knowledge base drives rigor.
+            </li>
+            <li>
+              <strong>Seven guidelines for conducting/evaluating DSR.</strong><br/>
+              What is new: a practical checklist to align authors, reviewers, editors around consistent standards. <span class="noteRef">:contentReference[oaicite:51]{index=51}</span><br/>
+              Why it matters: creates a shared language for assessing DSR quality and contribution.
+            </li>
+            <li>
+              <strong>Evaluation emphasis as core of credibility.</strong><br/>
+              What is new: reinforces evaluation as the primary basis for claims about artifacts; highlights importance of metrics and their appropriateness. <span class="noteRef">:contentReference[oaicite:52]{index=52}</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="section" id="p1-method" data-title="Hevner 2004 methodology process">
+          <h3>5. Methodology / Process (as described in this paper)</h3>
+          <p>
+            This is a conceptual/methodological paper rather than a single artifact build. Its “method” is to define boundaries and then provide a normative guideline set.
+            Key process elements it emphasizes for DSR projects:
+          </p>
+          <ul>
+            <li><strong>Build + evaluate</strong> are the two core processes (from March &amp; Smith), iterated via a build-and-evaluate loop. <span class="noteRef">:contentReference[oaicite:53]{index=53}</span></li>
+            <li>Artifacts should be constructed and exercised within <strong>appropriate environments</strong> and evaluated with suitable subject groups when human interaction is involved. <span class="noteRef">:contentReference[oaicite:54]{index=54}</span></li>
+            <li><strong>Design as search:</strong> finding an effective artifact is a search constrained by environment “laws” and goals (Guideline 6). <span class="noteRef">:contentReference[oaicite:55]{index=55}</span></li>
+          </ul>
+
+          <div class="callout">
+            <strong>Tradeoff highlighted:</strong> Overemphasis on rigor can lower relevance; likewise, weak rigor can produce untrustworthy “solutions.” The paper argues both are necessary. <span class="noteRef">:contentReference[oaicite:56]{index=56}</span>
+          </div>
+        </section>
+
+        <section class="section" id="p1-eval" data-title="Hevner 2004 evaluation evidence claims">
+          <h3>6. Evaluation / Evidence</h3>
+          <h4>How the paper validates its claims</h4>
+          <ul>
+            <li>By presenting a structured framework and guidelines, then arguing their necessity using the relevance/rigor tension and the need to distinguish routine design from research.</li>
+            <li>By linking artifact claims to the requirement of evaluation and emphasizing metrics and evaluation appropriateness. <span class="noteRef">:contentReference[oaicite:57]{index=57}</span></li>
+          </ul>
+
+          <h4>Explicit links: claims → evidence expectations (for DSR papers)</h4>
+          <table>
+            <thead><tr><th>Typical DSR claim</th><th>What this paper says you must show</th><th>Common evidence forms (from the framework)</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>“Artifact solves an important problem”</td>
+                <td>Problem relevance + utility demonstrated (Guidelines 2 &amp; 3). <span class="noteRef">

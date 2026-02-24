@@ -1,0 +1,1984 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Study Companion — Human–AI Systems & AI in IS (4 Papers)</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1620;
+      --panel2:#0c121a;
+      --text:#e7eef8;
+      --muted:#a8b3c5;
+      --faint:#7f8aa0;
+      --line:#203044;
+      --accent:#7cc4ff;
+      --accent2:#b7ffb0;
+      --warn:#ffd27c;
+      --danger:#ff8c8c;
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:linear-gradient(180deg, var(--bg), #070a0e);
+      color:var(--text);
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .layout{
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      min-height:100vh;
+    }
+    aside{
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:auto;
+      padding:18px 16px;
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border-right:1px solid var(--line);
+    }
+    main{
+      padding:28px 28px 80px;
+      max-width: 1100px;
+    }
+    .brand{
+      padding:12px 12px 14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,0.02);
+      box-shadow: var(--shadow);
+      margin-bottom:14px;
+    }
+    .brand h1{
+      font-size:14px;
+      margin:0 0 8px;
+      letter-spacing:.2px;
+      color:var(--text);
+    }
+    .brand .sub{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+    .search{
+      margin:12px 0 10px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .search input{
+      width:100%;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0a1017;
+      color:var(--text);
+      outline:none;
+    }
+    .search input:focus{border-color:rgba(124,196,255,.7); box-shadow:0 0 0 3px rgba(124,196,255,.12)}
+    .pillrow{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 0}
+    .pill{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:var(--muted);
+      cursor:pointer;
+      user-select:none;
+    }
+    .pill.active{
+      border-color:rgba(124,196,255,.7);
+      color:var(--text);
+      background:rgba(124,196,255,.08);
+    }
+    nav{margin-top:12px}
+    .navgroup{
+      margin:12px 0 16px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      background:rgba(255,255,255,.02);
+    }
+    .navgroup .ghead{
+      padding:10px 12px;
+      font-size:12px;
+      color:var(--text);
+      background:rgba(255,255,255,.02);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+    }
+    .navgroup .ghead .tag{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+    }
+    .navlist{padding:8px 6px 10px}
+    .navlist a{
+      display:block;
+      padding:7px 10px;
+      border-radius:10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .navlist a:hover{background:rgba(124,196,255,.08); color:var(--text); text-decoration:none}
+    .navlist a.active{background:rgba(124,196,255,.12); color:var(--text)}
+    .toc-mini{
+      padding:0 10px 10px;
+      color:var(--faint);
+      font-size:11px;
+      line-height:1.4;
+    }
+
+    h2{margin:28px 0 10px; font-size:22px}
+    h3{margin:20px 0 10px; font-size:18px}
+    h4{margin:14px 0 8px; font-size:15px; color:var(--text)}
+    p{color:var(--muted); line-height:1.65; margin:10px 0}
+    ul,ol{color:var(--muted); line-height:1.6}
+    li{margin:6px 0}
+    .section{
+      padding:18px 18px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.02);
+      box-shadow: var(--shadow);
+      margin:14px 0 18px;
+    }
+    .meta{
+      font-size:12px;
+      color:var(--faint);
+      margin-top:6px;
+      line-height:1.45;
+    }
+    .callout{
+      border:1px solid var(--line);
+      border-left:4px solid var(--accent);
+      background:rgba(124,196,255,.06);
+      padding:12px 12px;
+      border-radius:14px;
+      margin:12px 0;
+    }
+    .callout.warn{border-left-color:var(--warn); background:rgba(255,210,124,.07)}
+    .callout.danger{border-left-color:var(--danger); background:rgba(255,140,140,.06)}
+    .callout.good{border-left-color:var(--accent2); background:rgba(183,255,176,.06)}
+    .callout .title{
+      font-size:12px;
+      letter-spacing:.2px;
+      text-transform:uppercase;
+      color:var(--text);
+      margin:0 0 6px;
+    }
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    @media (max-width: 980px){
+      .layout{grid-template-columns: 1fr}
+      aside{position:relative; height:auto}
+      main{padding:18px}
+      .grid2{grid-template-columns:1fr}
+    }
+
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      background:rgba(255,255,255,.02);
+      margin:10px 0 14px;
+    }
+    th,td{
+      padding:10px 10px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+      font-size:12px;
+      line-height:1.45;
+      color:var(--muted);
+    }
+    th{
+      text-align:left;
+      color:var(--text);
+      background:rgba(255,255,255,.03);
+      font-weight:600;
+    }
+    tr:last-child td{border-bottom:none}
+    code, pre{
+      font-family:var(--mono);
+      font-size:12px;
+    }
+    .imgslot{
+      border:1px dashed rgba(124,196,255,.7);
+      background:rgba(124,196,255,.05);
+      border-radius:14px;
+      padding:12px;
+      margin:10px 0 10px;
+    }
+    .imgslot .label{
+      font-size:12px;
+      color:var(--text);
+      margin:0 0 6px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:baseline;
+    }
+    .imgslot .label span{
+      color:var(--faint);
+      font-size:11px;
+    }
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.015);
+      padding:10px 12px;
+      margin:10px 0;
+    }
+    details summary{
+      cursor:pointer;
+      color:var(--text);
+      font-weight:600;
+      font-size:12px;
+      list-style:none;
+      outline:none;
+    }
+    details summary::-webkit-details-marker{display:none}
+    details .content{margin-top:8px}
+    .kpi{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:10px 0 0;
+    }
+    .kpi .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 10px;
+      background:rgba(255,255,255,.02);
+      min-width:160px;
+      flex:1;
+    }
+    .kpi .box .t{font-size:11px; color:var(--faint)}
+    .kpi .box .v{font-size:13px; color:var(--text); margin-top:4px; line-height:1.35}
+    .muted{color:var(--muted)}
+    .faint{color:var(--faint)}
+    .hr{height:1px; background:var(--line); margin:16px 0}
+    .toplink{float:right; font-size:12px; color:var(--faint)}
+  </style>
+</head>
+
+<body>
+<div class="layout">
+  <aside>
+    <div class="brand">
+      <h1>Offline Study Companion (Knowledge-Focused)</h1>
+
+      <div class="search">
+        <input id="searchBox" type="text" placeholder="Search titles, headings, keywords…" autocomplete="off"/>
+      </div>
+
+      <div class="pillrow" aria-label="Quick filters">
+        <div class="pill active" data-filter="all">All</div>
+        <div class="pill" data-filter="collins">Collins (SLR)</div>
+        <div class="pill" data-filter="fabri">Fabri (Taxonomy)</div>
+        <div class="pill" data-filter="hs2023">Hevner &amp; Storey (8Cs)</div>
+        <div class="pill" data-filter="dss2024">Storey/Hevner/Yoon (DSS)</div>
+      </div>
+
+      <div class="toc-mini">
+        Tip: Use search to filter navigation. Click a link to jump; your selection highlights.
+      </div>
+    </div>
+
+    <nav id="nav">
+      <!-- Collins -->
+      <div class="navgroup" data-paper="collins">
+        <div class="ghead">
+          <div>Collins et al. (2021, IJIM)</div>
+          <div class="tag">AI in IS — SLR</div>
+        </div>
+        <div class="navlist">
+          <a href="#collins" data-key="collins">Paper Home</a>
+          <a href="#collins-1" data-key="collins">1. Overview</a>
+          <a href="#collins-2" data-key="collins">2. Key Concepts & Keywords</a>
+          <a href="#collins-3" data-key="collins">3. Core Frameworks / Models</a>
+          <a href="#collins-4" data-key="collins">4. Main Contributions</a>
+          <a href="#collins-5" data-key="collins">5. Methodology / Process</a>
+          <a href="#collins-6" data-key="collins">6. Evaluation / Evidence</a>
+          <a href="#collins-7" data-key="collins">7. Examples / Case Studies</a>
+          <a href="#collins-8" data-key="collins">8. Limitations / Open Issues</a>
+          <a href="#collins-9" data-key="collins">9. Practical Takeaways</a>
+          <a href="#collins-10" data-key="collins">10. Figures & Tables Index</a>
+          <a href="#collins-11" data-key="collins">11. Credits & Citation</a>
+        </div>
+      </div>
+
+      <!-- Fabri -->
+      <div class="navgroup" data-paper="fabri">
+        <div class="ghead">
+          <div>Fabri et al. (2023, BISE)</div>
+          <div class="tag">Human–AI hybrids</div>
+        </div>
+        <div class="navlist">
+          <a href="#fabri" data-key="fabri">Paper Home</a>
+          <a href="#fabri-1" data-key="fabri">1. Overview</a>
+          <a href="#fabri-2" data-key="fabri">2. Key Concepts & Keywords</a>
+          <a href="#fabri-3" data-key="fabri">3. Core Frameworks / Models</a>
+          <a href="#fabri-4" data-key="fabri">4. Main Contributions</a>
+          <a href="#fabri-5" data-key="fabri">5. Methodology / Process</a>
+          <a href="#fabri-6" data-key="fabri">6. Evaluation / Evidence</a>
+          <a href="#fabri-7" data-key="fabri">7. Examples / Case Studies</a>
+          <a href="#fabri-8" data-key="fabri">8. Limitations / Open Issues</a>
+          <a href="#fabri-9" data-key="fabri">9. Practical Takeaways</a>
+          <a href="#fabri-10" data-key="fabri">10. Figures & Tables Index</a>
+          <a href="#fabri-11" data-key="fabri">11. Credits & Citation</a>
+        </div>
+      </div>
+
+      <!-- Hevner & Storey 2023 -->
+      <div class="navgroup" data-paper="hs2023">
+        <div class="ghead">
+          <div>Hevner &amp; Storey (2023, ACM TMIS)</div>
+          <div class="tag">HAIS “8Cs”</div>
+        </div>
+        <div class="navlist">
+          <a href="#hs2023" data-key="hs2023">Paper Home</a>
+          <a href="#hs2023-1" data-key="hs2023">1. Overview</a>
+          <a href="#hs2023-2" data-key="hs2023">2. Key Concepts & Keywords</a>
+          <a href="#hs2023-3" data-key="hs2023">3. Core Frameworks / Models</a>
+          <a href="#hs2023-4" data-key="hs2023">4. Main Contributions</a>
+          <a href="#hs2023-5" data-key="hs2023">5. Methodology / Process</a>
+          <a href="#hs2023-6" data-key="hs2023">6. Evaluation / Evidence</a>
+          <a href="#hs2023-7" data-key="hs2023">7. Examples / Case Studies</a>
+          <a href="#hs2023-8" data-key="hs2023">8. Limitations / Open Issues</a>
+          <a href="#hs2023-9" data-key="hs2023">9. Practical Takeaways</a>
+          <a href="#hs2023-10" data-key="hs2023">10. Figures & Tables Index</a>
+          <a href="#hs2023-11" data-key="hs2023">11. Credits & Citation</a>
+        </div>
+      </div>
+
+      <!-- DSS 2024 -->
+      <div class="navgroup" data-paper="dss2024">
+        <div class="ghead">
+          <div>Storey, Hevner &amp; Yoon (2024, DSS)</div>
+          <div class="tag">Decision sciences</div>
+        </div>
+        <div class="navlist">
+          <a href="#dss2024" data-key="dss2024">Paper Home</a>
+          <a href="#dss2024-1" data-key="dss2024">1. Overview</a>
+          <a href="#dss2024-2" data-key="dss2024">2. Key Concepts & Keywords</a>
+          <a href="#dss2024-3" data-key="dss2024">3. Core Frameworks / Models</a>
+          <a href="#dss2024-4" data-key="dss2024">4. Main Contributions</a>
+          <a href="#dss2024-5" data-key="dss2024">5. Methodology / Process</a>
+          <a href="#dss2024-6" data-key="dss2024">6. Evaluation / Evidence</a>
+          <a href="#dss2024-7" data-key="dss2024">7. Examples / Case Studies</a>
+          <a href="#dss2024-8" data-key="dss2024">8. Limitations / Open Issues</a>
+          <a href="#dss2024-9" data-key="dss2024">9. Practical Takeaways</a>
+          <a href="#dss2024-10" data-key="dss2024">10. Figures & Tables Index</a>
+          <a href="#dss2024-11" data-key="dss2024">11. Credits & Citation</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <main id="content">
+
+    <!-- ========================================================= -->
+    <!-- Collins 2021 -->
+    <!-- ========================================================= -->
+    <section id="collins" class="section" data-paper="collins">
+      <a class="toplink" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ top</a>
+      <h2>Collins et al. (2021) — <span class="muted">Artificial intelligence in information systems research: A systematic literature review and research agenda</span></h2>
+      <p class="meta">
+        Source: International Journal of Information Management (IJIM), 2021. (Review article / systematic literature review.)<br/>
+        Scope stated by authors: AI research in IS from <b>2005–2020</b>; search yielded <b>1877</b> studies, with <b>98</b> primary studies included after screening.
+      </p>
+
+      <div class="callout good">
+        <div class="title">How to use these notes</div>
+        <div class="muted">
+          This paper is not “one model” — it is a <b>map of how IS research has used AI</b>, what business value is emphasized,
+          what methods dominate, and what the authors think is missing. Read it as (1) a vocabulary, (2) a set of organizing lenses,
+          and (3) a research agenda with concrete question-types.
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="box"><div class="t">Primary purpose</div><div class="v">Create a cumulative view of AI-in-IS and propose a future research agenda</div></div>
+        <div class="box"><div class="t">Dominant AI category observed</div><div class="v">Machine learning dominates primary studies (authors report the largest share)</div></div>
+        <div class="box"><div class="t">Value lens used</div><div class="v">Maps studies to AI “business needs”: Process automation, Cognitive insight, Cognitive engagement</div></div>
+      </div>
+    </section>
+
+    <section id="collins-1" class="section" data-paper="collins">
+      <h3>1. Overview</h3>
+
+      <h4>Problem addressed</h4>
+      <ul>
+        <li>AI activity in IS research increased, but the authors see a risk of <b>fragmented, non-cumulative knowledge</b> (a pattern the IS field has faced before).</li>
+        <li>They argue that without a clear synthesis, “AI in IS” may become a collection of isolated applications rather than a coherent body of knowledge.</li>
+      </ul>
+
+      <h4>Why it matters</h4>
+      <ul>
+        <li>Organizations are adopting AI for operational and strategic goals; IS research is positioned to study <b>how AI creates value in socio-technical contexts</b> (not just technical performance).</li>
+        <li>IS has a distinctive role: understanding how technology, people, processes, governance, and complementary assets combine to generate outcomes.</li>
+      </ul>
+
+      <h4>Core thesis / central claim</h4>
+      <ul>
+        <li>A structured review of AI-in-IS (2005–2020) can reveal <b>what is being studied</b>, <b>how it is studied</b>, and <b>where the gaps are</b>, enabling a more cumulative research trajectory.</li>
+      </ul>
+
+      <h4>What the paper contributes</h4>
+      <ul>
+        <li><b>Systematic Literature Review (SLR)</b> with explicit search and screening leading to 98 primary studies.</li>
+        <li><b>Synthesis of themes</b> that characterize AI in IS research: (a) what kinds of AI, (b) what kinds of value, (c) how contributions are framed.</li>
+        <li><b>Research agenda</b> (explicit future research topics/questions), including definitional issues and under-explored AI areas.</li>
+        <li><b>Practice implications</b>: which AI applications are most pursued/studied, and what that suggests for future deployments and skills.</li>
+      </ul>
+
+      <details>
+        <summary>Illustration (collapsible): What “non-cumulative” looks like in AI-in-IS</summary>
+        <div class="content muted">
+          <ul>
+            <li>Many papers can become “one-off” demonstrations: a model is applied to a dataset in a domain, but the field learns little about <b>generalizable mechanisms</b> (e.g., adoption, governance, workflow redesign, trust, complementary assets).</li>
+            <li>Cumulative knowledge requires: shared definitions, comparable constructs, explicit boundary conditions, and repeated use of common lenses so results “stack.”</li>
+            <li>This SLR is trying to supply the “stacking framework”: categories of AI, value types, and contribution types that make findings comparable.</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <section id="collins-2" class="section" data-paper="collins">
+      <h3>2. Key Concepts &amp; Keywords (as used in this paper)</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Meaning in this paper</th>
+            <th>Why it matters for interpreting findings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Artificial Intelligence (AI)</b></td>
+            <td>Discussed as a broad umbrella with definitional ambiguity; the authors highlight <b>lack of consensus</b> and treat it as a set of methods/capabilities used in IS contexts.</td>
+            <td>If “AI” is defined inconsistently, research comparisons become unreliable; the paper’s agenda explicitly calls for definitional work.</td>
+          </tr>
+          <tr>
+            <td><b>Systematic Literature Review (SLR)</b></td>
+            <td>Structured process to identify, screen, and synthesize published work under explicit criteria.</td>
+            <td>SLR is used here to reduce selection bias and provide a defensible map of the field.</td>
+          </tr>
+          <tr>
+            <td><b>Primary study</b></td>
+            <td>A paper included after screening that forms the evidence base for synthesis (98 papers).</td>
+            <td>All reported themes, distributions, and agenda items derive from these.</td>
+          </tr>
+          <tr>
+            <td><b>AI categories (Dejoux &amp; Léon lens)</b></td>
+            <td>Organizing categories of AI (authors report machine learning as dominant; other categories include expert systems, machine vision, NLP, robotics, and “other”).</td>
+            <td>Helps distinguish whether “AI in IS” is actually <b>mostly ML</b> vs a broad range of AI paradigms.</td>
+          </tr>
+          <tr>
+            <td><b>Business value / “value type”</b></td>
+            <td>Mapped to three business needs: <b>Process automation</b>, <b>Cognitive insight</b>, <b>Cognitive engagement</b> (adapted from an AI-in-business framing used by the authors).</td>
+            <td>Shows what outcomes IS researchers implicitly prioritize (e.g., automation over engagement).</td>
+          </tr>
+          <tr>
+            <td><b>Contribution type</b></td>
+            <td>How a study claims to contribute: e.g., frameworks/methods/techniques, models, guidelines, lessons learned, etc. (authors adapt a contribution taxonomy).</td>
+            <td>Separates “we built a model” from “we built an actionable method,” which affects reuse.</td>
+          </tr>
+          <tr>
+            <td><b>Research agenda</b></td>
+            <td>Explicit future research topics/questions derived from gaps and trends in the SLR.</td>
+            <td>Provides a roadmap of what the authors believe would strengthen cumulative knowledge.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn">
+        <div class="title">Important nuance</div>
+        <div class="muted">
+          The paper treats “AI” as a research domain inside IS, but repeatedly emphasizes that <b>definition and scope</b> are unsettled.
+          Many disagreements in “AI impact” debates can be traced to different implicit definitions of AI (automation vs learning vs autonomy vs interaction).
+        </div>
+      </div>
+    </section>
+
+    <section id="collins-3" class="section" data-paper="collins">
+      <h3>3. Core Frameworks / Models</h3>
+
+      <h4>Framework A — AI business needs / value types</h4>
+      <p>
+        The authors map primary studies into three “value types” (business needs):
+        <b>Process Automation</b>, <b>Cognitive Insight</b>, and <b>Cognitive Engagement</b>.
+      </p>
+      <ul>
+        <li><b>Why it exists:</b> A way to make “AI value” comparable across different domains and technical methods.</li>
+        <li><b>How used in the paper:</b> They classify each study by the most relevant value type and then report distributions (automation appears most common in their dataset).</li>
+        <li><b>Implication:</b> If IS research mostly studies automation/insight, then socio-technical issues of engagement (human-facing interaction, conversational systems, etc.) may be under-explored.</li>
+      </ul>
+
+      <div class="imgslot" id="collins-img-fig7">
+        <div class="label">
+          <div><b>Image Slot — Fig. (Value type distribution)</b></div>
+          <span>PDF page: 10 (Collins et al. PDF)</span>
+        </div>
+        <img src="./Assets/HAIS/img1.png"/>
+        <div class="muted">
+          <ul>
+            <li><b>What the diagram shows:</b> A count of primary studies by value type (process automation, cognitive insight, cognitive engagement).<br/></li>
+          <li><b>What insight it conveys:</b> The “center of gravity” of AI-in-IS research is not evenly distributed; certain value types dominate (authors report automation as most common).<br/></li>
+          <li><b>Why it matters:</b> It reveals what the field is implicitly rewarding and what may be missing (e.g., fewer studies of engagement suggests opportunity in human-facing AI, conversational systems, and experience design).</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>Framework B — AI method categories used in IS research</h4>
+      <p>
+        The paper organizes what kinds of AI are studied, using a multi-category lens where the authors find <b>machine learning overwhelmingly prominent</b>,
+        and smaller representation of expert systems, machine vision, NLP, robotics, and broader “other” studies.
+      </p>
+      <ul>
+        <li><b>Why it exists:</b> “AI” is too broad; without method categories, the field may incorrectly generalize findings from ML to AI-as-a-whole.</li>
+        <li><b>How used:</b> The authors count and discuss research emphases and suggest gaps (e.g., comparatively fewer studies in some categories).</li>
+        <li><b>Implications:</b> Underrepresentation of certain AI categories can limit theory-building about human-AI interaction, governance, and deployment in those forms.</li>
+      </ul>
+
+      <h4>Framework C — Contribution types in AI-in-IS</h4>
+      <p>
+        The authors classify how studies contribute (e.g., frameworks, guidelines, models, lessons learned).
+      </p>
+      <ul>
+        <li><b>Why it exists:</b> To assess whether the field is producing reusable artifacts (methods, frameworks) or mostly isolated models.</li>
+        <li><b>How used:</b> The paper reports distribution by contribution type and uses it to motivate agenda items about building cumulative knowledge.</li>
+      </ul>
+
+      <details>
+        <summary>Example (collapsible): Using the “value type” lens on one AI system</summary>
+        <div class="content muted">
+          Suppose an organization deploys an AI tool in customer support:
+          <ul>
+            <li><b>Process automation</b>: auto-routing tickets, auto-filling forms, automating repetitive steps.</li>
+            <li><b>Cognitive insight</b>: mining complaint themes, predicting churn, identifying root causes in logs.</li>
+            <li><b>Cognitive engagement</b>: interactive chatbot conversations, personalized guidance, empathy/rapport in user experience.</li>
+          </ul>
+          The paper’s lens encourages you to ask: which of these is the research actually measuring and theorizing about?
+        </div>
+      </details>
+    </section>
+
+    <section id="collins-4" class="section" data-paper="collins">
+      <h3>4. Main Contributions</h3>
+
+      <h4>Contribution 1 — Field synthesis of AI-in-IS (2005–2020)</h4>
+      <ul>
+        <li><b>What is new:</b> Consolidates scattered AI-in-IS work into a structured evidence base.</li>
+        <li><b>Why it matters:</b> Enables comparisons and reveals dominant themes rather than relying on anecdotal impressions of “what the field studies.”</li>
+        <li><b>Advance over prior work:</b> Focused specifically on IS research and explicitly maps studies to value types and AI categories.</li>
+      </ul>
+
+      <h4>Contribution 2 — Mapping AI research to business value types</h4>
+      <ul>
+        <li><b>What is new:</b> An organizing lens translating research outputs into <b>value types</b> that are meaningful for organizations.</li>
+        <li><b>Why it matters:</b> Helps IS researchers justify relevance and identify neglected socio-technical value dimensions (e.g., engagement).</li>
+      </ul>
+
+      <h4>Contribution 3 — Research agenda</h4>
+      <ul>
+        <li><b>What is new:</b> Explicit, gap-driven topics and questions (including definitional issues and opportunities in less-studied AI areas).</li>
+        <li><b>Why it matters:</b> Shifts the conversation from “AI is important” to “here are specific knowledge gaps that will move the field forward.”</li>
+      </ul>
+
+      <div class="callout">
+        <div class="title">Say this in your own words</div>
+        <div class="muted">
+          “This paper doesn’t just list AI papers in IS; it classifies them so we can see what kinds of AI and what kinds of organizational value IS researchers emphasize,
+          then it proposes what research would make the field’s knowledge more cumulative and useful.”
+        </div>
+      </div>
+    </section>
+
+    <section id="collins-5" class="section" data-paper="collins">
+      <h3>5. Methodology / Process (SLR)</h3>
+
+      <h4>High-level process (as described by authors)</h4>
+      <ol>
+        <li><b>Search strategy</b> to gather candidate studies (authors report 1877).</li>
+        <li><b>Screening / selection</b> to identify “primary studies” relevant to AI-in-IS (authors report 98 included).</li>
+        <li><b>Coding and classification</b> of primary studies into:
+          <ul>
+            <li>AI category (e.g., ML, expert systems, NLP, etc.)</li>
+            <li>value type (process automation / cognitive insight / cognitive engagement)</li>
+            <li>contribution type (framework/model/guidelines/etc.)</li>
+          </ul>
+        </li>
+        <li><b>Synthesis</b> of themes and derivation of <b>research agenda</b>.</li>
+      </ol>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Fig. (Study selection process)</b></div>
+          <span>PDF pages: ~3–6 (selection flow appears early in paper)</span>
+        </div>
+        <img src="./Assets/HAIS/img2.png" width="40%"/>
+        <div class="muted">
+          <b>What the diagram likely shows:</b> A screening funnel from initial search results to final included primary studies (often PRISMA-like).<br/>
+          <b>What insight it conveys:</b> Why the evidence base is defensible: it shows that inclusion wasn’t arbitrary and that the authors filtered systematically.<br/>
+          <b>Why it matters:</b> In an SLR, the selection flow is part of the argument: it claims “this is what the field looks like” based on a traceable method.
+        </div>
+      </div>
+
+      <details>
+        <summary>Illustration (collapsible): What “coding” means in an SLR like this</summary>
+        <div class="content muted">
+          Coding is the act of turning each paper into structured attributes so patterns can be measured.
+          In this paper’s style, one primary study becomes something like:
+          <ul>
+            <li>AI category: machine learning</li>
+            <li>Value type: cognitive insight</li>
+            <li>Contribution type: model</li>
+            <li>Domain: (e.g., healthcare / finance / operations)</li>
+          </ul>
+          Once coded, you can compute distributions, cross-tabs, and identify “empty cells” (gaps).
+        </div>
+      </details>
+    </section>
+
+    <section id="collins-6" class="section" data-paper="collins">
+      <h3>6. Evaluation / Evidence</h3>
+
+      <h4>What counts as evidence in this paper</h4>
+      <ul>
+        <li>The “evidence” is the <b>coded set of 98 primary studies</b> and their distributions across categories (AI type, value type, contribution type).</li>
+        <li>Claims like “X dominates” or “Y is under-studied” are supported by <b>counts and mappings</b> shown in tables/figures.</li>
+      </ul>
+
+      <h4>Strengths</h4>
+      <ul>
+        <li><b>Transparent synthesis logic:</b> Converts qualitative literature into structured categories.</li>
+        <li><b>Field-level perspective:</b> Helps avoid being misled by a handful of prominent AI papers.</li>
+      </ul>
+
+      <h4>Limitations (evaluation-wise)</h4>
+      <ul>
+        <li>Findings depend on <b>search scope</b>, <b>inclusion criteria</b>, and <b>coding decisions</b>.</li>
+        <li>Mapping each paper to a single “most relevant” value type simplifies reality (one AI system can create multiple value types).</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="title">How to read “dominance” claims</div>
+        <div class="muted">
+          When the authors say “machine learning dominates,” the correct interpretation is:
+          “Within the set of included AI-in-IS primary studies, ML appears most frequently under the authors’ classification.”
+          This is a pattern claim about a corpus — not a claim that “ML is always the best AI approach.”
+        </div>
+      </div>
+    </section>
+
+    <section id="collins-7" class="section" data-paper="collins">
+      <h3>7. Examples / Case Studies (as used by the authors)</h3>
+      <p>
+        The paper is a review, so examples are typically brief references to representative primary studies to illustrate a value type or AI category.
+      </p>
+
+      <details>
+        <summary>Example (collapsible): “Automation” vs “Insight” in AI decision support (as discussed in the paper)</summary>
+        <div class="content muted">
+          The authors discuss that in some decision-support contexts, AI’s value is not “making the decision”
+          but <b>improving the knowledge basis</b> used for the decision. This distinction matters because:
+          <ul>
+            <li>Decision automation raises governance/accountability issues.</li>
+            <li>Insight/knowledge refinement can be adopted earlier because humans remain the final decision-makers.</li>
+          </ul>
+          Reading the paper through this lens helps you ask: is a study about replacing human judgment or augmenting it?
+        </div>
+      </details>
+    </section>
+
+    <section id="collins-8" class="section" data-paper="collins">
+      <h3>8. Limitations, Challenges, Open Issues</h3>
+      <ul>
+        <li><b>Definition problem:</b> The authors emphasize lack of consensus on what counts as “AI,” and propose definitional research as an agenda item.</li>
+        <li><b>Category imbalance:</b> Heavy focus on ML suggests some AI areas (e.g., deeper NLP interaction, robotics, certain vision opportunities) may be underrepresented in IS research.</li>
+        <li><b>Socio-technical completeness:</b> IS value often requires complementary assets; purely technical advances may not translate directly to organizational value without process/governance redesign.</li>
+      </ul>
+
+      <div class="callout danger">
+        <div class="title">Common misread to avoid</div>
+        <div class="muted">
+          “Because ML dominates the literature, AI in IS = ML.”<br/>
+          The paper is specifically warning against that kind of collapse. Its classification is meant to make the imbalance visible so researchers can correct it.
+        </div>
+      </div>
+    </section>
+
+    <section id="collins-9" class="section" data-paper="collins">
+      <h3>9. Practical Takeaways / Study Checklist (knowledge-focused)</h3>
+      <ul>
+        <li>When reading any “AI in organization” paper, always identify:
+          <ul>
+            <li><b>AI capability type</b> (ML? NLP? expert system? autonomy?)</li>
+            <li><b>Value type</b> (automation vs insight vs engagement)</li>
+            <li><b>Contribution type</b> (model, framework, method, guidelines, lessons learned)</li>
+          </ul>
+        </li>
+        <li>Ask whether the paper explains the <b>socio-technical mechanism</b> (how AI changes workflows, roles, accountability, incentives), not just predictive performance.</li>
+        <li>Use “category imbalances” as opportunity signals: under-studied combinations of AI type × value type × socio-technical context are plausible high-impact directions.</li>
+        <li>Treat definitional choices as part of the argument: if “AI” means “automation,” the conclusions differ from “AI” meaning “interactive learning system.”</li>
+      </ul>
+
+      <details>
+        <summary>Collapsible: A reusable template you can apply to future papers</summary>
+        <div class="content muted">
+          For any AI-in-IS paper, write 6 short bullets:
+          <ol>
+            <li><b>What “AI” specifically is</b> (model type + data type + learning regime).</li>
+            <li><b>Where in the workflow it sits</b> (before/after human action; which decision point).</li>
+            <li><b>What value is claimed</b> (automation/insight/engagement or equivalent).</li>
+            <li><b>What changes organizationally</b> (roles, control points, governance, skills).</li>
+            <li><b>What the evidence actually measures</b> (technical performance, adoption, outcomes, perceptions).</li>
+            <li><b>Boundary conditions</b> (where it fails, where it needs complementary assets).</li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <section id="collins-10" class="section" data-paper="collins">
+      <h3>10. Figures & Tables Index (Collins et al., 2021)</h3>
+      <div class="callout">
+        <div class="title">Note</div>
+        <div class="muted">
+          Paper page numbers were not reliably extractable from the PDF text; use <b>PDF page numbers</b> below for screenshotting.
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th><th>Label</th><th>Paper page</th><th>PDF page</th><th>What it represents (short)</th><th>Credits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Figure</td><td><b>Fig. (Selection flow)</b></td><td>—</td><td>~3–6</td><td>Study identification/screening funnel from initial results to included primary studies</td><td>As in paper</td></tr>
+          <tr><td>Figure</td><td><b>Fig. 7</b></td><td>—</td><td>10</td><td>Counts of primary studies by AI value type (process automation / cognitive insight / cognitive engagement)</td><td>As in paper</td></tr>
+
+          <tr><td>Table</td><td><b>Table 10</b></td><td>—</td><td>9</td><td>Contribution types taxonomy (framework/method/technique, guidelines, lessons learned, model, etc.)</td><td>Adapted taxonomy credited in paper</td></tr>
+          <tr><td>Table</td><td><b>Table 12</b></td><td>—</td><td>~9–10</td><td>Mapping of primary studies to AI categories (e.g., ML, expert systems, NLP, etc.)</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Table 13</b></td><td>—</td><td>~10</td><td>Mapping of studies to value types (automation/insight/engagement)</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Table 14</b></td><td>—</td><td>13</td><td>Future research agenda topics and question prompts (incl. AI definition and other agenda categories)</td><td>As in paper</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="collins-11" class="section" data-paper="collins">
+      <h3>11. Credits & Citation</h3>
+      <p class="muted">
+        <b>Paper:</b> Collins, C., Dennehy, D., Conboy, K., &amp; Mikalef, P. (2021).
+        Artificial intelligence in information systems research: A systematic literature review and research agenda.
+        <i>International Journal of Information Management</i>.
+      </p>
+      <p class="faint">
+        This HTML file is a study companion derived solely from the attached paper. Figures/tables are referenced with placeholders for manual screenshot insertion.
+      </p>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- Fabri 2023 -->
+    <!-- ========================================================= -->
+    <section id="fabri" class="section" data-paper="fabri">
+      <a class="toplink" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ top</a>
+      <h2>Fabri et al. (2023) — <span class="muted">Disentangling Human-AI Hybrids: Conceptualizing the Interworking of Humans and AI-Enabled Systems</span></h2>
+      <p class="meta">
+        Source: Business &amp; Information Systems Engineering (BISE), 2023.<br/>
+        Core move: a <b>sociomaterial</b> view + a <b>taxonomy</b> of human–AI “interworking” and <b>archetypes</b> derived from analyzing a sample of human–AI hybrids in literature/practice (authors describe a sample of 101 hybrids).
+      </p>
+
+      <div class="callout good">
+        <div class="title">Big idea in one sentence</div>
+        <div class="muted">
+          Human–AI “hybrids” are best understood by how <b>human agency</b>, <b>AI (material) agency</b>, and <b>sociomaterial practices</b> are <b>entangled</b> in real work — and we can systematically classify those entanglements.
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="box"><div class="t">Main artifact</div><div class="v">Taxonomy of human–AI hybrids + archetypes illustrating typical interworking patterns</div></div>
+        <div class="box"><div class="t">Theoretical lens</div><div class="v">Sociomateriality (humans + technology as entangled in practice)</div></div>
+        <div class="box"><div class="t">Why “disentangle”</div><div class="v">To describe interworking precisely (beyond vague “human-in-the-loop”)</div></div>
+      </div>
+    </section>
+
+    <section id="fabri-1" class="section" data-paper="fabri">
+      <h3>1. Overview</h3>
+
+      <h4>Problem addressed</h4>
+      <ul>
+        <li>Organizations increasingly deploy AI where humans and AI-enabled systems “work together,” but research often uses broad labels (e.g., human-in-the-loop) that do not specify <b>how</b> the interworking actually happens.</li>
+        <li>The authors argue we lack a <b>holistic understanding</b> of the entangled interworking that characterizes “human–AI hybrids.”</li>
+      </ul>
+
+      <h4>Why it matters</h4>
+      <ul>
+        <li>Different interworking designs produce different outcomes: performance, accountability, trust, learning, and how work is experienced.</li>
+        <li>Without clear conceptualization, it is difficult to compare studies, design systems intentionally, or identify where risks/benefits come from.</li>
+      </ul>
+
+      <h4>Core thesis / central claim</h4>
+      <ul>
+        <li>Human–AI interworking can be described systematically using a taxonomy that treats a human–AI hybrid as a <b>sociomaterial entity</b> (human agency + AI agency + sociomaterial practices).</li>
+        <li>Once classified, recurring patterns emerge as <b>archetypes</b> that clarify typical roles AI-enabled systems take in organizations.</li>
+      </ul>
+
+      <h4>What the paper contributes</h4>
+      <ul>
+        <li><b>Taxonomy development</b> for human–AI hybrids grounded in sociomateriality.</li>
+        <li><b>Status quo analysis</b> of existing hybrids (how the sample distributes across taxonomy characteristics).</li>
+        <li><b>Archetypes</b> derived via clustering, representing ideal-typical interworking scenarios (range of roles AI can play).</li>
+      </ul>
+
+      <details>
+        <summary>Illustration (collapsible): Why “human-in-the-loop” is too coarse</summary>
+        <div class="content muted">
+          “Human-in-the-loop” can mean very different things:
+          <ul>
+            <li>Human checks an AI output once at the end (singular verification).</li>
+            <li>Human and AI iterate repeatedly (continuous mutual supplementation).</li>
+            <li>Human provides data/labels to train AI (learning relationship), even if not involved during operation.</li>
+            <li>Human must interpret AI explanations and integrate them with context (sensemaking).</li>
+          </ul>
+          The taxonomy makes these differences explicit so two studies aren’t treated as “the same” when they aren’t.
+        </div>
+      </details>
+    </section>
+
+    <section id="fabri-2" class="section" data-paper="fabri">
+      <h3>2. Key Concepts &amp; Keywords (as used in this paper)</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Meaning in this paper</th>
+            <th>Distinguishing detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Human–AI hybrid</b></td>
+            <td>A sociomaterial entity formed when <b>human agents</b> and <b>AI-enabled systems</b> closely collaborate in task performance.</td>
+            <td>Not “human + tool” loosely; the emphasis is on <b>entangled interworking</b> that shapes what work is and how it is done.</td>
+          </tr>
+          <tr>
+            <td><b>Sociomateriality / entanglement</b></td>
+            <td>Humans and technology are not separable in practice; agency and outcomes emerge from their interrelations.</td>
+            <td>Used to justify why the unit of analysis is the <b>hybrid</b>, not the human alone or the AI alone.</td>
+          </tr>
+          <tr>
+            <td><b>Human agency</b></td>
+            <td>The human’s cognitive functions and roles in interworking: e.g., reasoning/decision-making, interacting, verifying, sensemaking, etc.</td>
+            <td>The taxonomy distinguishes what the human <b>contributes</b> vs how the human <b>relates to AI</b>.</td>
+          </tr>
+          <tr>
+            <td><b>Material agency (AI-enabled system)</b></td>
+            <td>What the AI system does in the hybrid (e.g., predicting, reasoning, interacting, automating), and how it interacts with humans.</td>
+            <td>AI is treated as an agentive component within socio-technical practice, not just a passive artifact.</td>
+          </tr>
+          <tr>
+            <td><b>Interworking</b></td>
+            <td>The patterned collaboration between human and AI system: directionality, continuity, and form (sequential/parallel/flexible).</td>
+            <td>This is the heart of the taxonomy: it specifies “who does what when,” not just “AI helps humans.”</td>
+          </tr>
+          <tr>
+            <td><b>Archetype</b></td>
+            <td>An ideal-typical pattern of a human–AI hybrid derived by clustering similar hybrids across taxonomy characteristics.</td>
+            <td>Archetypes help translate taxonomy into “recognizable” organizational scenarios.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <div class="title">Say this in your own words</div>
+        <div class="muted">
+          “A human–AI hybrid is not just a person using AI; it’s a combined sociomaterial setup where roles, interactions, and learning relationships define the actual work practice.”
+        </div>
+      </div>
+    </section>
+
+    <section id="fabri-3" class="section" data-paper="fabri">
+      <h3>3. Core Frameworks / Models</h3>
+
+      <h4>Model 1 — Sociomaterial entanglement view of human–AI hybrids</h4>
+      <ul>
+        <li><b>Why it exists:</b> To avoid treating “human” and “AI system” as separable entities when the phenomenon is their joint practice.</li>
+        <li><b>How used:</b> It motivates a taxonomy that includes both sides’ roles and the practice-level interworking design.</li>
+        <li><b>Implications:</b> Interventions (design changes) should be considered at the level of the hybrid practice (workflow, interfaces, governance), not just model tuning.</li>
+      </ul>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Fig. 1 (Sociomaterial entanglement of human–AI hybrids)</b></div>
+          <span>PDF page: 6 (BISE PDF)</span>
+        </div>
+        <div class="muted">
+          <b>What the diagram shows:</b> A conceptual depiction of how human agency, AI/material agency, and practices interrelate to form the hybrid.<br/>
+          <b>What insight it conveys:</b> The “hybrid” is the meaningful unit: agency is distributed and outcomes are emergent.<br/>
+          <b>Why it matters:</b> It justifies why classification must include both human and AI roles plus interaction patterns.
+        </div>
+      </div>
+
+      <h4>Model 2 — Taxonomy of human–AI hybrids</h4>
+      <p>
+        The taxonomy organizes a hybrid into three “actor/practice” components:
+        <b>(1) Human (human agency)</b>, <b>(2) AI (material agency)</b>, and <b>(3) Sociomaterial practices</b>.
+        Each component is described by <b>dimensions</b> with <b>characteristics</b>.
+      </p>
+
+      <div class="grid2">
+        <div>
+          <h4>Human (human agency) — key dimensions (as described)</h4>
+          <ul>
+            <li><b>Human cognitive functions:</b> what cognition the human brings (e.g., reasoning/decision-making, interacting, etc.).</li>
+            <li><b>Interaction human → AI:</b> how the human relates to the AI system (e.g., supplementing, facilitating, verifying — the paper distinguishes such patterns).</li>
+            <li><b>Human focus:</b> what the human is primarily oriented toward (paper discusses sensemaking and other foci).</li>
+          </ul>
+        </div>
+        <div>
+          <h4>AI (material agency) — key dimensions (as described)</h4>
+          <ul>
+            <li><b>AI cognitive functions:</b> what the AI does (e.g., reasoning, predicting; the paper reports common patterns in the sample).</li>
+            <li><b>Interaction AI → human:</b> how AI outputs relate to human action (e.g., supplementation via recommendations/predictions).</li>
+            <li><b>AI focus:</b> often discussed as automation-oriented in some archetypes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>Sociomaterial practices — key dimensions (as described)</h4>
+      <ul>
+        <li><b>Form of interworking:</b> sequential vs parallel vs more flexible arrangements (the taxonomy treats this as a core practice property).</li>
+        <li><b>Mode of interworking:</b> singular vs continuous interaction (one-off check vs ongoing iterative interplay).</li>
+        <li><b>Learning relationship:</b> whether humans and AI learn separately or in more coupled ways (paper reports distributions in the status quo analysis).</li>
+      </ul>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Fig. 2 (Taxonomy overview)</b></div>
+          <span>PDF page: 7 (BISE PDF)</span>
+        </div>
+        <div class="muted">
+          <b>What the diagram shows:</b> The taxonomy structure: components (human/AI/practices) → dimensions → characteristics.<br/>
+          <b>What insight it conveys:</b> “Interworking” is multi-dimensional: you can’t describe a hybrid with one label.<br/>
+          <b>Why it matters:</b> Enables systematic comparison, clustering, and design guidance (you can ask what to change: interaction mode? learning coupling? roles?).
+        </div>
+      </div>
+
+      <h4>Model 3 — Archetypes of human–AI hybrids</h4>
+      <p>
+        After classifying a sample of hybrids, the authors cluster them and present archetypes that illustrate the range of AI roles.
+        The paper’s archetype table excerpt explicitly names patterns such as:
+        <b>Sequential Automation (aka “AI Pre-Worker”)</b> and <b>Parallel Automation (aka “Outsourcing AI”)</b>,
+        and discusses another archetype referred to as <b>“Superpower-giving AI”</b>.
+      </p>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Table (Archetypes summary)</b></div>
+          <span>PDF pages: 12–13 (BISE PDF)</span>
+        </div>
+        <div class="muted">
+          <b>What the table shows:</b> For each archetype: typical human cognitive functions, AI cognitive functions, interaction patterns, focus, interworking form/mode, and learning relationship.<br/>
+          <b>What insight it conveys:</b> “AI role” is not one thing — it ranges from pre-work automation to parallel outsourcing to augmentation that changes what humans can do.<br/>
+          <b>Why it matters:</b> If you can identify your real-world system’s archetype, you can anticipate its likely risks/benefits (e.g., verification burden, deskilling, bias mitigation, trust dynamics).
+        </div>
+      </div>
+
+      <details>
+        <summary>Example (collapsible): How the three archetypes feel different in practice</summary>
+        <div class="content muted">
+          <ul>
+            <li><b>AI Pre-Worker (sequential automation):</b> AI does early-stage analysis/prediction; humans step in later to verify, decide, and interpret. Human attention is triggered after AI output exists.</li>
+            <li><b>Outsourcing AI (parallel automation):</b> AI runs alongside humans and completes substantial parts of the task; humans integrate/oversee rather than do all steps themselves.</li>
+            <li><b>Superpower-giving AI:</b> AI handles reasoning/prediction so humans can make decisions with capabilities they would not otherwise have (e.g., data-backed assessments), changing the “power” of human judgment.</li>
+          </ul>
+          The taxonomy helps distinguish whether AI is <i>front-loading</i> work, <i>offloading</i> work, or <i>transforming</i> what humans can do.
+        </div>
+      </details>
+    </section>
+
+    <section id="fabri-4" class="section" data-paper="fabri">
+      <h3>4. Main Contributions</h3>
+
+      <h4>Contribution 1 — A sociomaterial taxonomy that specifies interworking</h4>
+      <ul>
+        <li><b>What is new:</b> A structured vocabulary for describing human–AI hybrids beyond generic “loop” labels.</li>
+        <li><b>Why it matters:</b> Enables comparison and accumulation across studies, and supports more intentional design choices.</li>
+        <li><b>Advances prior work:</b> Moves from “AI helps humans” to <b>how</b> roles and practices are arranged and entangled.</li>
+      </ul>
+
+      <h4>Contribution 2 — Status quo analysis of observed hybrids</h4>
+      <ul>
+        <li><b>What is new:</b> Empirical application of the taxonomy to a broad sample to show what patterns dominate in practice/literature.</li>
+        <li><b>Why it matters:</b> Reveals which interworking forms are common (and which are rare), which helps identify underexplored configurations.</li>
+      </ul>
+
+      <h4>Contribution 3 — Archetypes of human–AI hybrids</h4>
+      <ul>
+        <li><b>What is new:</b> Archetypes derived from clustering provide “recognizable” reference cases for designers and researchers.</li>
+        <li><b>Why it matters:</b> Helps turn taxonomy from an analytic tool into a practical guide: “Which archetype are we building?”</li>
+      </ul>
+
+      <div class="callout">
+        <div class="title">Say this in your own words</div>
+        <div class="muted">
+          “The paper gives a systematic way to describe how humans and AI actually work together, then shows typical patterns (archetypes) that represent real organizational roles AI systems take.”
+        </div>
+      </div>
+    </section>
+
+    <section id="fabri-5" class="section" data-paper="fabri">
+      <h3>5. Methodology / Process (taxonomy building + archetypes)</h3>
+
+      <h4>Taxonomy development logic (as described)</h4>
+      <ul>
+        <li>The paper uses an iterative taxonomy development approach, mixing conceptual reasoning and empirical checks.</li>
+        <li>They report multiple iterations, including:
+          <ul>
+            <li>Conceptual-to-empirical steps: define dimensions/characteristics from literature and then test on real cases.</li>
+            <li>Empirical-to-conceptual steps: classify a sample of hybrids and refine the taxonomy based on fit.</li>
+          </ul>
+        </li>
+        <li>After classification, they derive archetypes via clustering (hierarchical clustering is mentioned).</li>
+      </ul>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Table 2 (Iterations of taxonomy development)</b></div>
+          <span>PDF page: 6 (BISE PDF)</span>
+        </div>
+        <div class="muted">
+          <b>What the table shows:</b> Iterations, approach (conceptual-to-empirical vs empirical-to-conceptual), and focus for each iteration.<br/>
+          <b>What insight it conveys:</b> The taxonomy is not purely theoretical; it’s repeatedly tested and refined against examples of human–AI hybrids.<br/>
+          <b>Why it matters:</b> Taxonomies are only useful if they classify real phenomena reliably; iteration improves validity.
+        </div>
+      </div>
+
+      <details>
+        <summary>Illustration (collapsible): What “classification” means here</summary>
+        <div class="content muted">
+          For each identified human–AI hybrid case, the authors assign characteristics:
+          <ul>
+            <li>What the human mainly does (cognitive function + focus)</li>
+            <li>What the AI mainly does (cognitive function + focus)</li>
+            <li>How they interact (directionality, mode: singular vs continuous, form: sequential vs parallel)</li>
+            <li>How learning is arranged (separate vs more coupled)</li>
+          </ul>
+          Once all cases are coded, cluster analysis groups “similar hybrids” into archetypes.
+        </div>
+      </details>
+    </section>
+
+    <section id="fabri-6" class="section" data-paper="fabri">
+      <h3>6. Evaluation / Evidence</h3>
+
+      <h4>What evidence supports the paper’s claims</h4>
+      <ul>
+        <li><b>Internal evidence:</b> Demonstrated ability of taxonomy to classify a diverse sample of hybrids (authors discuss a sample of 101).</li>
+        <li><b>Pattern evidence:</b> Status quo analysis describing distributions and correlations among characteristics (paper references correlation insights in appendices).</li>
+        <li><b>Archetype evidence:</b> Clustering results that produce coherent archetypes with interpretable, ideal-typical profiles.</li>
+      </ul>
+
+      <h4>Strengths</h4>
+      <ul>
+        <li>Connects theory (sociomateriality) to a practical classification artifact (taxonomy + archetypes).</li>
+        <li>Supports both <b>explanation</b> (how hybrids differ) and <b>design</b> (what could be changed).</li>
+      </ul>
+
+      <h4>Limitations (evaluation-wise)</h4>
+      <ul>
+        <li>Taxonomy outcomes depend on sample coverage and interpretation of cases.</li>
+        <li>Clustering produces archetypes that are “ideal-typical”; real systems can blend features or evolve over time.</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="title">Reading tip</div>
+        <div class="muted">
+          Treat archetypes as “maps,” not boxes. A system can move between archetypes as governance changes,
+          as AI becomes more autonomous, or as humans’ roles shift from performing to overseeing.
+        </div>
+      </div>
+    </section>
+
+    <section id="fabri-7" class="section" data-paper="fabri">
+      <h3>7. Examples / Case Studies (explicitly discussed)</h3>
+
+      <details>
+        <summary>Case (collapsible): Radiology-style AI as “AI Pre-Worker”</summary>
+        <div class="content muted">
+          The paper discusses an example where AI-enabled systems detect/predict in radiology, producing outputs that humans later verify and decide upon.
+          This illustrates:
+          <ul>
+            <li><b>Sequential interworking:</b> AI acts before the human in the task chain.</li>
+            <li><b>Human role:</b> verification + decision-making + interpretation/sensemaking.</li>
+            <li><b>Why the archetype name fits:</b> AI “prepares” work (pre-work) that enables human final action.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>Case (collapsible): Risk assessment in courts as “Superpower-giving AI”</summary>
+        <div class="content muted">
+          The paper references a risk assessment use case in courts:
+          <ul>
+            <li>AI provides reasoning/prediction to support a human decision-maker (judge).</li>
+            <li>The argument is that data-driven assessment can mitigate certain biases present in purely human judgment.</li>
+            <li>This is framed as “superpower-giving” because it changes what humans can do: decisions become informed by analyses beyond unaided human capacity.</li>
+          </ul>
+          Important nuance: this does not eliminate bias risks — it shifts them (to data/model design, transparency, and governance).
+        </div>
+      </details>
+    </section>
+
+    <section id="fabri-8" class="section" data-paper="fabri">
+      <h3>8. Limitations, Challenges, Open Issues</h3>
+      <ul>
+        <li><b>Conceptual generality vs specificity:</b> A taxonomy must be general enough to cover many systems, but specific enough to meaningfully distinguish them.</li>
+        <li><b>Dynamic evolution:</b> Human–AI hybrids can change as AI systems are updated, retrained, or re-governed; classifications may need revisiting over time.</li>
+        <li><b>Learning coupling:</b> Understanding how humans learn from AI and AI learns from humans (beyond “separate learning”) remains complex and under-theorized.</li>
+      </ul>
+
+      <div class="callout danger">
+        <div class="title">Common pitfall the paper helps you avoid</div>
+        <div class="muted">
+          Treating “AI augmentation” as one uniform thing.
+          The taxonomy forces you to specify whether augmentation happens via supplementation, facilitation, verification, interaction mode, and learning relationship.
+        </div>
+      </div>
+    </section>
+
+    <section id="fabri-9" class="section" data-paper="fabri">
+      <h3>9. Practical Takeaways / Knowledge Checklist</h3>
+      <ul>
+        <li>When you describe a human–AI system, always state:
+          <ul>
+            <li><b>Human cognitive role</b> (reasoning, decision-making, interacting, etc.) and human focus (e.g., sensemaking).</li>
+            <li><b>AI cognitive role</b> (predicting, reasoning, interacting, automating) and AI focus.</li>
+            <li><b>Interworking form</b> (sequential vs parallel) and <b>mode</b> (singular vs continuous).</li>
+            <li><b>Learning relationship</b> (who learns from whom, and how tightly coupled that learning is).</li>
+          </ul>
+        </li>
+        <li>Use archetypes to communicate quickly with stakeholders: “We’re building a pre-worker system” vs “outsourcing AI” implies very different governance.</li>
+        <li>Design choices change not just performance but <b>accountability</b>, <b>trust burden</b>, and <b>how work is experienced</b>.</li>
+      </ul>
+
+      <details>
+        <summary>Collapsible: A mini “design move” catalog based on the taxonomy</summary>
+        <div class="content muted">
+          If a hybrid is failing, the taxonomy suggests targeted design moves:
+          <ul>
+            <li><b>Too much human burden?</b> Move from continuous to more singular interaction, or add automation for routine steps.</li>
+            <li><b>Low trust?</b> Increase verification supports, transparency, or shift AI role from decision-making to insight generation.</li>
+            <li><b>Deskilling risk?</b> Rebalance human focus toward sensemaking/learning and design for deliberate practice, not just outsourcing.</li>
+            <li><b>Bias concerns?</b> Identify where AI affects decision boundaries; strengthen governance and feedback loops.</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <section id="fabri-10" class="section" data-paper="fabri">
+      <h3>10. Figures & Tables Index (Fabri et al., 2023)</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th><th>Label</th><th>Paper page</th><th>PDF page</th><th>What it represents (short)</th><th>Credits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Figure</td><td><b>Fig. 1</b></td><td>—</td><td>6</td><td>Sociomaterial entanglement of human–AI hybrids (conceptual depiction)</td><td>Adapted (as credited in paper)</td></tr>
+          <tr><td>Figure</td><td><b>Fig. 2</b></td><td>629</td><td>7</td><td>Taxonomy overview (components → dimensions → characteristics)</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Table 2</b></td><td>—</td><td>6</td><td>Iterations of taxonomy development (C2E/E2C steps and focus)</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Archetypes table</b></td><td>—</td><td>12–13</td><td>Archetypes (e.g., AI Pre-Worker; Outsourcing AI; Superpower-giving AI) with characteristic profiles</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Appendix tables</b></td><td>—</td><td>varies</td><td>Classification sample and correlation analysis references (appendices)</td><td>As in paper</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="fabri-11" class="section" data-paper="fabri">
+      <h3>11. Credits & Citation</h3>
+      <p class="muted">
+        <b>Paper:</b> Fabri, L., Häckel, B., Oberländer, A. M., Rieg, M., &amp; Stöhr, A. (2023).
+        Disentangling Human-AI Hybrids: Conceptualizing the Interworking of Humans and AI-Enabled Systems.
+        <i>Business &amp; Information Systems Engineering</i>, 65(6), 623–641.
+      </p>
+      <p class="faint">
+        This HTML file is a study companion derived solely from the attached paper. Figures/tables are referenced with placeholders for manual screenshot insertion.
+      </p>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- Hevner & Storey 2023 (8Cs) -->
+    <!-- ========================================================= -->
+    <section id="hs2023" class="section" data-paper="hs2023">
+      <a class="toplink" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ top</a>
+      <h2>Hevner &amp; Storey (2023) — <span class="muted">Research Challenges for the Design of Human-Artificial Intelligence Systems (HAIS)</span></h2>
+      <p class="meta">
+        Source: ACM Transactions on Management Information Systems (TMIS), 2023 (commentary / agenda-setting).<br/>
+        Core move: a taxonomy of HAIS design research challenges called the <b>“8Cs”</b>:
+        <b>composition</b>, <b>complexity</b>, <b>creativity</b>, <b>confidence</b>, <b>control</b>, <b>conscience</b>, <b>certification</b>, and <b>contribution</b>.
+      </p>
+
+      <div class="callout good">
+        <div class="title">What this paper is (and is not)</div>
+        <div class="muted">
+          This is not a single experiment — it is a <b>research challenges taxonomy</b> meant to guide
+          design science research (DSR) on HAIS. It clarifies what makes HAIS uniquely hard: distributed agency, emergent behavior,
+          governance, ethics, and credible contributions.
+        </div>
+      </div>
+    </section>
+
+    <section id="hs2023-1" class="section" data-paper="hs2023">
+      <h3>1. Overview</h3>
+
+      <h4>Problem addressed</h4>
+      <ul>
+        <li>AI components are increasingly embedded in socio-technical systems; HAIS integrate human and machine actions.</li>
+        <li>Designing HAIS raises research challenges beyond “build a better model” because behavior emerges from <b>human–AI synergy</b> under constraints (ethics, governance, trust, accountability).</li>
+      </ul>
+
+      <h4>Why it matters</h4>
+      <ul>
+        <li>HAIS can create significant benefits, but also risks: unsafe decisions, opaque automation, value misalignment, unfairness, and loss of accountability.</li>
+        <li>IS and design science are positioned to study HAIS as <b>socio-technical artifacts</b> with both technical and human behavior components.</li>
+      </ul>
+
+      <h4>Core thesis / central claim</h4>
+      <ul>
+        <li>HAIS design research can be organized into a taxonomy of eight design challenges (8Cs), which can guide rigorous and relevant DSR contributions.</li>
+      </ul>
+
+      <h4>What the paper contributes</h4>
+      <ul>
+        <li>A <b>Taxonomy of HAIS Design Challenges</b> (the 8Cs).</li>
+        <li>For each C: key research issues and guidance for conducting DSR on HAIS.</li>
+        <li>A summarized research agenda and guidance table linking the 8Cs to DSR activities and outputs.</li>
+      </ul>
+
+      <details>
+        <summary>Illustration (collapsible): What makes HAIS different from “AI system”</summary>
+        <div class="content muted">
+          A standalone AI model can be evaluated as a technical artifact.
+          HAIS require designing:
+          <ul>
+            <li>the model <i>and</i> the human processes around it (who decides, who overrides, how explanations are used)</li>
+            <li>interfaces and feedback loops</li>
+            <li>governance and certification structures</li>
+            <li>ethical constraints and values</li>
+          </ul>
+          Thus, the key challenges are about <b>integration</b>, not just prediction.
+        </div>
+      </details>
+    </section>
+
+    <section id="hs2023-2" class="section" data-paper="hs2023">
+      <h3>2. Key Concepts &amp; Keywords</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th><th>Meaning in this paper</th><th>Key implication</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>HAIS</b></td>
+            <td>Human–Artificial Intelligence Systems: socio-technical systems integrating human and AI component actions.</td>
+            <td>Design targets include both <b>technical</b> and <b>human behavior</b> elements plus their synergy.</td>
+          </tr>
+          <tr>
+            <td><b>Design Science Research (DSR)</b></td>
+            <td>Research approach focused on designing and evaluating artifacts (systems, methods) with rigor and relevance.</td>
+            <td>DSR is presented as a natural approach for HAIS because HAIS are designed socio-technical artifacts.</td>
+          </tr>
+          <tr>
+            <td><b>8Cs</b></td>
+            <td>Taxonomy of HAIS design challenges: composition, complexity, creativity, confidence, control, conscience, certification, contribution.</td>
+            <td>Provides a checklist of “where HAIS can fail” and “what research must address.”</td>
+          </tr>
+          <tr>
+            <td><b>Human–AI synergy</b></td>
+            <td>Intentional exploitation of complementary human and AI strengths to achieve goals.</td>
+            <td>Synergy requires balancing tradeoffs and defining boundaries of responsibility and control.</td>
+          </tr>
+          <tr>
+            <td><b>Governance hierarchy</b></td>
+            <td>Multi-level governance to certify HAIS correctness, effectiveness, and ethical behavior (paper proposes five levels).</td>
+            <td>Trustworthiness is a system property requiring governance, not only model metrics.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="hs2023-3" class="section" data-paper="hs2023">
+      <h3>3. Core Frameworks / Models</h3>
+
+      <h4>Framework — Taxonomy of HAIS Research Challenges (8Cs)</h4>
+      <p>
+        The 8Cs taxonomy is organized around the lifecycle of HAIS development and use.
+        The paper depicts a taxonomy diagram and then devotes sections to each challenge.
+      </p>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Fig. 2 (Taxonomy of HAIS challenges)</b></div>
+          <span>Paper page: 10:3 • PDF page: 3</span>
+        </div>
+        <div class="muted">
+          <b>What the diagram shows:</b> A taxonomy overview with central activities of HAIS development (resources → design process → implementation/at work) and the eight challenges surrounding them.<br/>
+          <b>What insight it conveys:</b> HAIS challenges span from early resource composition through implementation governance and research contribution framing.<br/>
+          <b>Why it matters:</b> Provides a structured agenda: you can locate a research question inside a specific challenge and lifecycle phase.
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <h4>The “8Cs” explained (plain language + why + how used)</h4>
+
+      <h4>1) Composition</h4>
+      <ul>
+        <li><b>Plain language:</b> What human capabilities, AI components, data, technologies, time, and funding are needed — and how stakeholders’ goals/values shape requirements.</li>
+        <li><b>Why it exists:</b> HAIS require deliberate synergy; without right resources and stakeholder alignment, the design will be brittle or misaligned.</li>
+        <li><b>How used in paper:</b> Introduced as the starting point of HAIS DSR; emphasizes cataloging resources and tradeoffs among stakeholder values.</li>
+      </ul>
+
+      <h4>2) Complexity</h4>
+      <ul>
+        <li><b>Plain language:</b> HAIS have interacting components with emergent behaviors; complexity arises from coupling between human behavior, AI behavior, data dynamics, and environment changes.</li>
+        <li><b>Why it exists:</b> Complexity threatens predictability and makes evaluation/assurance difficult.</li>
+        <li><b>How used:</b> Frames research needs in modeling, decomposing, and managing complex interactions in HAIS.</li>
+      </ul>
+
+      <h4>3) Creativity</h4>
+      <ul>
+        <li><b>Plain language:</b> Designing HAIS often requires creative recombination of human insights and AI capabilities; also includes how HAIS can support creativity/innovation tasks.</li>
+        <li><b>Why it exists:</b> Many high-value HAIS domains are not routine; they involve novelty and changing requirements.</li>
+        <li><b>How used:</b> Points to research on methods, tooling, and processes that enable creative HAIS design and creative outcomes.</li>
+      </ul>
+
+      <h4>4) Confidence</h4>
+      <ul>
+        <li><b>Plain language:</b> How stakeholders gain trust in HAIS outputs and behavior (reliability, transparency, accountability, evidence).</li>
+        <li><b>Why it exists:</b> Without confidence, adoption fails or misuse grows; with overconfidence, harm can occur.</li>
+        <li><b>How used:</b> Calls for rigorous evaluation mapping (which evaluation methods build what forms of confidence) and transparency/accountability design.</li>
+      </ul>
+
+      <h4>5) Control</h4>
+      <ul>
+        <li><b>Plain language:</b> Where humans maintain decision authority and override points; defining boundaries of autonomy.</li>
+        <li><b>Why it exists:</b> HAIS can act rapidly and at scale; control points are needed to prevent unsafe or misaligned decisions.</li>
+        <li><b>How used:</b> The paper positions control as a key design and governance issue: which decisions must stay human-governed and why.</li>
+      </ul>
+
+      <h4>6) Conscience</h4>
+      <ul>
+        <li><b>Plain language:</b> Ethical behavior, values alignment, and responsibility in HAIS design and use.</li>
+        <li><b>Why it exists:</b> AI can encode biases and scale harm; ethical considerations are integral, not optional.</li>
+        <li><b>How used:</b> Frames research into embedding ethical constraints, monitoring outcomes, and managing value tradeoffs across stakeholders.</li>
+      </ul>
+
+      <h4>7) Certification</h4>
+      <ul>
+        <li><b>Plain language:</b> Governance and assurance mechanisms that certify correctness, effectiveness, safety, and ethics.</li>
+        <li><b>Why it exists:</b> HAIS must be trustworthy in practice; certification is a multi-level, ongoing process.</li>
+        <li><b>How used:</b> The paper proposes a <b>five-level governance hierarchy</b> (user, developer, organizational, industry, government) for HAIS certification.</li>
+      </ul>
+
+      <h4>8) Contribution</h4>
+      <ul>
+        <li><b>Plain language:</b> What counts as a rigorous and relevant research contribution in HAIS DSR.</li>
+        <li><b>Why it exists:</b> HAIS research spans disciplines; contribution claims must be clear about artifact novelty, evaluation, and generalizability.</li>
+        <li><b>How used:</b> Encourages explicit linking of designed artifacts to knowledge contributions and practical guidance.</li>
+      </ul>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Fig. 3 (Balancing human behaviors and AI capabilities)</b></div>
+          <span>Paper page: 10:5 • PDF page: 5</span>
+        </div>
+        <div class="muted">
+          <b>What the diagram shows:</b> A conceptual balancing of human behaviors and AI capabilities to achieve HAIS goals.<br/>
+          <b>What insight it conveys:</b> HAIS success depends on alignment and balance — not maximizing AI autonomy by default.<br/>
+          <b>Why it matters:</b> Encourages design framing around synergy and tradeoffs rather than “replace the human.”
+        </div>
+      </div>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Table 1 (DSR guidance &amp; research agenda for 8Cs)</b></div>
+          <span>Paper page: 10:12–10:13 • PDF pages: 12–13</span>
+        </div>
+        <div class="muted">
+          <b>What the table shows:</b> For each C: DSR guidance activities and forward-looking research agenda items.<br/>
+          <b>What insight it conveys:</b> Each challenge translates into actionable research tasks (e.g., identify resources; select evaluation methods; design transparency/accountability levels).<br/>
+          <b>Why it matters:</b> Converts the taxonomy into a usable project planning and research design tool.
+        </div>
+      </div>
+
+      <details>
+        <summary>Illustration (collapsible): Five-level governance hierarchy (from Certification section)</summary>
+        <div class="content muted">
+          The paper proposes a governance hierarchy to certify HAIS behavior:
+          <ol>
+            <li><b>User governance:</b> requirements for usability, understandability, support.</li>
+            <li><b>Developer governance:</b> software engineering practices, audit trails, verification tools.</li>
+            <li><b>Organizational governance:</b> safety culture, management strategies, accountability.</li>
+            <li><b>Industry governance:</b> standards, best practices, cross-organization assurance.</li>
+            <li><b>Government governance:</b> regulatory oversight, legal compliance for safety-critical impacts.</li>
+          </ol>
+          Key point: trustworthiness is multi-layered and cannot be ensured by model accuracy alone.
+        </div>
+      </details>
+    </section>
+
+    <section id="hs2023-4" class="section" data-paper="hs2023">
+      <h3>4. Main Contributions</h3>
+      <ul>
+        <li><b>Taxonomy artifact:</b> The 8Cs provide a structured lens for HAIS design research challenges.</li>
+        <li><b>Research agenda + guidance:</b> Connects each challenge to concrete research activities and DSR considerations.</li>
+        <li><b>Governance perspective:</b> Proposes multi-level certification governance as essential for trustworthy HAIS.</li>
+      </ul>
+      <div class="callout">
+        <div class="title">Say this in your own words</div>
+        <div class="muted">
+          “This paper gives a checklist of the eight big challenge areas you must handle when designing human–AI systems, and it frames them as design science research problems with governance and trustworthiness built in.”
+        </div>
+      </div>
+    </section>
+
+    <section id="hs2023-5" class="section" data-paper="hs2023">
+      <h3>5. Methodology / Process</h3>
+      <p>
+        This paper is an agenda-setting commentary: it synthesizes prior work and proposes a taxonomy and guidance rather than reporting a single empirical study.
+      </p>
+      <ul>
+        <li><b>Inputs:</b> prior research across disciplines, DSR framing, human-centered AI governance ideas.</li>
+        <li><b>Process:</b> propose taxonomy diagram → elaborate each C with issues → propose governance/certification ideas → summarize guidance and research agenda in Table 1.</li>
+        <li><b>Output style:</b> conceptual structure + actionable guidance for HAIS DSR projects.</li>
+      </ul>
+    </section>
+
+    <section id="hs2023-6" class="section" data-paper="hs2023">
+      <h3>6. Evaluation / Evidence</h3>
+      <p>
+        Evidence is primarily conceptual and synthesis-based: the validity claim is that the 8Cs taxonomy is comprehensive and useful for organizing HAIS design research challenges.
+      </p>
+      <h4>Strengths</h4>
+      <ul>
+        <li>High-level structure that makes HAIS challenges discussable and researchable.</li>
+        <li>Explicit translation into DSR guidance activities (Table 1).</li>
+      </ul>
+      <h4>Limitations</h4>
+      <ul>
+        <li>Taxonomy usefulness depends on adoption and operationalization in future empirical/DSR work.</li>
+        <li>Some challenge boundaries can overlap (e.g., confidence vs certification; conscience vs control).</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="title">How to operationalize this paper</div>
+        <div class="muted">
+          Treat each “C” as a requirements category. For a given HAIS project, write explicit design decisions and evaluation methods under each C.
+          The paper’s Table 1 is effectively a template for that.
+        </div>
+      </div>
+    </section>
+
+    <section id="hs2023-7" class="section" data-paper="hs2023">
+      <h3>7. Examples / Case Studies</h3>
+      <p>
+        The paper uses examples illustratively rather than presenting a single detailed case study. Its most concrete example-like content is the governance hierarchy for certification and the balancing diagram.
+      </p>
+
+      <details>
+        <summary>Example (collapsible): Turning “confidence” into design + evaluation choices</summary>
+        <div class="content muted">
+          To increase stakeholder confidence, a HAIS project might:
+          <ul>
+            <li>Design transparency features (explanations, audit trails).</li>
+            <li>Choose mixed-method evaluation: technical performance + human behavior assessment + organizational outcome measures.</li>
+            <li>Define what “confidence” means for each stakeholder (users vs regulators vs developers) and tailor evidence accordingly.</li>
+          </ul>
+          The paper’s point is that confidence is designed, not assumed.
+        </div>
+      </details>
+    </section>
+
+    <section id="hs2023-8" class="section" data-paper="hs2023">
+      <h3>8. Limitations, Challenges, Open Issues</h3>
+      <ul>
+        <li><b>Cross-disciplinary complexity:</b> HAIS problems span technical and social domains; researchers need transdisciplinary capabilities.</li>
+        <li><b>Evaluation difficulty:</b> HAIS require evaluating both technical artifact and human/organizational behaviors; mixed methods are often necessary.</li>
+        <li><b>Governance maturity:</b> Many HAIS are deployed faster than governance structures evolve; certification and accountability remain open challenges.</li>
+      </ul>
+    </section>
+
+    <section id="hs2023-9" class="section" data-paper="hs2023">
+      <h3>9. Practical Takeaways / Knowledge Checklist</h3>
+      <ul>
+        <li>Whenever you see a HAIS, ask: <b>Where are the control points?</b> Who can override? Who is accountable?</li>
+        <li>Use the 8Cs as a design checklist:
+          <ul>
+            <li><b>Composition:</b> resources + stakeholder values</li>
+            <li><b>Complexity:</b> emergent behavior + coupling</li>
+            <li><b>Creativity:</b> novelty in design and outcomes</li>
+            <li><b>Confidence:</b> trust evidence + transparency</li>
+            <li><b>Control:</b> decision boundaries + autonomy constraints</li>
+            <li><b>Conscience:</b> ethics + values alignment</li>
+            <li><b>Certification:</b> multi-level governance assurance</li>
+            <li><b>Contribution:</b> clear knowledge + practical impact claims</li>
+          </ul>
+        </li>
+        <li>Trustworthiness is a system property: model metrics are necessary but not sufficient.</li>
+      </ul>
+    </section>
+
+    <section id="hs2023-10" class="section" data-paper="hs2023">
+      <h3>10. Figures & Tables Index (Hevner &amp; Storey, 2023)</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th><th>Label</th><th>Paper page</th><th>PDF page</th><th>What it represents (short)</th><th>Credits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Figure</td><td><b>Fig. 1</b></td><td>10:2</td><td>2</td><td>Commentary scope and contributions</td><td>As in paper</td></tr>
+          <tr><td>Figure</td><td><b>Fig. 2</b></td><td>10:3</td><td>3</td><td>Taxonomy of HAIS research challenges (8Cs) overview</td><td>As in paper</td></tr>
+          <tr><td>Figure</td><td><b>Fig. 3</b></td><td>10:5</td><td>5</td><td>Balancing human behaviors and AI capabilities to achieve HAIS goals</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Table 1</b></td><td>10:12–10:13</td><td>12–13</td><td>DSR guidance + research agenda mapped to 8Cs</td><td>As in paper</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="hs2023-11" class="section" data-paper="hs2023">
+      <h3>11. Credits & Citation</h3>
+      <p class="muted">
+        <b>Paper:</b> Hevner, A., &amp; Storey, V. (2023). Research Challenges for the Design of Human-Artificial Intelligence Systems (HAIS).
+        <i>ACM Transactions on Management Information Systems</i>, 14(1), Article 10.
+      </p>
+      <p class="faint">
+        This HTML file is a study companion derived solely from the attached paper. Figures/tables are referenced with placeholders for manual screenshot insertion.
+      </p>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- DSS 2024 -->
+    <!-- ========================================================= -->
+    <section id="dss2024" class="section" data-paper="dss2024">
+      <a class="toplink" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ top</a>
+      <h2>Storey, Hevner &amp; Yoon (2024) — <span class="muted">The design of human-artificial intelligence systems in decision sciences: A look back and directions forward</span></h2>
+      <p class="meta">
+        Source: Decision Support Systems (DSS), 2024. (Survey/review within DSS domain.)<br/>
+        Core move: organizes HAIS in decision sciences by <b>control boundary archetypes</b> and proposes a <b>research contribution matrix</b> spanning technical AI design,
+        socio-technical synergy design, and human behavior design.
+      </p>
+
+      <div class="callout good">
+        <div class="title">Big idea in one sentence</div>
+        <div class="muted">
+          In decision sciences, the important question is not “AI yes/no,” but <b>what control boundary and synergy design</b> defines the human–AI system —
+          and research contributions can target technical AI, socio-technical balance, or human decision behavior.
+        </div>
+      </div>
+    </section>
+
+    <section id="dss2024-1" class="section" data-paper="dss2024">
+      <h3>1. Overview</h3>
+
+      <h4>Problem addressed</h4>
+      <ul>
+        <li>Decision sciences and DSS research are being reshaped by rapid advances in AI and by the design of complex HAIS.</li>
+        <li>There is a need to synthesize prior DSS research on HAIS and define directions forward, especially around <b>human–AI control boundaries</b> and <b>design science research (DSR)</b> contributions.</li>
+      </ul>
+
+      <h4>Why it matters</h4>
+      <ul>
+        <li>AI is changing how decisions are made: speed, scale, autonomy, and explainability requirements.</li>
+        <li>High-impact decisions require human supervision and awareness of which decisions are delegated to AI vs retained by humans.</li>
+      </ul>
+
+      <h4>Core thesis / central claim</h4>
+      <ul>
+        <li>We can organize HAIS in decision sciences using archetypes based on control boundaries and map research contributions across technical, socio-technical, and human behavior design dimensions.</li>
+      </ul>
+
+      <h4>What the paper contributes</h4>
+      <ul>
+        <li><b>Four HAIS archetypes</b> (authors state they are based on human–AI control boundaries).</li>
+        <li><b>HAIS Research Contribution Matrix</b> (Table 1) spanning types of decision systems and three design contribution columns.</li>
+        <li><b>Mapping</b> of DSS papers into the matrix (e.g., Table 4) to show status quo and gaps.</li>
+        <li><b>Directions forward</b> — predicts movement toward more work that addresses support/collaboration/innovation features rather than only autonomy.</li>
+      </ul>
+    </section>
+
+    <section id="dss2024-2" class="section" data-paper="dss2024">
+      <h3>2. Key Concepts &amp; Keywords</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th><th>Meaning in this paper</th><th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Decision sciences / DSS</b></td>
+            <td>A research and practice domain focused on decision-making, decision support, and organizational decision systems.</td>
+            <td>Grounds the review: the paper looks specifically at DSS-published HAIS contributions.</td>
+          </tr>
+          <tr>
+            <td><b>HAIS archetypes (control boundaries)</b></td>
+            <td>Four system archetypes based on how control is divided between humans and AI (paper lists them and describes each).</td>
+            <td>Clarifies whether AI is making decisions, supporting, collaborating, or innovating, and what governance is needed.</td>
+          </tr>
+          <tr>
+            <td><b>Research Contribution Matrix</b></td>
+            <td>A matrix that crosses HAIS system types with three contribution columns: AI technical design, socio-technical synergistic design, and human behavior design.</td>
+            <td>Provides a structured way to identify gaps: which combinations are under-studied.</td>
+          </tr>
+          <tr>
+            <td><b>Design Science Research (DSR)</b></td>
+            <td>Used as a framing lens for designing and evaluating HAIS artifacts in decision sciences.</td>
+            <td>Emphasizes artifact-building + evaluation + contributions beyond prediction accuracy.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="dss2024-3" class="section" data-paper="dss2024">
+      <h3>3. Core Frameworks / Models</h3>
+
+      <h4>Framework 1 — DSR on Human–AI systems in decision sciences</h4>
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Fig. 1 (DSR on Human–AI systems in decision sciences)</b></div>
+          <span>PDF page: 1</span>
+        </div>
+        <div class="muted">
+          <b>What the diagram shows:</b> A conceptual framing of DSR for HAIS in decision sciences, emphasizing interactions among design, evaluation, and contributions.<br/>
+          <b>What insight it conveys:</b> HAIS research is not purely technical; DSR contributions can target socio-technical design and human behavior design alongside AI design.<br/>
+          <b>Why it matters:</b> Sets the review’s organizing principle: look for contribution types, not just application domains.
+        </div>
+      </div>
+
+      <h4>Framework 2 — Four HAIS archetypes based on control boundaries</h4>
+      <p>
+        The paper organizes HAIS by four archetypes (explicitly “based on the human-AI control boundaries employed”).
+        One archetype described directly in the text is <b>Decision-Making Systems</b>, where the AI component has the dominant role and decisions can be automated with minimal human intervention (up to autonomous behavior).
+      </p>
+
+      <details>
+        <summary>Illustration (collapsible): Why “control boundary” is the key variable</summary>
+        <div class="content muted">
+          A control boundary answers: “Who is allowed to decide what, and when?”
+          In decision contexts, that boundary determines:
+          <ul>
+            <li>accountability and liability</li>
+            <li>required transparency/explainability</li>
+            <li>safe override mechanisms</li>
+            <li>human skill preservation vs displacement</li>
+          </ul>
+          The paper uses archetypes to make these differences explicit across decision system designs.
+        </div>
+      </details>
+
+      <h4>Framework 3 — HAIS Research Contribution Matrix (Table 1)</h4>
+      <p>
+        Table 1 shows a matrix with rows corresponding to HAIS system types (e.g., decision innovation, collaboration, support, making),
+        and columns corresponding to three contribution targets:
+        <b>Artificial Intelligence (Technical) Design</b>, <b>Socio-Technical (Synergistic) Design</b>, and <b>Human Behavior (Social) Design</b>.
+      </p>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Table 1 (HAIS research contribution matrix)</b></div>
+          <span>PDF page: 3</span>
+        </div>
+        <div class="muted">
+          <b>What the table shows:</b> For each HAIS system type, examples of what research contributions look like in each design column (technical AI; socio-technical balance; human behavior process design).<br/>
+          <b>What insight it conveys:</b> Many papers cluster in certain cells; the matrix makes gaps visible (e.g., fewer technical AI designs specifically for support/collaboration/innovation).<br/>
+          <b>Why it matters:</b> It converts a broad field into a structured research map: you can plan research by choosing a cell and arguing why it is needed.
+        </div>
+      </div>
+
+      <h4>Framework 4 — Mapping DSS papers to the matrix (Table 4)</h4>
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Table 4 (DSS papers mapped to the matrix)</b></div>
+          <span>PDF page: 4</span>
+        </div>
+        <div class="muted">
+          <b>What the table shows:</b> Counts of papers per matrix cell plus exemplar papers for each category.<br/>
+          <b>What insight it conveys:</b> Empirical evidence of what DSS has emphasized historically, and which areas are sparse.<br/>
+          <b>Why it matters:</b> This mapping is the review’s “evidence” that justifies directions forward.
+        </div>
+      </div>
+
+      <div class="imgslot">
+        <div class="label">
+          <div><b>Image Slot — Fig. 2 (DSR challenges for HAIS decision systems)</b></div>
+          <span>PDF page: 6</span>
+        </div>
+        <div class="muted">
+          <b>What the diagram shows:</b> A set of DSR challenges for HAIS decision systems (explicitly adapted from another source as credited in the paper).<br/>
+          <b>What insight it conveys:</b> HAIS decision systems face layered challenges (technical, socio-technical, governance).<br/>
+          <b>Why it matters:</b> Complements the matrix by highlighting the “design challenges” side of the agenda.
+        </div>
+      </div>
+    </section>
+
+    <section id="dss2024-4" class="section" data-paper="dss2024">
+      <h3>4. Main Contributions</h3>
+      <ul>
+        <li><b>Archetype organization:</b> HAIS classified via control boundaries; clarifies system role of AI (support vs decision-making, etc.).</li>
+        <li><b>Contribution matrix:</b> A structured map that separates technical AI advances from socio-technical design advances and human behavior design advances.</li>
+        <li><b>Status quo mapping:</b> Shows where DSS literature is concentrated and which areas are sparse.</li>
+        <li><b>Directions forward:</b> Argues for stronger attention to AI designs and socio-technical designs supporting collaboration, support, and innovation (not only displacement/autonomy).</li>
+      </ul>
+
+      <div class="callout">
+        <div class="title">Say this in your own words</div>
+        <div class="muted">
+          “This paper reviews HAIS in decision sciences by focusing on where control sits between humans and AI, and it uses a matrix to show what kinds of contributions DSS research has made (technical AI vs socio-technical synergy vs human decision behavior).”
+        </div>
+      </div>
+    </section>
+
+    <section id="dss2024-5" class="section" data-paper="dss2024">
+      <h3>5. Methodology / Process</h3>
+      <p>
+        This is a review/survey focused on Decision Support Systems (DSS) literature:
+      </p>
+      <ul>
+        <li><b>Corpus:</b> Prior research published in DSS (paper describes mapping papers into the contribution matrix).</li>
+        <li><b>Organizing lenses:</b> (1) HAIS archetypes based on control boundaries, (2) contribution matrix with three design contribution columns.</li>
+        <li><b>Outputs:</b> Tables mapping papers to categories; narrative synthesis discussing trends and future directions.</li>
+      </ul>
+    </section>
+
+    <section id="dss2024-6" class="section" data-paper="dss2024">
+      <h3>6. Evaluation / Evidence</h3>
+
+      <h4>What counts as evidence</h4>
+      <ul>
+        <li><b>Mapping tables</b> (e.g., Table 4) that show counts and exemplar papers per matrix category.</li>
+        <li>Interpretive synthesis about what trends imply for future work (e.g., predicted movement “up the rows” of the matrix toward support/collaboration/innovation features).</li>
+      </ul>
+
+      <h4>Strengths</h4>
+      <ul>
+        <li>Provides a structured and decision-sciences-specific map of HAIS research contributions.</li>
+        <li>Separates technical AI contributions from socio-technical and human-process contributions.</li>
+      </ul>
+
+      <h4>Limitations</h4>
+      <ul>
+        <li>As a review, its conclusions depend on the DSS corpus and classification choices.</li>
+        <li>Archetype boundaries can blur in real systems (a system can both support and automate depending on context).</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="title">Reading tip</div>
+        <div class="muted">
+          Use the matrix as a “gap finder”: if a domain is saturated with technical model improvements,
+          look for opportunities in socio-technical synergy design and human behavior design where fewer contributions exist.
+        </div>
+      </div>
+    </section>
+
+    <section id="dss2024-7" class="section" data-paper="dss2024">
+      <h3>7. Examples / Case Studies (as used by the paper)</h3>
+      <p>
+        The paper provides exemplars within matrix categories (e.g., examples of papers in innovation/collaboration/support/making).
+        These are typically short descriptions used to justify category meaning rather than full case studies.
+      </p>
+
+      <details>
+        <summary>Example (collapsible): Decision-making systems and autonomous behaviors</summary>
+        <div class="content muted">
+          The paper notes that decision-making systems can automate reactive decisions via well-defined algorithms with minimal human intervention,
+          and at the extreme can displace humans via autonomous behaviors (examples mentioned include robotic process automation and self-driving vehicles).
+          This highlights why control boundaries and governance are essential in safety-critical domains.
+        </div>
+      </details>
+    </section>
+
+    <section id="dss2024-8" class="section" data-paper="dss2024">
+      <h3>8. Limitations, Challenges, Open Issues</h3>
+      <ul>
+        <li><b>Underrepresented contribution areas:</b> The paper observes comparatively few papers that design AI specifically for support/collaboration/innovation features rather than autonomy/displacement.</li>
+        <li><b>Governance and boundaries:</b> Maintaining proper decision jurisdiction (what AI can decide) remains a central challenge.</li>
+        <li><b>Balancing transformation with safety:</b> As AI improves, pressures to automate increase; research must address controls and ethical boundaries.</li>
+      </ul>
+    </section>
+
+    <section id="dss2024-9" class="section" data-paper="dss2024">
+      <h3>9. Practical Takeaways / Knowledge Checklist</h3>
+      <ul>
+        <li>Describe any HAIS decision system first by <b>control boundary</b> (who decides what).</li>
+        <li>Then identify the contribution target:
+          <ul>
+            <li><b>Technical AI design:</b> methods, models, tools</li>
+            <li><b>Socio-technical synergy design:</b> balancing human + AI, interaction structures, control points</li>
+            <li><b>Human behavior design:</b> improving human decision processes with AI</li>
+          </ul>
+        </li>
+        <li>Use the matrix to avoid tunnel vision: better models do not automatically yield better decisions unless synergy and human processes are designed.</li>
+      </ul>
+
+      <details>
+        <summary>Collapsible: A quick “matrix-first” way to plan your own HAIS research</summary>
+        <div class="content muted">
+          Pick:
+          <ol>
+            <li>a HAIS system type (innovation / collaboration / support / making)</li>
+            <li>a contribution column (technical AI / socio-technical / human behavior)</li>
+          </ol>
+          Then justify:
+          <ul>
+            <li>why that cell is underexplored (use mapping evidence)</li>
+            <li>what artifact you will design (model, interface, governance mechanism)</li>
+            <li>how you will evaluate it (technical metrics + human behavior + decision outcomes)</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <section id="dss2024-10" class="section" data-paper="dss2024">
+      <h3>10. Figures & Tables Index (Storey, Hevner &amp; Yoon, 2024)</h3>
+
+      <div class="callout">
+        <div class="title">Note</div>
+        <div class="muted">
+          Paper page numbers are not consistently present in extracted text; use PDF pages below for screenshotting.
+          Figure 2 is explicitly noted as <b>adapted</b> in the paper.
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th><th>Label</th><th>Paper page</th><th>PDF page</th><th>What it represents (short)</th><th>Credits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Figure</td><td><b>Fig. 1</b></td><td>—</td><td>1</td><td>DSR framing for human–AI systems in decision sciences</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Table 1</b></td><td>—</td><td>3</td><td>HAIS research contribution matrix (system types × contribution columns)</td><td>As in paper</td></tr>
+          <tr><td>Table</td><td><b>Table 4</b></td><td>—</td><td>4</td><td>DSS papers mapped to the contribution matrix (counts + exemplars)</td><td>As in paper</td></tr>
+          <tr><td>Figure</td><td><b>Fig. 2</b></td><td>—</td><td>6</td><td>DSR challenges for HAIS decision systems</td><td>Adapted (see paper credits)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="dss2024-11" class="section" data-paper="dss2024">
+      <h3>11. Credits & Citation</h3>
+      <p class="muted">
+        <b>Paper:</b> Storey, V. C., Hevner, A. R., &amp; Yoon, V. Y. (2024).
+        The design of human-artificial intelligence systems in decision sciences: A look back and directions forward.
+        <i>Decision Support Systems</i>, 182, 114230.
+      </p>
+      <p class="faint">
+        This HTML file is a study companion derived solely from the attached paper. Figures/tables are referenced with placeholders for manual screenshot insertion.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  const searchBox = document.getElementById('searchBox');
+  const nav = document.getElementById('nav');
+  const navLinks = Array.from(nav.querySelectorAll('.navlist a'));
+  const sections = Array.from(document.querySelectorAll('main .section'));
+
+  function setActiveLink(hash){
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === hash));
+  }
+
+  function filterByPaper(paper){
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    const pill = document.querySelector(`.pill[data-filter="${paper}"]`);
+    if (pill) pill.classList.add('active');
+
+    // Show/hide nav groups
+    document.querySelectorAll('.navgroup').forEach(g=>{
+      const gp = g.getAttribute('data-paper');
+      const show = (paper === 'all') || (gp === paper);
+      g.style.display = show ? '' : 'none';
+    });
+
+    // Show/hide content sections
+    sections.forEach(s=>{
+      const sp = s.getAttribute('data-paper');
+      const show = (paper === 'all') || (sp === paper);
+      s.style.display = show ? '' : 'none';
+    });
+
+    // reset search
+    searchBox.value = '';
+    applySearch('');
+  }
+
+  function applySearch(q){
+    q = (q || '').trim().toLowerCase();
+    navLinks.forEach(a=>{
+      const txt = a.textContent.toLowerCase();
+      const show = (!q) || txt.includes(q);
+      a.style.display = show ? '' : 'none';
+    });
+  }
+
+  // pills
+  document.querySelectorAll('.pill').forEach(p=>{
+    p.addEventListener('click', () => filterByPaper(p.getAttribute('data-filter')));
+  });
+
+  // search
+  searchBox.addEventListener('input', (e)=>applySearch(e.target.value));
+
+  // scrollspy (simple)
+  const obs = new IntersectionObserver((entries)=>{
+    const visible = entries.filter(e=>e.isIntersecting)
+                           .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
+    if(!visible) return;
+    setActiveLink('#'+visible.target.id);
+  }, {root:null, threshold:[0.12,0.2,0.35,0.5]});
+
+  sections.forEach(s=>obs.observe(s));
+
+  // click nav link highlight
+  navLinks.forEach(a=>{
+    a.addEventListener('click', ()=> setActiveLink(a.getAttribute('href')));
+  });
+
+  // default
+  filterByPaper('all');
+})();
+</script>
+</body>
+</html>

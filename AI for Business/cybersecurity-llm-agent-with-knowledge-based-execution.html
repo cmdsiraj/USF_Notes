@@ -1,0 +1,1566 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRAKEN: Cybersecurity LLM Agent with Knowledge-Based Execution — Study Companion</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#0f1731;
+      --panel2:#111c3a;
+      --text:#e8ecff;
+      --muted:#b9c2ff;
+      --faint:#8b96d6;
+      --accent:#7aa2ff;
+      --accent2:#b07cff;
+      --border:rgba(255,255,255,.10);
+      --shadow:rgba(0,0,0,.35);
+      --callout:#111b35;
+      --good:#3ddc97;
+      --warn:#ffcc66;
+      --bad:#ff6b6b;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:linear-gradient(180deg, var(--bg) 0%, #070a14 100%);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .layout{
+      display:grid;
+      grid-template-columns: 340px 1fr;
+      min-height:100vh;
+    }
+    .sidebar{
+      position:sticky;
+      top:0;
+      align-self:start;
+      height:100vh;
+      overflow:auto;
+      padding:18px 16px 22px 16px;
+      background:linear-gradient(180deg, var(--panel) 0%, rgba(15,23,49,.92) 100%);
+      border-right:1px solid var(--border);
+      box-shadow: 0 10px 30px var(--shadow);
+    }
+    .brand{
+      padding:12px 12px 10px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+    }
+    .brand h1{
+      font-size:16px;
+      margin:0 0 8px 0;
+      letter-spacing:.2px;
+    }
+    .citation{
+      font-size:12px;
+      color:var(--muted);
+      margin:0;
+    }
+    .meta{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--faint);
+    }
+    .search{
+      margin-top:14px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .search input{
+      width:100%;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+    }
+    .search input:focus{border-color:rgba(122,162,255,.55)}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .pill b{color:var(--text)}
+    nav{
+      margin-top:14px;
+      padding:8px 6px;
+    }
+    nav .groupTitle{
+      font-size:11px;
+      color:var(--faint);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin:14px 8px 6px;
+    }
+    nav a{
+      display:block;
+      padding:8px 10px;
+      border-radius:10px;
+      color:var(--text);
+      border:1px solid transparent;
+    }
+    nav a:hover{
+      background:rgba(255,255,255,.04);
+      border-color:var(--border);
+      text-decoration:none;
+    }
+    nav a small{
+      color:var(--muted);
+      display:block;
+      font-size:11px;
+      margin-top:2px;
+    }
+
+    .content{
+      padding:26px 26px 40px;
+      max-width: 1100px;
+    }
+    .header{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:18px;
+    }
+    .header h2{
+      margin:0 0 6px 0;
+      font-size:28px;
+      letter-spacing:.2px;
+    }
+    .header p{
+      margin:0;
+      color:var(--muted);
+      max-width: 72ch;
+    }
+    .tocHint{
+      margin-top:6px;
+      font-size:12px;
+      color:var(--faint);
+    }
+
+    section{
+      margin: 22px 0 34px;
+      padding:18px 18px 18px;
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--border);
+    }
+    section h3{
+      margin:0 0 10px;
+      font-size:20px;
+    }
+    section h4{
+      margin:16px 0 8px;
+      font-size:16px;
+      color:var(--text);
+    }
+    section h5{
+      margin:14px 0 6px;
+      font-size:14px;
+      color:var(--muted);
+      letter-spacing:.2px;
+      text-transform:none;
+    }
+    .muted{color:var(--muted)}
+    .faint{color:var(--faint)}
+    .divider{
+      height:1px; background:var(--border); margin:14px 0;
+    }
+    ul{margin:8px 0 8px 20px}
+    li{margin:6px 0}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px}
+    .card{
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.18);
+      border-radius:14px;
+      padding:12px 12px;
+    }
+    .callout{
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(17,27,53,.9), rgba(17,27,53,.55));
+      border-left:4px solid var(--accent);
+      border-radius:14px;
+      padding:12px 12px;
+      margin:12px 0;
+    }
+    .callout .label{
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--faint);
+      margin-bottom:6px;
+    }
+    .callout.exam{border-left-color:var(--warn)}
+    .callout.say{border-left-color:var(--accent2)}
+    .callout.risk{border-left-color:var(--bad)}
+    .callout.good{border-left-color:var(--good)}
+    .kbd{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+    }
+    .mono{font-family:var(--mono)}
+    .tableWrap{overflow:auto; border-radius:14px; border:1px solid var(--border)}
+    table{width:100%; border-collapse:collapse; min-width:780px; background:rgba(0,0,0,.15)}
+    th,td{padding:10px 10px; border-bottom:1px solid var(--border); vertical-align:top}
+    th{position:sticky; top:0; background:rgba(15,23,49,.95); z-index:1; text-align:left; font-size:12px; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+    td{font-size:13px; color:var(--text)}
+    .tag{
+      display:inline-block;
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      margin-right:6px;
+      white-space:nowrap;
+    }
+
+    .imgSlot{
+      border:1px dashed rgba(122,162,255,.65);
+      background:rgba(122,162,255,.06);
+      border-radius:14px;
+      padding:12px;
+      margin:10px 0 10px;
+    }
+    .imgSlot .top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+    .imgSlot .title{
+      font-weight:700;
+      font-size:13px;
+      color:var(--text);
+    }
+    .imgSlot .refs{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .imgSlot .note{
+      font-size:12px;
+      color:var(--faint);
+      margin-top:8px;
+    }
+
+    .highlight{
+      background:rgba(176,124,255,.12);
+      border:1px solid rgba(176,124,255,.22);
+      padding:0 4px;
+      border-radius:8px;
+    }
+
+    .hiddenBySearch{display:none !important}
+    .topActions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      cursor:pointer;
+      font-size:12px;
+      user-select:none;
+    }
+    .btn:hover{background:rgba(255,255,255,.06)}
+    .btn:active{transform:translateY(1px)}
+    .small{font-size:12px}
+    .foot{
+      margin-top:14px;
+      font-size:12px;
+      color:var(--faint);
+    }
+
+    @media (max-width: 980px){
+      .layout{grid-template-columns: 1fr}
+      .sidebar{
+        position:relative;
+        height:auto;
+      }
+      table{min-width:640px}
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>Study Companion (Offline HTML)</h1>
+      <p class="citation">
+        <b>Paper:</b> CRAKEN: Cybersecurity LLM Agent with Knowledge-Based Execution (arXiv:2505.17107v1, 21 May 2025)
+      </p>
+      <p class="meta">
+        Authors: Minghao Shao, Haoran Xi, Nanda Rani, Meet Udeshi, Venkata Sai Charan Putrevu, Kimberly Milner, Brendan Dolan-Gavitt,
+        Sandeep Kumar Shukla, Prashanth Krishnamurthy, Farshad Khorrami, Ramesh Karri, Muhammad Shafique
+      </p>
+      <div class="search">
+        <input id="searchBox" type="text" placeholder="Search within notes (e.g., Self-RAG, Graph-RAG, Table 2, hallucination)"/>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <span class="pill" id="toggleCallouts" title="Show/Hide callout boxes"><b>Callouts</b> on</span>
+        <span class="pill" id="expandAll" title="Expand all collapsed details"><b>Expand</b> all</span>
+        <span class="pill" id="collapseAll" title="Collapse all details"><b>Collapse</b> all</span>
+      </div>
+      <div class="tocHint">Tip: use <span class="kbd">Ctrl/Cmd</span> + <span class="kbd">F</span> too.</div>
+    </div>
+
+    <nav id="nav">
+      <div class="groupTitle">Required Sections</div>
+      <a href="#s1">1. Overview <small>Problem, thesis, contributions</small></a>
+      <a href="#s2">2. Key Concepts & Keywords <small>Glossary table (paper-specific)</small></a>
+      <a href="#s3">3. Core Frameworks / Models <small>CRAKEN + retrieval algorithms (with figure slots)</small></a>
+      <a href="#s4">4. Main Contributions <small>What’s new + why it matters</small></a>
+      <a href="#s5">5. Methodology / Process <small>How results were produced</small></a>
+      <a href="#s6">6. Evaluation / Evidence <small>Claims → evidence mapping</small></a>
+      <a href="#s7">7. Examples / Case Studies <small>2019f-cry-macrypto</small></a>
+      <a href="#s8">8. Limitations, Challenges, Open Issues <small>Explicit limitations + future work</small></a>
+      <a href="#s9">9. Practical Takeaways / Study Checklist <small>Memorizable bullets</small></a>
+      <a href="#s10">10. Figures & Tables Index <small>All figure/table slots + page refs</small></a>
+      <a href="#s11">11. Credits & Citation <small>What this document is</small></a>
+
+      <div class="groupTitle">Quick Jump</div>
+      <a href="#framework-craken">CRAKEN architecture</a>
+      <a href="#framework-selfrag">Self-RAG retrieval loop</a>
+      <a href="#framework-graphrag">Graph-RAG + hybrid retrieval</a>
+      <a href="#results-table2">NYU CTF Bench results (Table 2)</a>
+      <a href="#mitre-table3">MITRE ATT&CK mapping (Table 3)</a>
+      <a href="#dist-table4">Solved distribution (Table 4)</a>
+    </nav>
+
+    <div class="foot">
+      This companion is intentionally <b>paper-faithful</b>: every technical claim below is based on the attached PDF only.
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    <div class="header">
+      <div>
+        <h2>CRAKEN — Exam-Ready Study Companion</h2>
+        <p>
+          CRAKEN is a framework for <span class="highlight">knowledge-based execution</span> in cybersecurity LLM agents:
+          it injects retrieved, task-specific security knowledge into agent execution to improve CTF-solving performance and breadth of offensive techniques.
+        </p>
+        <p class="tocHint">Use the left nav to jump; search filters sections and highlights matches.</p>
+      </div>
+      <div class="topActions">
+        <button class="btn" id="copyLinkBtn" title="Copy current section link">Copy section link</button>
+        <button class="btn" id="printBtn" title="Print / Save as PDF (browser)">Print</button>
+      </div>
+    </div>
+
+    <!-- 1. OVERVIEW -->
+    <section id="s1" data-searchable>
+      <h3>1. Overview</h3>
+
+      <div class="grid2">
+        <div class="card">
+          <h4>Problem the paper addresses</h4>
+          <ul>
+            <li><b>LLM cybersecurity agents</b> can solve CTF tasks, but face two key limitations:
+              <ul>
+                <li><b>Knowledge gap</b>: they cannot access the latest cybersecurity expertise beyond training cutoffs.</li>
+                <li><b>Integration gap</b>: even when external knowledge exists, integrating it into <b>multi-step planning/execution</b> is hard.</li>
+              </ul>
+            </li>
+            <li>Cybersecurity tasks require <b>domain-specific reasoning</b>, tools, and multi-stage exploit strategies; generic LLM knowledge is insufficient for many challenges.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Why it matters</h4>
+          <ul>
+            <li>Real-world threats evolve rapidly; automation must adapt without constant re-engineering.</li>
+            <li>CTFs model adversarial workflows (crypto, pwn, rev, web, forensics, misc), stressing:
+              <ul>
+                <li>Adaptive reasoning</li>
+                <li>Strategic planning</li>
+                <li>Domain-specific technical knowledge</li>
+              </ul>
+            </li>
+            <li>Using <b>CTF writeups</b> as a knowledge base offers concrete exploitation procedures and payload-level details.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h4>Core thesis / central claim</h4>
+      <div class="callout">
+        <div class="label">Key insight</div>
+        CRAKEN improves cybersecurity agent capability by combining:
+        <ul>
+          <li><b>Contextual decomposition</b> (turn agent context into focused, retrievable queries)</li>
+          <li><b>Iterative self-reflected retrieval</b> (Self-RAG-style loop with grading + rewriting)</li>
+          <li><b>Knowledge-hint injection</b> (inject retrieved, grounded guidance into executor steps)</li>
+        </ul>
+        The claim is that this <b>knowledge-based execution</b> yields measurable gains in solving CTFs and in covering a broader set of offensive techniques.
+      </div>
+
+      <h4>What the paper contributes (frameworks, models, methods)</h4>
+      <ul>
+        <li><b>CRAKEN framework</b>: integrate a domain-specific knowledge database into agent workflows for knowledge-based execution.</li>
+        <li><b>Optimized Self-RAG retrieval pipeline</b>: iterative retrieval → generation → hallucination grading → answer grading → query rewriting/refinement.</li>
+        <li><b>Graph-RAG integration</b>: add structured knowledge-graph retrieval (plus hybrid vector+graph mode) for cybersecurity concept connectivity.</li>
+        <li><b>Open-source datasets</b> curated from GitHub/Hugging Face:
+          <ul>
+            <li><b>writeups</b> (CTF writeups, excluding CSAW writeups due to NYU CTF Bench overlap)</li>
+            <li><b>payload</b> (attack payloads / exploit scripts)</li>
+            <li><b>code</b> (code snippets / task-solution pairs)</li>
+          </ul>
+        </li>
+        <li><b>Comprehensive evaluation</b> on:
+          <ul>
+            <li><b>NYU CTF Bench</b> (% solved, $ cost), across multiple LLMs and CRAKEN configurations</li>
+            <li><b>MITRE ATT&CK technique mapping</b> (Appendix D / Table 3)</li>
+            <li><b>Solution distribution overlap</b> among agents (Figure 3 + Appendix E / Table 4)</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="callout exam">
+        <div class="label">Exam tip</div>
+        A clean “one-sentence” definition you can memorize:
+        <br/>
+        <b>CRAKEN = (planner–executor CTF agent) + (iterative graded RAG retriever) + (knowledge-hint injection at delegation)</b>.
+      </div>
+    </section>
+
+    <!-- 2. KEY CONCEPTS & KEYWORDS -->
+    <section id="s2" data-searchable>
+      <h3>2. Key Concepts & Keywords</h3>
+      <p class="muted">
+        Glossary-style definitions <b>as used in this paper</b> (not generic textbook definitions). Where relevant, differences from common usage are noted.
+      </p>
+
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Meaning in this paper</th>
+              <th>Why it matters (in CRAKEN)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>LLM agent</b></td>
+              <td>An autonomous system using an LLM to plan and execute multi-step actions (tools + environment interaction) to reach a goal (e.g., find a CTF flag).</td>
+              <td>Baseline unit being improved; CRAKEN modifies how agents obtain and apply external knowledge.</td>
+            </tr>
+            <tr>
+              <td><b>CTF</b> (Capture-The-Flag)</td>
+              <td>Controlled cybersecurity challenge where success = obtain the <b>flag</b> string by exploiting vulnerabilities or solving security tasks across domains.</td>
+              <td>Evaluation setting for capabilities like planning, execution, exploitation workflows.</td>
+            </tr>
+            <tr>
+              <td><b>Planner–Executor</b> multi-agent system</td>
+              <td>Hierarchical multi-agent setup: a <b>planner</b> decomposes the problem into steps; <b>executors</b> carry out steps and return summaries; includes an auto-prompter from D-CIPHER.</td>
+              <td>CRAKEN plugs retrieval into the <b>delegation step</b> to inject targeted knowledge into executor tasks.</td>
+            </tr>
+            <tr>
+              <td><b>Knowledge-based execution</b></td>
+              <td>Using retrieved domain knowledge to guide the agent’s step-by-step actions during execution (not just high-level planning).</td>
+              <td>Paper argues execution-time knowledge is more valuable than planning-time knowledge for many tasks.</td>
+            </tr>
+            <tr>
+              <td><b>RAG</b> (Retrieval-Augmented Generation)</td>
+              <td>Augment generation with external non-parametric memory (searchable database) to retrieve relevant context and generate answers/hints.</td>
+              <td>Core mechanism to access CTF writeups / payloads / code beyond LLM pretraining.</td>
+            </tr>
+            <tr>
+              <td><b>Self-RAG</b></td>
+              <td>Self-evaluating retrieval-generation pipeline: agent decides when to retrieve and critiques retrieval/generation quality; CRAKEN implements a recursive retrieval+grading loop inspired by Self-RAG.</td>
+              <td>CRAKEN uses graders (relevance, hallucination, solved) + query rewriting to produce grounded hints.</td>
+            </tr>
+            <tr>
+              <td><b>Graph-RAG</b></td>
+              <td>Transforms unstructured text into a <b>knowledge graph</b> (entities + relations as triplets) and retrieves via graph search; CRAKEN also uses a hybrid graph+vector mode.</td>
+              <td>Captures relationships between vulnerabilities/exploits/software systems; reduces token usage and improves retrieval focus.</td>
+            </tr>
+            <tr>
+              <td><b>Contextual decomposition</b></td>
+              <td>Breaking a task description / long conversational context into focused components to create effective queries for retrieval.</td>
+              <td>Mitigates information overload and reduces irrelevant retrieval that can mislead executors.</td>
+            </tr>
+            <tr>
+              <td><b>Knowledge hint injection</b></td>
+              <td>Injecting the retrieved and validated knowledge hint directly into executor tasks at delegation time.</td>
+              <td>Primary integration point where retrieved knowledge affects actions (commands, exploitation steps).</td>
+            </tr>
+            <tr>
+              <td><b>Relevance grader</b></td>
+              <td>Module that checks whether retrieved documents are relevant to the query before generation proceeds.</td>
+              <td>Stops low-quality retrieval early; triggers query rewriting and re-retrieval.</td>
+            </tr>
+            <tr>
+              <td><b>Hallucination grader</b></td>
+              <td>Checks whether generated knowledge hints are grounded in retrieved documents (hallucination-free).</td>
+              <td>Prevents injected hints from being ungrounded and derailing the executor.</td>
+            </tr>
+            <tr>
+              <td><b>Solved grader</b></td>
+              <td>Checks whether the generated hint actually satisfies the query/task requirement.</td>
+              <td>Forces iterative refinement until an answer is both grounded and sufficient.</td>
+            </tr>
+            <tr>
+              <td><b>NYU CTF Bench</b></td>
+              <td>Benchmark of 200 CTFs across 6 categories (crypto, forensics, pwn, rev, web, misc); used for % solved and cost evaluation.</td>
+              <td>Main quantitative performance evidence (Table 2).</td>
+            </tr>
+            <tr>
+              <td><b>MITRE ATT&CK techniques</b></td>
+              <td>Structured classification of offensive tactics/techniques; CTFs are mapped to techniques needed to solve them (mapping taken from D-CIPHER).</td>
+              <td>Measures breadth of offensive capabilities beyond raw solve rate (Appendix D / Table 3).</td>
+            </tr>
+            <tr>
+              <td><b>Knowledge databases</b></td>
+              <td>Three curated corpora: <b>writeups</b> (step-by-step solve procedures), <b>payload</b> (compact exploit scripts), <b>code</b> (code snippets / task-solution pairs).</td>
+              <td>Paper shows dataset choice strongly affects performance; writeups yield best overall guidance.</td>
+            </tr>
+            <tr>
+              <td><b>Budget cap</b></td>
+              <td>Experiments use a maximum budget of <span class="mono">$3.0</span> per run (for fair comparison with prior work).</td>
+              <td>Constrains agent persistence and retrieval retries; interacts with “give up” vs “max rounds” behaviors.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout say">
+        <div class="label">Say this in your own words</div>
+        CRAKEN isn’t “just RAG.” It is a <b>quality-controlled</b> retrieval loop (graders + rewriting) that turns retrieved knowledge into <b>actionable executor hints</b> inside a planner–executor agent.
+      </div>
+    </section>
+
+    <!-- 3. CORE FRAMEWORKS / MODELS -->
+    <section id="s3" data-searchable>
+      <h3>3. Core Frameworks / Models</h3>
+      <p class="muted">
+        Each model/framework is explained in plain language, why it exists, how it is used in the paper, and implications.
+        <b>All figure slots are placed directly in this section</b> (as required).
+      </p>
+
+      <!-- CRAKEN architecture -->
+      <div id="framework-craken" class="card" data-searchable>
+        <h4>3.1 CRAKEN System Architecture (Planner–Executor + Retrieval System)</h4>
+        <p>
+          CRAKEN combines (A) a <b>planner–executor multi-agent system</b> (based on D-CIPHER) with (B) an <b>iterative retrieval system</b>
+          that produces grounded, task-specific <b>knowledge hints</b> that are injected into executor steps.
+        </p>
+
+        <div class="imgSlot" id="fig1">
+          <div class="top">
+            <div class="title">Image Slot — Figure 1: CRAKEN architecture (planner–executor + retrieval system)</div>
+            <div class="refs">Paper page: 3 · PDF page: 3</div>
+          </div>
+          <div class="note">
+            Screenshot this figure from the PDF and paste it here manually.
+          </div>
+        </div>
+
+        <h5>What the diagram shows</h5>
+        <ul>
+          <li><b>Left side:</b> Planner–Executor multi-agent system:
+            <ul>
+              <li><b>Planner</b> receives challenge context and delegates tasks.</li>
+              <li>Multiple <b>Executors</b> run delegated steps, then return summaries.</li>
+              <li>System includes a “summary tasks” component and an auto-prompter agent (inherited from D-CIPHER).</li>
+              <li>Success condition is “submit flag.”</li>
+            </ul>
+          </li>
+          <li><b>Right side:</b> Retrieval system:
+            <ul>
+              <li>Triggered during delegation to create a <b>knowledge hint</b>.</li>
+              <li>Core stages include context decomposition, document retrieval, query rewriting, generation, and multiple graders.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h5>What insight it conveys</h5>
+        <ul>
+          <li>Retrieval is not a single-shot RAG call: it is an <b>iterative, graded process</b> that tries to ensure relevance and grounding.</li>
+          <li>Knowledge is integrated at the <b>execution boundary</b> (delegation/injection), aligning retrieved guidance with concrete tasks.</li>
+        </ul>
+
+        <h5>Why it is important</h5>
+        <ul>
+          <li>Targets the “integration gap”: the architecture operationalizes how external knowledge becomes actionable steps.</li>
+          <li>Supports modularity: retrieval can be attached to other agentic systems, not only D-CIPHER.</li>
+        </ul>
+
+        <div class="callout exam">
+          <div class="label">Exam tip</div>
+          If asked “Where does knowledge enter CRAKEN?”, answer:
+          <b>during task delegation, as injected executor hints produced by the graded retrieval loop.</b>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Self-RAG inspired retrieval loop -->
+      <div id="framework-selfrag" class="card" data-searchable>
+        <h4>3.2 Recursive Retrieval Process (Self-RAG-style, with graders + rewriting)</h4>
+        <p>
+          CRAKEN uses a recursive retrieval loop inspired by Self-RAG to produce grounded, query-satisfying hints.
+          The loop includes multiple specialized modules and can retry until a recursion depth limit.
+        </p>
+
+        <div class="imgSlot" id="alg1">
+          <div class="top">
+            <div class="title">Image Slot — Algorithm 1: CRAKEN recursive RAG process</div>
+            <div class="refs">Paper page: 4 · PDF page: 4</div>
+          </div>
+          <div class="note">
+            Screenshot Algorithm 1 from the PDF and paste it here manually.
+          </div>
+        </div>
+
+        <h5>Plain-language explanation (what it does)</h5>
+        <ul>
+          <li>Start with a query <span class="mono">q</span>.</li>
+          <li>Retrieve documents <span class="mono">R</span>.</li>
+          <li>If retrieved docs are irrelevant → rewrite query and retry.</li>
+          <li>Generate a candidate knowledge hint from <span class="mono">R</span>.</li>
+          <li>Check for hallucination (is the hint grounded in <span class="mono">R</span>?) → if not grounded, regenerate.</li>
+          <li>Check if the hint solves/satisfies the query → if not, rewrite query and continue.</li>
+          <li>Stop when solved, or return empty output when max recursion depth reached.</li>
+        </ul>
+
+        <h5>Why it exists</h5>
+        <ul>
+          <li>Agentic RAG failures are common: irrelevant retrieval and hallucinated synthesis can mislead autonomous executors.</li>
+          <li>CRAKEN adds explicit <b>quality gates</b> (graders) and <b>repair mechanisms</b> (rewriter + recursion) to improve reliability.</li>
+        </ul>
+
+        <h5>How it is used in CRAKEN</h5>
+        <ul>
+          <li>Called during delegation: produces a <b>knowledge hint</b> tailored to the executor’s current task.</li>
+          <li>The hint is meant to be directly actionable (e.g., which vulnerability pattern to test, which exploit steps to attempt).</li>
+        </ul>
+
+        <h5>Implications for research/practice</h5>
+        <ul>
+          <li>Shows a template for <b>self-correcting retrieval</b> in autonomous systems: retrieve → judge → rewrite → retry.</li>
+          <li>Highlights that retrieval quality is not only about embeddings; it is also about <b>verification and control flow</b>.</li>
+        </ul>
+
+        <div class="imgSlot" id="fig4">
+          <div class="top">
+            <div class="title">Image Slot — Figure 4: Transition diagram visualizing the RAG process</div>
+            <div class="refs">Paper page: 7 · PDF page: 7</div>
+          </div>
+          <div class="note">Screenshot Figure 4 from the PDF and paste it here manually.</div>
+        </div>
+
+        <h5>Figure 4 explanation (interpretation, not caption repetition)</h5>
+        <ul>
+          <li>The figure summarizes how often CRAKEN transitions between retrieval steps (e.g., retrieve → grade → rewrite → retry).</li>
+          <li>The paper reports that:
+            <ul>
+              <li>Only <b>43.8%</b> of retrieved documents meet grading standards.</li>
+              <li><b>72.7%</b> of generated content fails hallucination verification.</li>
+              <li>The retry mechanism contributes meaningfully (reported as <b>33.7%</b> contribution to overall success rates in the transition analysis).</li>
+              <li>When hallucination verification passes, final grading passes at a high rate (reported <b>95.2%</b>).</li>
+            </ul>
+          </li>
+          <li>Core takeaway: the validation/retry loop is essential because initial retrieval and generation are often low-quality.</li>
+        </ul>
+
+        <div class="callout">
+          <div class="label">Key insight</div>
+          The transition stats are a “systems diagnosis”: CRAKEN works partly because it <b>retries and filters aggressively</b>, not because first-pass retrieval is consistently good.
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Graph-RAG -->
+      <div id="framework-graphrag" class="card" data-searchable>
+        <h4>3.3 Graph-RAG + Hybrid Retrieval (Graph + Vector)</h4>
+        <p>
+          Graph-RAG converts unstructured knowledge into a structured graph of entities and relations, enabling graph search.
+          CRAKEN combines this with classic vector retrieval in a <b>hybrid mode</b>.
+        </p>
+
+        <div class="imgSlot" id="fig2">
+          <div class="top">
+            <div class="title">Image Slot — Figure 2: Graph-RAG Retrieval (hybrid structured + unstructured retrieval)</div>
+            <div class="refs">Paper page: 5 · PDF page: 5</div>
+          </div>
+          <div class="note">Screenshot Figure 2 from the PDF and paste it here manually.</div>
+        </div>
+
+        <h5>What the diagram shows</h5>
+        <ul>
+          <li>Two retrieval channels:
+            <ul>
+              <li><b>Structured retrieval:</b> graph search over a knowledge graph (nodes = entities; edges = relations; built from semantic triplets).</li>
+              <li><b>Unstructured retrieval:</b> classic text/vector similarity search over documents/chunks.</li>
+            </ul>
+          </li>
+          <li>Outputs are merged into a <b>final context</b> for the agent.</li>
+        </ul>
+
+        <h5>Why it exists</h5>
+        <ul>
+          <li>Cybersecurity knowledge is highly inter-related (software systems ↔ vulnerabilities ↔ exploit techniques).</li>
+          <li>Graph representations can:
+            <ul>
+              <li>Enable retrieving “connected” concepts via topology (not only semantic similarity).</li>
+              <li>Reduce token usage by retrieving structured subgraphs and focused context.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h5>How CRAKEN uses it</h5>
+        <ul>
+          <li>Graph-RAG is evaluated as an alternative to the default vector-only retrieval configuration.</li>
+          <li>CRAKEN extracts relevant semantic triplets from the query and searches for matching subgraphs, optionally adding supporting text snippets.</li>
+        </ul>
+
+        <h5>Implications</h5>
+        <ul>
+          <li>Suggests that retrieval for complex, multi-step tasks can benefit from <b>structure-aware memory</b>, not just embeddings.</li>
+          <li>Points toward hybrid retrieval as a practical design pattern: <b>graph for relationship navigation</b> + <b>text for detail grounding</b>.</li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Additional RAG algorithms (Appendix A) -->
+      <div class="card" data-searchable>
+        <h4>3.4 Additional Retrieval Algorithms Supported (Appendix A)</h4>
+        <p class="muted">
+          Beyond Self-RAG and Graph-RAG, CRAKEN supports multiple retrieval strategies that can be toggled and composed.
+        </p>
+
+        <div class="grid2">
+          <div class="card">
+            <h5>Multi-query</h5>
+            <ul>
+              <li>Generate multiple semantically distinct query variants (paper mentions typically five).</li>
+              <li>Retrieve documents per variant, aggregate and deduplicate.</li>
+              <li><b>Goal:</b> reduce dependence on one phrasing; increase chance of capturing relevant knowledge.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h5>RAG-fusion</h5>
+            <ul>
+              <li>Retrieve several candidate documents and fuse rankings using <b>Reciprocal Rank Fusion (RRF)</b>.</li>
+              <li><b>Goal:</b> improve precision and diversity by re-ranking based on fused score.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h5>Decomposition</h5>
+            <ul>
+              <li>Decompose complex queries into simpler sub-questions.</li>
+              <li>Process each sub-question independently; return structured (sub-question, answer) list.</li>
+              <li><b>Goal:</b> better for multi-part/procedural queries.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h5>Step-back</h5>
+            <ul>
+              <li>Generate a broader “step-back” version of the query when ambiguous/underspecified.</li>
+              <li>Retrieve background knowledge using the step-back query.</li>
+              <li><b>Goal:</b> recover indirect clues and context needed for layered tasks.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout exam">
+          <div class="label">Exam tip</div>
+          If asked “How is CRAKEN extensible?”, cite that retrieval strategies are <b>configurable and composable</b> (classic RAG, Self-RAG loop, Graph-RAG, plus Multi-query/RAG-fusion/Decomposition/Step-back).
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Failure / exit analysis figure -->
+      <div class="card" data-searchable>
+        <h4>3.5 Agent Exit Behaviors (Give up vs Max cost vs Max rounds vs Error)</h4>
+
+        <div class="imgSlot" id="fig5">
+          <div class="top">
+            <div class="title">Image Slot — Figure 5: CRAKEN exit analysis by category across models</div>
+            <div class="refs">Paper page: 8 · PDF page: 8</div>
+          </div>
+          <div class="note">Screenshot Figure 5 from the PDF and paste it here manually.</div>
+        </div>
+
+        <h5>What the figure shows</h5>
+        <ul>
+          <li>For each model (Claude 3.5, Claude 3.7, GPT-4o, GPT-4.1), exit types are broken down by category:
+            <span class="tag">Solved</span>
+            <span class="tag">Give up</span>
+            <span class="tag">Max cost</span>
+            <span class="tag">Max rounds</span>
+            <span class="tag">Error</span>
+          </li>
+        </ul>
+
+        <h5>Interpretation used by the paper</h5>
+        <ul>
+          <li>Claude models show higher persistence (notably lower “give up” rates than GPT-4o in several categories).</li>
+          <li>Claude 3.7 shows more “max rounds” exits than Claude 3.5, interpreted as deeper planning/persistence, but can introduce some error states for complex formats.</li>
+          <li>GPT-4o has relatively high “give up” rates in categories like crypto/web/pwn (as described in the paper’s failure analysis narrative).</li>
+        </ul>
+
+        <div class="callout">
+          <div class="label">Key insight</div>
+          Solve rate differences are partly a <b>behavioral</b> phenomenon (persistence vs early give-up) under budget/round limits, not only a “knowledge” phenomenon.
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Solution overlap figure -->
+      <div class="card" data-searchable>
+        <h4>3.6 Complementary Capabilities: Solution Overlap Across Agents</h4>
+
+        <div class="imgSlot" id="fig3">
+          <div class="top">
+            <div class="title">Image Slot — Figure 3: Overlap of CTFs solved by EnIGMA vs D-CIPHER vs CRAKEN (best setup)</div>
+            <div class="refs">Paper page: 7 · PDF page: 7</div>
+          </div>
+          <div class="note">Screenshot Figure 3 from the PDF and paste it here manually.</div>
+        </div>
+
+        <h5>Interpretation</h5>
+        <ul>
+          <li>Figure visualizes overlap of solved challenges across three agents on the best model setup (Claude 3.5 Sonnet in that comparison).</li>
+          <li>Paper highlights CRAKEN uniquely solved <b>8</b> challenges, compared to <b>4</b> unique solutions for each of D-CIPHER and EnIGMA in that analysis.</li>
+          <li>Key message: agents have <b>specialized strengths</b>; CRAKEN increases diversity of solved tasks rather than only improving the same set.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. MAIN CONTRIBUTIONS -->
+    <section id="s4" data-searchable>
+      <h3>4. Main Contributions</h3>
+
+      <div class="grid2">
+        <div class="card">
+          <h4>Contribution 1: CRAKEN framework for knowledge-based execution</h4>
+          <ul>
+            <li><b>What’s new:</b> explicit integration of a cybersecurity knowledge database into agent execution via decomposition, iterative retrieval, and hint injection.</li>
+            <li><b>Why it matters:</b> addresses training cutoff and knowledge integration limitations; aims for adaptable cybersecurity automation.</li>
+            <li><b>How it advances prior work:</b> builds on D-CIPHER’s multi-agent structure but adds a robust RAG system that actively governs retrieval quality and grounding.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Contribution 2: Optimized Self-RAG-style retrieval framework</h4>
+          <ul>
+            <li><b>What’s new:</b> a recursive pipeline with modules: retriever, relevance grading, generator, hallucination grading, query rewriting, solved grading.</li>
+            <li><b>Why it matters:</b> agentic retrieval can mislead; grading + rewriting adds reliability and safety against hallucinated hints.</li>
+            <li><b>Advances prior work:</b> operationalizes Self-RAG-like behavior for autonomous security agents and evaluates it in a CTF setting.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Contribution 3: Graph-RAG integration + hybrid retrieval mode</h4>
+          <ul>
+            <li><b>What’s new:</b> retrieval over a cybersecurity knowledge graph built from semantic triplets, plus hybrid graph+vector retrieval.</li>
+            <li><b>Why it matters:</b> cybersecurity concepts are relational; graph search can capture connected vulnerabilities/exploits and reduce token use.</li>
+            <li><b>Advances prior work:</b> evaluates structured retrieval benefits for agentic tasks compared to vector-only RAG.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Contribution 4: Open-source knowledge datasets for CTF RAG</h4>
+          <ul>
+            <li><b>What’s new:</b> curated corpora (writeups/payload/code) from GitHub/Hugging Face, preprocessed into consistent formats.</li>
+            <li><b>Why it matters:</b> enables reproducible evaluation of how different knowledge types impact agent performance.</li>
+            <li><b>Advances prior work:</b> creates a dedicated knowledge base for knowledge-based execution rather than generic web search.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Contribution 5: Evaluation on solve rate, cost, and ATT&CK breadth</h4>
+          <ul>
+            <li><b>What’s new:</b> combines CTF success metrics with MITRE ATT&CK technique coverage and solution distribution analysis.</li>
+            <li><b>Why it matters:</b> avoids equating “solve rate” with “capability breadth”; technique coverage is a richer capability signal.</li>
+            <li><b>Advances prior work:</b> compares across agents/configurations and highlights tradeoffs (performance vs cost vs persistence).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout say">
+        <div class="label">Say this in your own words</div>
+        CRAKEN’s novelty is the <b>control loop</b> around retrieval (grading + rewriting + retries) and the decision to feed the result into <b>executor-level actions</b>, not just a static context window.
+      </div>
+    </section>
+
+    <!-- 5. METHODOLOGY / PROCESS -->
+    <section id="s5" data-searchable>
+      <h3>5. Methodology / Process (How the authors arrived at results)</h3>
+
+      <div class="grid2">
+        <div class="card">
+          <h4>Implementation choices</h4>
+          <ul>
+            <li>Retrieval process implemented with <b>LangChain</b>.</li>
+            <li>Vector similarity search via <b>Milvus</b>.</li>
+            <li>Graph knowledge management for Graph-RAG via <b>Neo4j</b>.</li>
+            <li>Multi-agent system built on top of <b>D-CIPHER</b> (planner, executor, auto-prompter, same Docker environment/tools; retrieval integrated with minimal modifications).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Knowledge database construction</h4>
+          <ul>
+            <li>Three databases:
+              <ul>
+                <li><b>writeups</b>: 1,298 CTF writeups in markdown; excludes CSAW writeups to avoid overlap with NYU CTF Bench.</li>
+                <li><b>payload</b>: 135 attack payloads (compact exploit scripts) to test offensive implementation help.</li>
+                <li><b>code</b>: 4,656 code snippets (task description + solution) to test coding proficiency help.</li>
+              </ul>
+            </li>
+            <li>Preprocessing:
+              <ul>
+                <li>“code” database: two-column (task description, solution).</li>
+                <li>“payload” database: (exploit code, vulnerability name).</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h4>Experimental setup</h4>
+      <ul>
+        <li><b>Benchmark:</b> NYU CTF Bench (200 tasks; categories: crypto, forensics, pwn, rev, web, misc).</li>
+        <li><b>Metrics:</b> % solved and $ cost (total API cost across agents + retrieval calls). A task counts solved if flag is submitted or appears in conversation.</li>
+        <li><b>Budget constraint:</b> maximum budget per run (paper uses $3.0 cap for fair comparison).</li>
+        <li><b>Models evaluated:</b> Claude 3.5 Sonnet, Claude 3.7 Sonnet, GPT-4o, GPT-4.1, DeepSeek V3.</li>
+      </ul>
+
+      <h4>Configurations compared</h4>
+      <ul>
+        <li>D-CIPHER baseline vs CRAKEN default (Self-RAG + classic vector RAG).</li>
+        <li>Graph-RAG vs vector-only retrieval (holding other settings constant).</li>
+        <li>Knowledge injection into <b>planner</b> (knowledge-based planner) vs injection into execution (default) to test where knowledge helps most.</li>
+        <li>Different databases (writeups vs code vs payloads vs mixture).</li>
+        <li>Mixed LLMs (agent model vs retriever model) to study cost/performance tradeoffs.</li>
+      </ul>
+
+      <div class="callout exam">
+        <div class="label">Exam tip</div>
+        If asked “What is the intervention in CRAKEN vs D-CIPHER?”, answer:
+        <b>adding a structured RAG retrieval subsystem (Self-RAG loop; optionally Graph-RAG) that injects knowledge hints into executor tasks.</b>
+      </div>
+
+      <div class="callout">
+        <div class="label">Design tradeoff</div>
+        CRAKEN reduces information overload by decomposition and grading, but it adds extra retrieval calls → <b>higher compute cost</b> in many configurations.
+      </div>
+    </section>
+
+    <!-- 6. EVALUATION / EVIDENCE -->
+    <section id="s6" data-searchable>
+      <h3>6. Evaluation / Evidence</h3>
+
+      <h4 id="results-table2">6.1 Performance and cost on NYU CTF Bench (Table 2)</h4>
+
+      <div class="imgSlot" id="table2">
+        <div class="top">
+          <div class="title">Image Slot — Table 2: Overall and category-wise performance of D-CIPHER vs CRAKEN</div>
+          <div class="refs">Paper page: 6 · PDF page: 6</div>
+        </div>
+        <div class="note">Screenshot Table 2 from the PDF and paste it here manually.</div>
+      </div>
+
+      <div class="card">
+        <h5>What Table 2 reports</h5>
+        <ul>
+          <li>For each model/config: <b>% solved</b>, <b>$ cost</b>, and category-wise solve rates across crypto/forensics/pwn/rev/web/misc.</li>
+        </ul>
+
+        <h5>Key results emphasized by the paper</h5>
+        <ul>
+          <li>CRAKEN generally improves performance over D-CIPHER for most models, with moderate cost increases.</li>
+          <li>Example highlighted:
+            <ul>
+              <li>Claude 3.5 Sonnet: <b>19%</b> (D-CIPHER) → <b>21%</b> (CRAKEN default), cost increases from <span class="mono">$0.52</span> → <span class="mono">$0.68</span>.</li>
+              <li>Claude 3.7 Sonnet: <b>17.5%</b> → <b>18.5%</b>, cost <span class="mono">$0.63</span> → <span class="mono">$0.82</span>.</li>
+            </ul>
+          </li>
+          <li>Graph-RAG configuration (on Claude 3.5 Sonnet) reaches <b>22%</b> solve rate (paper notes it solves two additional challenges under that setup).</li>
+          <li>Dataset finding: <b>writeups</b> outperform code/payload/mixed datasets; mixing without careful curation can degrade performance.</li>
+          <li>Planner vs execution injection: injecting knowledge during <b>execution</b> is more effective than knowledge-based planning for many categories (paper highlights this gap, especially in rev/web).</li>
+        </ul>
+      </div>
+
+      <div class="callout">
+        <div class="label">Claims → evidence mapping</div>
+        <ul>
+          <li><b>Claim:</b> CRAKEN improves CTF solving performance vs prior work.
+            <br/><b>Evidence:</b> Table 2 overall % solved increases for several models (not universally for all models/configs).</li>
+          <li><b>Claim:</b> Graph-RAG helps without extra compute cost in that comparison.
+            <br/><b>Evidence:</b> Table 2 shows Graph-RAG solve rate 22% with comparable average cost to default CRAKEN in the discussed configuration.</li>
+          <li><b>Claim:</b> Execution-time knowledge is more valuable than planning-time knowledge.
+            <br/><b>Evidence:</b> Table 2 “knowledge-based planner” underperforms default execution injection overall and in key categories (paper notes exceptions like pwn).</li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+
+      <h4>6.2 Retrieval process quality and necessity of retries (Figure 4)</h4>
+      <p class="muted">
+        The paper explicitly reports that first-pass retrieval and generation frequently fail grading checks, motivating the iterative design.
+      </p>
+      <ul>
+        <li><b>Document relevance pass rate</b> reported as <b>43.8%</b>.</li>
+        <li><b>Hallucination verification failures</b> reported as <b>72.7%</b> of generated content failing hallucination checks.</li>
+        <li><b>Validation effectiveness</b>: once hallucination verification passes, final grading success is high (reported <b>95.2%</b>).</li>
+      </ul>
+
+      <div class="divider"></div>
+
+      <h4 id="mitre-table3">6.3 Offensive capability breadth: MITRE ATT&CK technique coverage (Appendix D / Table 3)</h4>
+
+      <div class="imgSlot" id="table3">
+        <div class="top">
+          <div class="title">Image Slot — Table 3: MITRE ATT&CK capability across agents/configurations</div>
+          <div class="refs">Paper page: 18 · PDF page: 18</div>
+        </div>
+        <div class="note">Screenshot Table 3 from the PDF and paste it here manually.</div>
+      </div>
+
+      <div class="card">
+        <h5>What Table 3 is doing</h5>
+        <ul>
+          <li>Each CTF challenge is mapped to ATT&CK techniques (mapping taken from D-CIPHER).</li>
+          <li>For each technique (TID), table shows:
+            <ul>
+              <li>Technique name</li>
+              <li>#CTFs mapped to that technique</li>
+              <li>How many of those CTFs were solved by each agent/config (CRAKEN variants, D-CIPHER, EnIGMA).</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h5>What the paper concludes from Table 3</h5>
+        <ul>
+          <li>CRAKEN shows <b>superior offensive capabilities</b> compared to D-CIPHER and EnIGMA across techniques.</li>
+          <li>Paper highlights improvements especially on crypto and web-related techniques (examples explicitly mentioned include:
+            <span class="tag">T1110 Brute Force</span>
+            <span class="tag">T1190 Exploit Public-Facing Application</span>
+            <span class="tag">T1140 Deobfuscate/Decode Files or Information</span>
+          ).</li>
+          <li>The headline summary earlier in the paper: CRAKEN (with Claude 3.5 Sonnet in their analysis) shows a <b>25–30% improvement</b> in orchestrating a broader range of MITRE techniques vs other agents/configs.</li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+
+      <h4>6.4 Solution overlap and specialization (Figure 3 + Appendix E / Table 4)</h4>
+
+      <div class="imgSlot" id="table4">
+        <div class="top">
+          <div class="title">Image Slot — Table 4: Challenge solved distribution across agents</div>
+          <div class="refs">Paper page: 19 · PDF page: 19</div>
+        </div>
+        <div class="note">Screenshot Table 4 from the PDF and paste it here manually.</div>
+      </div>
+
+      <div class="card" id="dist-table4">
+        <h5>What Table 4 reports</h5>
+        <ul>
+          <li>A challenge-by-challenge matrix of success (✓) vs failure (×) for:
+            <b>EnIGMA</b>, <b>D-CIPHER (best model: Claude 3.5 Sonnet)</b>, and <b>CRAKEN</b>.</li>
+          <li>Challenges are grouped by category and event year.</li>
+        </ul>
+
+        <h5>Why this matters as evidence</h5>
+        <ul>
+          <li>Supports the claim that different agents have different strengths (not just a single scalar “accuracy”).</li>
+          <li>Enables the overlap analysis shown in Figure 3; paper emphasizes CRAKEN uniquely solves more niche tasks in that comparison.</li>
+        </ul>
+      </div>
+
+      <div class="callout exam">
+        <div class="label">Exam tip</div>
+        If asked “How do they validate that CRAKEN improves breadth, not only solve rate?”:
+        <b>MITRE ATT&CK technique coverage (Table 3) + solved overlap/distribution (Figure 3, Table 4).</b>
+      </div>
+
+      <div class="callout risk">
+        <div class="label">Limitations of evaluation (as implied by the paper’s setup)</div>
+        <ul>
+          <li>CTFs are controlled proxies for real attacks; technique mapping depends on existing mappings (taken from D-CIPHER).</li>
+          <li>Cost is API-cost-specific and can shift with pricing/model updates; the reported numbers are contextual to their run configuration.</li>
+          <li>Budget caps/round limits influence persistence behaviors (Figure 5), which can affect observed performance.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. EXAMPLES / CASE STUDIES -->
+    <section id="s7" data-searchable>
+      <h3>7. Examples / Case Studies</h3>
+
+      <div class="card">
+        <h4>7.1 Case Study: 2019f-cry-macrypto (broken RC4 in Rust)</h4>
+        <ul>
+          <li><b>Problem context:</b> Derive plaintext flag from broken RC4 encryption implemented in Rust.</li>
+          <li><b>Notable observation:</b> Paper states this challenge was solved <b>exclusively</b> by Claude 3.7 Sonnet using default CRAKEN among compared agents.</li>
+          <li><b>What CRAKEN adds:</b> A self-reflective retrieval round supplies relevant context from adjacent stream-cipher writeups, enabling step-to-step navigation without hallucination.</li>
+        </ul>
+
+        <h5>Artifact / idea applied (retrieval hint content)</h5>
+        <p class="muted">
+          Appendix C shows a full retrieval-style hint for a query like:
+          <span class="mono">“RC4 stream cipher vulnerabilities in state maintenance and input handling in Rust”</span>.
+        </p>
+
+        <h5>What the retrieved hint emphasizes (as shown in Appendix C narrative)</h5>
+        <ul>
+          <li><b>Keystream reuse</b> vulnerabilities (e.g., constant IV/counter issues analogized from AES-CTR writeups).</li>
+          <li><b>Lack of state refresh</b> leading to repeated keystream segments.</li>
+          <li><b>Implementation flaws / code tampering</b> (small changes in RC4 state update logic can fully break security).</li>
+          <li><b>Repeating keystream patterns</b> enabling XOR-based recovery if plaintext structure/known-plaintext exists.</li>
+        </ul>
+
+        <h5>Evaluation method</h5>
+        <ul>
+          <li>Qualitative: trace retrieval process and show that one retrieval round provided sufficient context to solve.</li>
+          <li>Quantitative: reflected indirectly in overall benchmark results; case study highlights a specific win scenario.</li>
+        </ul>
+
+        <h5>Key takeaway</h5>
+        <div class="callout good">
+          <div class="label">Key takeaway</div>
+          CRAKEN can turn <b>adjacent-domain writeup knowledge</b> (AES-CTR, A5/1, RC4 variants) into actionable guidance for a specific RC4 implementation flaw, illustrating why writeup-style procedural knowledge is valuable.
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. LIMITATIONS, CHALLENGES, OPEN ISSUES -->
+    <section id="s8" data-searchable>
+      <h3>8. Limitations, Challenges, Open Issues</h3>
+
+      <div class="grid2">
+        <div class="card">
+          <h4>8.1 System/technical limitations and challenges</h4>
+          <ul>
+            <li><b>Retrieval quality remains a bottleneck:</b> the paper’s transition analysis indicates many retrieved docs are filtered out and many generations fail hallucination checks (necessitating retries).</li>
+            <li><b>Long conversational contexts:</b> the paper suggests future work on retrieval strategies for long contexts and better integration between knowledge databases and agents.</li>
+            <li><b>Dataset organization matters:</b> mixing datasets without careful curation can degrade performance (writeups outperform mixed corpora in their comparisons).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>8.2 Constraints from model/tooling</h4>
+          <ul>
+            <li>The paper notes reliance on <b>tool calling</b> capabilities for the agentic setup, limiting incorporation of some advanced reasoning modes/models that may not support the same tool-calling behavior in their framework context.</li>
+            <li>Budget caps and limits (max cost/max rounds) influence how far agents can persist.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h4>8.3 Ethics & misuse concerns (explicitly discussed)</h4>
+      <div class="callout risk">
+        <div class="label">Risk / ethics callout</div>
+        <ul>
+          <li>CTFs are controlled environments, but CRAKEN’s knowledge-based approach improves offensive capability, raising misuse concerns if safeguards are bypassed.</li>
+          <li>Paper warns that <b>prompt injection vulnerability</b> becomes non-trivial when combined with RAG: malicious actors could manipulate the agent into accessing/misusing retrieved information.</li>
+          <li>Paper calls for proactive assessment of prompt injection vulnerabilities and training data integrity, framed similarly to secure software responsibility practices.</li>
+        </ul>
+      </div>
+
+      <h4>8.4 Open issues / future work directions (from the paper’s discussion)</h4>
+      <ul>
+        <li>Improve retrieval strategies for long contexts and better connect knowledge databases to agent decision-making.</li>
+        <li>Explore data organization strategies to curate datasets across cybersecurity domains.</li>
+        <li>Strengthen robustness against prompt injection and other integrity attacks in retrieval-augmented agents.</li>
+      </ul>
+
+      <div class="callout exam">
+        <div class="label">Exam tip</div>
+        If asked “What’s the main remaining weakness CRAKEN exposes?”:
+        <b>retrieval quality and hallucination risk are still high, so the system depends on retries + graders to remain reliable.</b>
+      </div>
+    </section>
+
+    <!-- 9. PRACTICAL TAKEAWAYS / STUDY CHECKLIST -->
+    <section id="s9" data-searchable>
+      <h3>9. Practical Takeaways / Study Checklist</h3>
+
+      <div class="callout exam">
+        <div class="label">Memorize this checklist</div>
+        <ul>
+          <li><b>Problem:</b> LLM cybersecurity agents lack up-to-date expertise and struggle to integrate external knowledge into multi-step exploits.</li>
+          <li><b>CRAKEN recipe:</b> Decompose context → Retrieve → Grade relevance → Generate hint → Grade hallucination → Grade “solved” → Rewrite query → Retry → Inject hint into executor.</li>
+          <li><b>Where knowledge helps most:</b> execution-time injection usually beats planning-time injection (with category-dependent exceptions).</li>
+          <li><b>Retrieval types:</b> classic vector RAG + Self-RAG loop; optional Graph-RAG with hybrid graph+vector retrieval.</li>
+          <li><b>Knowledge sources:</b> writeups (best overall), payloads, code snippets; mixing without curation can hurt.</li>
+          <li><b>Metrics:</b> % solved and $ cost on NYU CTF Bench; plus MITRE ATT&CK technique coverage for breadth.</li>
+          <li><b>Key evidence artifacts:</b> Table 2 (performance/cost), Figure 4 (retrieval transitions/quality), Table 3 (MITRE breadth), Figure 3/Table 4 (solution overlap/specialization), Figure 5 (exit behaviors).</li>
+          <li><b>System insight:</b> graders + retries are not optional—first-pass retrieval/generation often fails.</li>
+          <li><b>Ethics:</b> RAG increases prompt injection risk; integrity and safety evaluation is necessary for offensive agents.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h4>Use CRAKEN as a template to evaluate other papers</h4>
+        <ul>
+          <li><b>Integration point:</b> Where does retrieved knowledge enter the agent loop (planning, execution, tool selection)?</li>
+          <li><b>Quality controls:</b> Are there explicit graders/verifiers? What happens on failure?</li>
+          <li><b>Memory structure:</b> Vector-only vs structured (graphs/ontologies) vs hybrid.</li>
+          <li><b>Benchmarks:</b> Do results include cost and failure modes, not only success rate?</li>
+          <li><b>Breadth metrics:</b> Do they measure technique coverage (e.g., ATT&CK) or only solve rate?</li>
+        </ul>
+      </div>
+
+      <div class="callout say">
+        <div class="label">Say this in your own words</div>
+        “CRAKEN shows that for autonomous cyber agents, it’s not enough to retrieve facts—you need a control loop that checks relevance and grounding, then feeds validated guidance into the specific step being executed.”
+      </div>
+    </section>
+
+    <!-- 10. FIGURES & TABLES INDEX -->
+    <section id="s10" data-searchable>
+      <h3>10. Figures & Tables Index (FINAL SECTION)</h3>
+      <p class="muted">
+        For each figure/table: paper page number, PDF page number, what it represents, and any credit notes if cited.
+        <b>Paper page == PDF page</b> for this PDF.
+      </p>
+
+      <h4>Figures</h4>
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Paper page</th>
+              <th>PDF page</th>
+              <th>What it represents (short description)</th>
+              <th>Credits / notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Figure 1</b></td>
+              <td>3</td>
+              <td>3</td>
+              <td>CRAKEN architecture: planner–executor multi-agent system + iterative retrieval system and knowledge-hint injection point.</td>
+              <td>Builds on planner–executor structure from D-CIPHER; paper cites ReWOO/plan-and-solve lineage.</td>
+            </tr>
+            <tr>
+              <td><b>Figure 2</b></td>
+              <td>5</td>
+              <td>5</td>
+              <td>Graph-RAG retrieval diagram: hybrid structured (graph search) + unstructured (text/vector) retrieval merged into final context.</td>
+              <td>Graph-RAG concepts referenced in related work; implemented with Neo4j in CRAKEN.</td>
+            </tr>
+            <tr>
+              <td><b>Figure 3</b></td>
+              <td>7</td>
+              <td>7</td>
+              <td>Overlap of solved CTFs across EnIGMA, D-CIPHER, and CRAKEN (best-model setup) showing specialization and unique solves.</td>
+              <td>Used to support “solution diversity” claim; detailed distribution in Appendix E (Table 4).</td>
+            </tr>
+            <tr>
+              <td><b>Figure 4</b></td>
+              <td>7</td>
+              <td>7</td>
+              <td>Transition diagram for the retrieval algorithm: proportions of retrieval steps, grading passes/fails, and retry contributions.</td>
+              <td>Evidence for why recursive grading + retries matter.</td>
+            </tr>
+            <tr>
+              <td><b>Figure 5</b></td>
+              <td>8</td>
+              <td>8</td>
+              <td>Exit analysis by category and model: solved vs give-up vs max cost vs max rounds vs error distributions.</td>
+              <td>Interpreted as persistence differences across models under constraints.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="margin-top:16px;">Tables</h4>
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Paper page</th>
+              <th>PDF page</th>
+              <th>What it represents (short description)</th>
+              <th>Credits / notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Table 1</b></td>
+              <td>2</td>
+              <td>2</td>
+              <td>Feature comparison of cybersecurity LLM agents: #CTFs, tools, multi-agent, Self-RAG, Graph-RAG; CRAKEN marked as supporting all.</td>
+              <td>Positions CRAKEN relative to NYU CTF baseline, EnIGMA, HackSynth, D-CIPHER, etc.</td>
+            </tr>
+            <tr>
+              <td><b>Table 2</b></td>
+              <td>6</td>
+              <td>6</td>
+              <td>Overall and category-wise performance + cost for D-CIPHER vs CRAKEN across multiple models and CRAKEN variants.</td>
+              <td>Primary quantitative evidence for solve/cost tradeoffs.</td>
+            </tr>
+            <tr>
+              <td><b>Table 3</b></td>
+              <td>18</td>
+              <td>18</td>
+              <td>MITRE ATT&CK technique coverage: technique IDs, #CTFs per technique, and solved counts per agent/config.</td>
+              <td>Technique mapping is taken from D-CIPHER (as stated in Appendix D).</td>
+            </tr>
+            <tr>
+              <td><b>Table 4</b></td>
+              <td>19</td>
+              <td>19</td>
+              <td>Per-challenge solved distribution (✓/×) across EnIGMA, D-CIPHER (best model), and CRAKEN, grouped by category/year.</td>
+              <td>Supports overlap/specialization analysis discussed with Figure 3.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="margin-top:16px;">Algorithms</h4>
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Paper page</th>
+              <th>PDF page</th>
+              <th>What it represents (short description)</th>
+              <th>Credits / notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Algorithm 1</b></td>
+              <td>4</td>
+              <td>4</td>
+              <td>Recursive RAG workflow: retrieve → grade relevance → generate → grade hallucination → grade solved → rewrite query → retry up to max depth.</td>
+              <td>Inspired by Self-RAG; instantiated with explicit grader modules.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 11. CREDITS & CITATION -->
+    <section id="s11" data-searchable>
+      <h3>11. Credits & Citation</h3>
+
+      <div class="card">
+        <h4>Full paper citation</h4>
+        <p class="mono">
+          Shao, Minghao; Xi, Haoran; Rani, Nanda; Udeshi, Meet; Putrevu, Venkata Sai Charan; Milner, Kimberly; Dolan-Gavitt, Brendan;
+          Shukla, Sandeep Kumar; Krishnamurthy, Prashanth; Khorrami, Farshad; Karri, Ramesh; Shafique, Muhammad.
+          “CRAKEN: Cybersecurity LLM Agent with Knowledge-Based Execution.”
+          arXiv:2505.17107v1, 21 May 2025.
+        </p>
+        <p class="muted small">
+          The paper states the framework is open-sourced at: <span class="mono">https://github.com/NYU-LLM-CTF/nyuctf_agents_craken</span>
+          (URL included for completeness; this companion does not rely on external links).
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <h4>Figure/Table credits</h4>
+        <ul>
+          <li>All figures/tables referenced here are from the CRAKEN paper PDF unless otherwise noted in the paper itself.</li>
+          <li>MITRE technique mapping in Appendix D is explicitly taken from D-CIPHER (as stated in the paper).</li>
+        </ul>
+      </div>
+
+      <div class="callout">
+        <div class="label">Statement</div>
+        These notes are a <b>study companion</b> designed to substitute the paper during exam review.
+        They do <b>not</b> embed original images; instead they provide labeled image slots with page references for manual screenshot insertion.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  (function(){
+    const searchBox = document.getElementById('searchBox');
+    const sections = Array.from(document.querySelectorAll('[data-searchable]'));
+    const nav = document.getElementById('nav');
+    const toggleCallouts = document.getElementById('toggleCallouts');
+    const expandAll = document.getElementById('expandAll');
+    const collapseAll = document.getElementById('collapseAll');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const printBtn = document.getElementById('printBtn');
+
+    // --- Search filter ---
+    function clearHighlights(node){
+      const marks = node.querySelectorAll('mark.__hl');
+      marks.forEach(m => {
+        const text = document.createTextNode(m.textContent);
+        m.replaceWith(text);
+      });
+    }
+    function highlightText(node, query){
+      if(!query) return;
+      const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+        acceptNode: (t) => {
+          if(!t.nodeValue) return NodeFilter.FILTER_REJECT;
+          const v = t.nodeValue.trim();
+          if(!v) return NodeFilter.FILTER_REJECT;
+          const parent = t.parentElement;
+          if(!parent) return NodeFilter.FILTER_REJECT;
+          if(parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE') return NodeFilter.FILTER_REJECT;
+          if(parent.closest('code, pre')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const texts = [];
+      while(walker.nextNode()) texts.push(walker.currentNode);
+
+      const q = query.toLowerCase();
+      texts.forEach(t => {
+        const val = t.nodeValue;
+        const idx = val.toLowerCase().indexOf(q);
+        if(idx === -1) return;
+        const before = val.slice(0, idx);
+        const match = val.slice(idx, idx + query.length);
+        const after = val.slice(idx + query.length);
+        const frag = document.createDocumentFragment();
+        if(before) frag.appendChild(document.createTextNode(before));
+        const mark = document.createElement('mark');
+        mark.className = '__hl';
+        mark.style.background = 'rgba(122,162,255,.18)';
+        mark.style.border = '1px solid rgba(122,162,255,.22)';
+        mark.style.color = 'inherit';
+        mark.style.borderRadius = '8px';
+        mark.style.padding = '0 4px';
+        mark.textContent = match;
+        frag.appendChild(mark);
+        if(after) frag.appendChild(document.createTextNode(after));
+        t.replaceWith(frag);
+      });
+    }
+
+    function applySearch(){
+      const q = searchBox.value.trim().toLowerCase();
+      // clear old highlights
+      sections.forEach(s => clearHighlights(s));
+      // filter + highlight
+      sections.forEach(s => {
+        const text = s.innerText.toLowerCase();
+        const match = q === "" || text.includes(q);
+        s.classList.toggle('hiddenBySearch', !match);
+        if(match && q) highlightText(s, searchBox.value.trim());
+      });
+      // Also dim nav links that don't match (simple heuristic)
+      const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+      links.forEach(a => {
+        const targetId = a.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+        if(!target) return;
+        const visible = !target.classList.contains('hiddenBySearch');
+        a.style.opacity = (q === "" ? "1" : (visible ? "1" : ".35"));
+      });
+    }
+    searchBox.addEventListener('input', applySearch);
+
+    // --- Toggle callouts ---
+    let calloutsOn = true;
+    function setCallouts(on){
+      calloutsOn = on;
+      document.querySelectorAll('.callout').forEach(c => {
+        c.style.display = on ? '' : 'none';
+      });
+      toggleCallouts.innerHTML = on ? '<b>Callouts</b> on' : '<b>Callouts</b> off';
+    }
+    toggleCallouts.addEventListener('click', () => setCallouts(!calloutsOn));
+
+    // --- Expand/collapse details (future-proof: uses <details> if present) ---
+    expandAll.addEventListener('click', () => {
+      document.querySelectorAll('details').forEach(d => d.open = true);
+    });
+    collapseAll.addEventListener('click', () => {
+      document.querySelectorAll('details').forEach(d => d.open = false);
+    });
+
+    // --- Copy current section link ---
+    function getCurrentHash(){
+      // If user is within a section, pick the closest section id currently near top.
+      const y = window.scrollY;
+      const candidates = Array.from(document.querySelectorAll('section[id], [id^="framework-"], .imgSlot[id]'))
+        .filter(el => el.id)
+        .map(el => ({el, top: el.getBoundingClientRect().top + window.scrollY}))
+        .sort((a,b) => Math.abs(a.top - y - 120) - Math.abs(b.top - y - 120));
+      return candidates.length ? '#' + candidates[0].el.id : location.hash || '#s1';
+    }
+    copyLinkBtn.addEventListener('click', async () => {
+      const hash = getCurrentHash();
+      const url = location.origin + location.pathname + hash;
+      try{
+        await navigator.clipboard.writeText(url);
+        copyLinkBtn.textContent = 'Link copied';
+        setTimeout(()=>copyLinkBtn.textContent='Copy section link', 900);
+      }catch(e){
+        // fallback
+        prompt('Copy this link:', url);
+      }
+    });
+
+    // --- Print ---
+    printBtn.addEventListener('click', () => window.print());
+
+    // Initialize
+    setCallouts(true);
+    applySearch();
+  })();
+</script>
+</body>
+</html>
